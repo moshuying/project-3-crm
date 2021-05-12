@@ -1,0 +1,6 @@
+# devtools 热重启导致 mapper 出错的解决
+# https://github.com/abel533/MyBatis-Spring-Boot#spring-devtools-%E9%85%8D%E7%BD%AE
+restart:
+  include:
+    mapper: /mapper-[\\w-\\.]+jar
+    pagehelper: /pagehelper-[\\w-\\.]+jar

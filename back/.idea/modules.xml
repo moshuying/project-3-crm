@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/project-3-crm.iml" filepath="$PROJECT_DIR$/project-3-crm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-boot-api-project-seed.iml" filepath="$PROJECT_DIR$/spring-boot-api-project-seed.iml" />
     </modules>
   </component>
 </project>

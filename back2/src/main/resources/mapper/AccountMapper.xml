@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zoctan.seedling.mapper.AccountMapper">
+    <resultMap id="AccountMap" type="com.zoctan.seedling.entity.AccountDO">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="register_time" jdbcType="TIMESTAMP" property="registerTime"/>
+        <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
+    </resultMap>
+
+    <resultMap id="AccountWithRoleMap" type="com.zoctan.seedling.entity.AccountWithRoleDO" extends="AccountMap">
+        <collection property="roles" javaType="java.util.List" ofType="com.zoctan.seedling.entity.RoleDO">
+            <result column="role_name" jdbcType="VARCHAR" property="name"/>
+            <result column="role_id" jdbcType="BIGINT" property="id"/>
+        </collection>
+    </resultMap>
+
+    <!-- 按条件查询账户 -->
+    <select id="getByQueryWithRole" resultMap="AccountWithRoleMap">
+        SELECT
+        a.*,
+        r.name AS role_name,
+        r.id AS role_id
+        FROM account a
+        LEFT JOIN account_role ar ON a.id = ar.account_id
+        LEFT JOIN role r ON ar.role_id = r.id
+        <where>
+            <if test="id != null">a.id = #{id}</if>
+            <if test="name != null">a.name = #{name}</if>
+            <if test="email != null">a.email = #{email}</if>
+        </where>
+    </select>
+
+    <!-- 按账户名更新最后登陆时间 -->
+    <update id="updateLoginTimeByName">
+        UPDATE account
+        SET login_time = NOW()
+        WHERE name = #{name}
+    </update>
+</mapper>
