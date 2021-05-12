@@ -1,0 +1,28 @@
+// https://www.jetbrains.com/help/idea/http-client-in-product-code-editor.html
+POST http://0.0.0.0:8080/account/token
+Accept: application/json;charset=UTF-8
+Cache-Control: no-cache
+Content-Type: application/json;charset=UTF-8
+
+{
+  "name": "admin",
+  "password": "admin"
+}
+
+> {% client.global.set("token", response.body.data); %}
+
+###
+
+POST http://0.0.0.0:8080/upload
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="README.md"
+Content-Type: application/octet-stream
+
+// 上传的文件路径
+< /home/zoctan/spring-boot-api-seedling/README.md
+
+###
+

@@ -1,0 +1,113 @@
+server:
+  port: 80
+
+spring:
+  devtools:
+    restart:
+      # 修改代码后自动重启
+      enabled: true
+  servlet:
+    multipart:
+      # 最大文件上传大小
+      max-file-size: 20MB
+      # 最大请求大小
+      max-request-size: 20MB
+  # 数据源（应该全部加密）
+  datasource:
+    druid:
+      # 连接，注意各个配置，尤其是要一次性执行多条 SQL 时，要 allowMultiQueries=true
+      url: jdbc:mysql://localhost:3306/seedling_dev?useUnicode=true&useSSL=false&useLegacyDatetimeCode=false&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=UTC
+      # 用户名 root
+      username: root
+      # 密码 root
+      password: 123456
+      # 驱动类
+      driver-class-name: MyEnc({0COuoMacyjuWsmPnBUH9Zr5yWx1i1lZa+B/N0uwIJVyKwI7lpV1emg==})
+      # 连接池配置 连接数量、最小、最大、获取连接等待超时的时间
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      max-wait: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 配置监控统计拦截的过滤器，去掉后监控界面 SQL 无法统计，wall 用于 SQL 防火墙防注入
+      filters: stat,wall
+      # WebStatFilter 配置
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        # 不统计
+        exclusions: /druid/*,*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico
+        session-stat-enable: true
+        session-stat-max-count: 10
+        principal-session-name: session_name
+        principal-cookie-name: cookie_name
+      # StatViewServlet 配置
+      stat-view-servlet:
+        enabled: true
+        # 配置 DruidStatViewServlet
+        url-pattern: /druid/*
+        # 禁止手动重置监控数据
+        reset-enable: false
+        # 监控页面登录的用户名/密码
+        login-username: admin
+        login-password: admin
+        # IP白名单（没有配置或者为空，则允许所有访问）
+        allow: 127.0.0.1
+        # IP黑名单（存在共同时，deny优先于allow）
+        deny:
+      # Spring 监控，对内部各接口调用的监控
+      aop-patterns: com.zoctan.seedling.controller.*,com.zoctan.seedling.dto.*,com.zoctan.seedling.mapper.*,com.zoctan.seedling.service.*
+  cache:
+    # 缓存类型
+    type: redis
+    redis:
+      # key 前缀
+      key-prefix: seedlingDev
+      # 过期时间
+      time-to-live: 60s
+  redis:
+    # 数据库索引（默认为0）
+    database: 0
+    # 服务器地址
+    host: 127.0.0.1
+    # 服务器连接端口
+    port: 6379
+    # 服务器连接密码 root
+    password:
+    jedis.pool:
+      # 连接池最大连接数（使用负值表示没有限制）
+      max-active: 8
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1ms
+      # 连接池中的最大空闲连接
+      max-idle: 8
+      # 连接池中的最小空闲连接
+      min-idle: 0
+
+logging:
+  # 日志级别
+  level.com.zoctan.seedling: debug
+
+# Json web token
+jwt:
+  # 过期时间（分钟）
+  expire-time: 1m
+  # claim 权限 key
+  claim-key-auth: auth
+  # 请求头或请求参数的 key
+  header: Authorization
+  # token 类型
+  token-type: Bearer
+
+upload:
+  # 上传路径
+  local-path: /tmp/
+  # 最小文件上传大小
+  min: 1KB
+  # 最大文件上传大小
+  max: 10MB

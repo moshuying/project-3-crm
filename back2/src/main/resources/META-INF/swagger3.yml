@@ -1,0 +1,19 @@
+application:
+  # 项目名称
+  name: APIs doc
+  # 项目版本信息
+  version: 1.0
+  # 项目描述信息
+  description: RESTFul APIs
+  # 项目许可
+  license: Apache License 2.0
+  url:
+    service: https://github.com/Zoctan/spring-boot-api-seedling
+    license: https://github.com/Zoctan/spring-boot-api-seedling/blob/master/LICENSE
+  # 扫描路径选择
+  apis.selector: com.zoctan.seedling.controller
+# 作者信息
+author:
+  name: Zoctan
+  url: https://github.com/Zoctan
+  email: 752481828@qq.com
