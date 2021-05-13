@@ -14,8 +14,15 @@
         >
            <span slot="action" slot-scope="text">
               <a @click="updateItem(text.id)">Update</a> |
-              <a @click="deleteItem(text.id)">Delete</a>
-          </span>
+               <a-popconfirm
+                   title="Are you sure delete this task?"
+                   ok-text="Yes"
+                   cancel-text="No"
+                   @confirm="deleteItem(text)"
+               >
+              <a>Delete</a>
+              </a-popconfirm>
+           </span>
         </a-table>
       </div>
     </a-card>
@@ -28,7 +35,9 @@
         okText="提交"
     >
       <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-        <a-input v-decorator="['id',{ rules: [{ required: false}] }]" hidden/>
+        <a-form-item hidden>
+          <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
+        </a-form-item>
         <a-form-item label="部门名称">
           <a-input
               v-decorator="['name', { rules: [{ required: true, message: '请输入部门名称' }] }]"
@@ -41,7 +50,6 @@
           />
         </a-form-item>
       </a-form>
-
     </a-modal>
   </div>
 </template>
@@ -107,24 +115,36 @@ export default {
       "size": 10
     }) {
       this.loading = true
+
       department.list(params).then(({data}) => {
         const res = data.data
-        console.log("departmentList", res)
         const pagination = {...this.pagination};
-        console.log(res)
         pagination.total = res.total
+        pagination.current = params.page
         this.dataSource = res.list
         this.pagination = pagination
         this.loading = false
       })
     },
-    deleteItem(id){
-      console.log(id)
+    deleteItem(text) {
+      const title = '删除'
+      department.deleteItem(text.id).then(({data})=>{
+        if (data.code !== 200) {
+          this.$notification['error']({
+            message: title + '部门信息出现错误',
+            description: '建议检查网络连接或重新登陆',
+          });
+        }
+        this.$notification.success({
+          message: title + '成功',
+          description: title + '部门信息成功',
+        });
+        this.fetch({"page": this.pagination.current, "size": 10})
+      })
     },
-    updateItem(id){
+    updateItem(id) {
       this.showModal('更改')
-      department.getDetail(id).then(({data})=>{
-        console.log(data.data)
+      department.getDetail(id).then(({data}) => {
         // 这里不能循环
         this.form.setFieldsValue({"id": data.data["id"]})
         this.form.setFieldsValue({"sn": data.data["sn"]})
@@ -132,7 +152,7 @@ export default {
       })
     },
     // modal
-    showModal(title='新增') {
+    showModal(title = '新增') {
       this.visible = true;
       this.title = title
     },
@@ -144,12 +164,10 @@ export default {
           console.log("form error");
           return;
         }
-        console.log(values,this.form.getFieldsValue());
-
         let method = 'add';
-        if(values.id) method='update';
+        if (values.id) method = 'update';
 
-       department[method](values).then(({data}) => {
+        department[method](values).then(({data}) => {
           this.confirmLoading = false;
           if (data.code !== 200) {
             this.$notification['error']({
@@ -162,12 +180,14 @@ export default {
             description: this.title + '部门信息成功',
           });
           this.visible = false
-          this.handleCancel(this.pagination)
+          this.fetch({"page": this.pagination.current, "size": 10})
         })
       });
     },
     handleCancel() {
       this.visible = false;
+      this.title=''
+      this.form.resetFields()
     }
   }
 }

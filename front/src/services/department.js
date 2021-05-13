@@ -46,12 +46,14 @@ export async function getDetail(id) {
 /**
  *
  * @param object {{
-  "name": "测试部门",
+   "id":1,
+  "name": "name",
   "sn": "test department"
 }}
  * @returns {Promise<AxiosResponse<T>>}
  */
 export async function update(object) {
+    console.log(METHOD.PATCH)
     return request(DEPARTMENT, METHOD.PATCH, object)
 }
 
