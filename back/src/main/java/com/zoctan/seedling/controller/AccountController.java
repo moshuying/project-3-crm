@@ -1,5 +1,6 @@
 package com.zoctan.seedling.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -9,8 +10,10 @@ import com.zoctan.seedling.core.response.Result;
 import com.zoctan.seedling.core.response.ResultGenerator;
 import com.zoctan.seedling.dto.AccountDTO;
 import com.zoctan.seedling.dto.AccountLoginDTO;
+import com.zoctan.seedling.dto.LoginResultDTO;
 import com.zoctan.seedling.entity.AccountDO;
 import com.zoctan.seedling.entity.AccountWithRoleDO;
+import com.zoctan.seedling.entity.LoginResultDO;
 import com.zoctan.seedling.service.AccountService;
 import com.zoctan.seedling.service.impl.UserDetailsServiceImpl;
 import com.zoctan.seedling.util.JsonUtils;
@@ -33,7 +36,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author Zoctan
@@ -87,7 +90,14 @@ public class AccountController {
     // 更新登录时间
     this.accountService.updateLoginTimeByName(name);
     final String token = this.jwtUtil.sign(name, userDetails.getAuthorities());
-    return ResultGenerator.genOkResult(token);
+    LoginResultDTO loginResultDTO = new LoginResultDTO();
+    loginResultDTO.setToken(token);
+    loginResultDTO.setUserName(name);
+    Map<String,Object> roles = new HashMap<String,Object>();
+    roles.put("id",name);
+    roles.put("operation",new String[]{"add","edit","delete"});
+    loginResultDTO.getRoles().add(roles);
+    return ResultGenerator.genOkResult(loginResultDTO);
   }
 
   @Operation(summary = "账户注销", description = "账户注销，使token失效")
