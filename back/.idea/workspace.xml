@@ -5,58 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6ddb61c1-2626-4885-ba0d-662f57fe1c4e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../back/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/.idea/libraries/Maven__junit_junit_4_12.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/Application.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/configurer/MybatisConfigurer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/configurer/Swagger2Config.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/configurer/WebMvcConfigurer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/core/AbstractService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/core/Mapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/core/ProjectConstant.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/core/Result.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/core/ResultCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/core/ResultGenerator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/core/Service.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/core/ServiceException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/dao/DepartmentMapper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/model/Department.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/service/DepartmentService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/service/impl/DepartmentServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/java/com/company/project/web/DepartmentController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/resources/application-dev.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/resources/application-prod.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/resources/application-test.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/resources/banner.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/main/resources/mapper/DepartmentMapper.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/test/java/CodeGenerator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/test/java/com/conpany/project/Tester.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/test/resources/demo-user.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/test/resources/generator/template/controller-restful.ftl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/test/resources/generator/template/controller.ftl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/test/resources/generator/template/service-impl.ftl" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../back/src/test/resources/generator/template/service.ftl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/zoctan/seedling/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zoctan/seedling/controller/AccountController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/zoctan/seedling/controller/DepartmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zoctan/seedling/controller/DepartmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/../front/.env.development" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/pages/department/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/pages/department/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/pages/login/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/pages/login/Login.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/services/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectId" id="1sQYvsoB0C7islLziCDA9TgTUV8" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -72,6 +47,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RunManager" selected="Spring Boot.Application">
@@ -137,6 +113,8 @@
       <option name="presentableId" value="Default" />
       <updated>1620806515376</updated>
       <workItem from="1620806516929" duration="4012000" />
+      <workItem from="1620820969888" duration="1981000" />
+      <workItem from="1620867050404" duration="4297000" />
     </task>
     <servers />
   </component>
