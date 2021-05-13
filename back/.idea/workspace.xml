@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6ddb61c1-2626-4885-ba0d-662f57fe1c4e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front/src/pages/department/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/pages/department/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front/src/services/department.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/services/department.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front/src/utils/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/utils/request.js" afterDir="false" />
-    </list>
+    <list default="true" id="6ddb61c1-2626-4885-ba0d-662f57fe1c4e" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -47,7 +42,7 @@
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
-  <component name="RunManager" selected="Spring Boot.Application">
+  <component name="RunManager" selected="Application.CodeGenerator">
     <configuration name="CodeGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="CodeGenerator" />
       <module name="spring-boot-api-seeding" />
@@ -111,7 +106,7 @@
       <updated>1620806515376</updated>
       <workItem from="1620806516929" duration="4012000" />
       <workItem from="1620820969888" duration="1981000" />
-      <workItem from="1620867050404" duration="12524000" />
+      <workItem from="1620867050404" duration="12932000" />
     </task>
     <servers />
   </component>
