@@ -23,13 +23,16 @@ public class LoginResultDTO extends AbstractConverter<LoginResultDTO, LoginResul
     private String token;
 
     @Schema(name = "过期时间")
-    private String expireAt = new Date().toString();
+    private Date expireAt = new Date(new Date().getTime()+30*60*1000);
 
     private List<Object> permissions = new ArrayList<>();
     private List<Object> roles = new ArrayList<>();
 
     @Schema(name = "用户信息")
     private Map<String, Object> user = new HashMap<>();
+
+    @Schema(name = "用户登录成功的提示")
+    private String message = "欢迎回来";
 
     public void setUserName(String name) {
         this.getUser().put("name", name);
@@ -49,6 +52,13 @@ public class LoginResultDTO extends AbstractConverter<LoginResultDTO, LoginResul
         position.put("HK", "前端工程師 | 螞蟻金服-計算服務事業群-REACT平台");
         position.put("US", "Front-end engineer | Ant Financial - Computing services business group - REACT platform");
         this.user.put("position", position);
+
+//        Date date = new Date(); //取时间
+//        Calendar calendar = new GregorianCalendar();
+//        calendar.setTime(date);
+////        calendar.add(calendar.DATE, 1); //把日期往后增加一天,整数  往后推,负数往前移动
+//        calendar.add(calendar.HOUR, 4);
+//        this.expireAt = calendar.getTime().toString();
     }
 
     @Override

@@ -90,13 +90,17 @@ public class AccountController {
     // 更新登录时间
     this.accountService.updateLoginTimeByName(name);
     final String token = this.jwtUtil.sign(name, userDetails.getAuthorities());
+    // 返回Ant Design Admin提供的登录返回格式
     LoginResultDTO loginResultDTO = new LoginResultDTO();
+
     loginResultDTO.setToken(token);
     loginResultDTO.setUserName(name);
     Map<String,Object> roles = new HashMap<String,Object>();
     roles.put("id",name);
     roles.put("operation",new String[]{"add","edit","delete"});
+
     loginResultDTO.getRoles().add(roles);
+    loginResultDTO.setMessage("欢迎回来 "+name);
     return ResultGenerator.genOkResult(loginResultDTO);
   }
 

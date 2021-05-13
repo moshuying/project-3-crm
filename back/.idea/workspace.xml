@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6ddb61c1-2626-4885-ba0d-662f57fe1c4e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/zoctan/seedling/filter/CorsFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/zoctan/seedling/filter/CorsFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front/.env.development" beforeDir="false" afterPath="$PROJECT_DIR$/../front/.env.development" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../front/src/pages/department/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/pages/department/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front/src/pages/login/Login.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/pages/login/Login.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../front/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/services/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../front/src/services/department.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/services/department.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../front/src/utils/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/../front/src/utils/request.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,7 +111,7 @@
       <updated>1620806515376</updated>
       <workItem from="1620806516929" duration="4012000" />
       <workItem from="1620820969888" duration="1981000" />
-      <workItem from="1620867050404" duration="5591000" />
+      <workItem from="1620867050404" duration="12524000" />
     </task>
     <servers />
   </component>
