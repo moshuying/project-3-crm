@@ -110,13 +110,9 @@ export default {
         page: pagination.current,
       });
     },
-    fetch(params = {
-      "page": 1,
-      "size": 10
-    }) {
+    fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
-
-      department.list(params).then(({data}) => {
+      department.list(params || {"page": 1, "size": 10}).then(({data}) => {
         const res = data.data
         const pagination = {...this.pagination};
         pagination.total = res.total
@@ -154,7 +150,7 @@ export default {
     // modal
     showModal(title = '新增') {
       this.visible = true;
-      this.title = title
+      this.title = title || '新增'
     },
     handleOk() {
       this.confirmLoading = true;
