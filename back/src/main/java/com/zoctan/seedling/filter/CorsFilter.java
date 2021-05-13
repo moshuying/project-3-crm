@@ -25,53 +25,53 @@ import static com.zoctan.seedling.core.constant.ProjectConstant.SPRING_PROFILE_P
 @Order(1)
 @Component
 public class CorsFilter implements Filter {
-  @Value("${spring.profiles.active}")
-  private String activeProfile;
+    @Value("${spring.profiles.active}")
+    private String activeProfile;
 
-  @Override
-  public void init(final FilterConfig filterConfig) {
-    log.debug("==> CorsFilter init");
-  }
-
-  @Override
-  public void doFilter(
-      final ServletRequest servletRequest,
-      final ServletResponse servletResponse,
-      final FilterChain filterChain)
-      throws IOException, ServletException {
-    final HttpServletRequest request = (HttpServletRequest) servletRequest;
-    final HttpServletResponse response = (HttpServletResponse) servletResponse;
-
-    // 仅在非生产环境下生效
-    if (!SPRING_PROFILE_PRODUCTION.equals(this.activeProfile)) {
-      // 允许所有来源
-      response.setHeader("Access-Control-Allow-Origin", "*");
-    }
-    response.setHeader("Access-Control-Allow-Credentials", "true");
-    response.setHeader(
-        "Access-Control-Allow-Headers", "Content-Type, Content-Length, Authorization");
-    // 明确允许通过的方法，不建议使用 *
-    response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, OPTIONS");
-    response.setHeader("Access-Control-Max-Age", "3600");
-    response.setHeader("Access-Control-Expose-Headers", "*");
-
-    // 预请求后，直接返回
-    // 返回码必须为 200 否则视为请求失败
-    if (HttpMethod.OPTIONS.matches(request.getMethod())) {
-      return;
+    @Override
+    public void init(final FilterConfig filterConfig) {
+        log.debug("==> CorsFilter init");
     }
 
-    log.debug(
-        "==> IP<{}> Request: [{}] {}",
-        IpUtils.getIpAddress(),
-        request.getMethod(),
-        UrlUtils.getMappingUrl(request));
+    @Override
+    public void doFilter(
+            final ServletRequest servletRequest,
+            final ServletResponse servletResponse,
+            final FilterChain filterChain)
+            throws IOException, ServletException {
+        final HttpServletRequest request = (HttpServletRequest) servletRequest;
+        final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-    filterChain.doFilter(request, response);
-  }
+        // 仅在非生产环境下生效
+        if (!SPRING_PROFILE_PRODUCTION.equals(this.activeProfile)) {
+            // 允许所有来源
+            response.setHeader("Access-Control-Allow-Origin", "*");
+        }
+        response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader(
+                "Access-Control-Allow-Headers", "Content-Type, Content-Length, Authorization");
+        // 明确允许通过的方法，不建议使用 *
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, OPTIONS");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Expose-Headers", "*");
 
-  @Override
-  public void destroy() {
-    log.debug("==> CorsFilter destroy");
-  }
+        // 预请求后，直接返回
+        // 返回码必须为 200 否则视为请求失败
+        if (HttpMethod.OPTIONS.matches(request.getMethod())) {
+            return;
+        }
+
+        log.debug(
+                "==> IP<{}> Request: [{}] {}",
+                IpUtils.getIpAddress(),
+                request.getMethod(),
+                UrlUtils.getMappingUrl(request));
+
+        filterChain.doFilter(request, response);
+    }
+
+    @Override
+    public void destroy() {
+        log.debug("==> CorsFilter destroy");
+    }
 }
