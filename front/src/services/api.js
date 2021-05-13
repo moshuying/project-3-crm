@@ -4,6 +4,7 @@
 // const BASE_URL = process.env.VUE_APP_API_BASE_URL
 const BASE_URL = process.env.VUE_APP_API_DEV_URL
 module.exports = {
+  BASE_URL,
   // LOGIN: `${BASE_URL}/login`,
   LOGIN: `${BASE_URL}/account/token`,
   // ROUTES: `${BASE_URL}/routes`,
