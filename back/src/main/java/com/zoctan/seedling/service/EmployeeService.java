@@ -9,4 +9,5 @@ import com.zoctan.seedling.core.service.Service;
 */
 public interface EmployeeService extends Service<Employee> {
 
+
 }

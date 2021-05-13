@@ -15,9 +15,9 @@
            <span slot="action" slot-scope="text">
               <a @click="updateItem(text.id)">Update</a> |
                <a-popconfirm
-                   title="Are you sure delete this task?"
-                   ok-text="Yes"
-                   cancel-text="No"
+                   title="您真的要删除这行数据么？"
+                   ok-text="是"
+                   cancel-text="否"
                    @confirm="deleteItem(text)"
                >
               <a>Delete</a>

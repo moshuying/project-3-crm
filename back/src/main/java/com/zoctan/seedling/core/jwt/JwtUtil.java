@@ -34,7 +34,9 @@ public class JwtUtil {
   @Resource private JwtConfigurationProperties jwtProperties;
   @Resource private RedisUtils redisUtils;
   @Resource private RsaUtils rsaUtils;
-
+  public JwtConfigurationProperties getJwtProperties(){
+    return this.jwtProperties;
+  }
   /** 根据 token 得到账户名 */
   public Optional<String> getName(final String token) {
     final Optional<Claims> claims = this.parseToken(token);

@@ -23,7 +23,7 @@ public class LoginResultDTO extends AbstractConverter<LoginResultDTO, LoginResul
     private String token;
 
     @Schema(name = "过期时间")
-    private Date expireAt = new Date(new Date().getTime()+30*60*1000);
+    private Date expireAt;
 
     private List<Object> permissions = new ArrayList<>();
     private List<Object> roles = new ArrayList<>();
