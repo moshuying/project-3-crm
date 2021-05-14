@@ -4,13 +4,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import springfox.documentation.service.*;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.spi.service.contexts.SecurityContext;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.zoctan.seedling.core.constant.ProjectConstant.SPRING_PROFILE_PRODUCTION;
 
@@ -59,28 +65,48 @@ public class Swagger3Config {
   @Value("${author.email}")
   private String authorEmail;
 
+  private ApiInfo apiInfo() {
+    return new ApiInfoBuilder()
+            .title(applicationName)
+            .version(applicationVersion)
+            .description(applicationDescription)
+            .termsOfServiceUrl(applicationServiceUrl)
+            .contact(new Contact(authorName, authorUrl, authorEmail))
+            .license(applicationLicense)
+            .licenseUrl(applicationLicenseUrl)
+            .build();
+  }
+
   @Bean
   public Docket docket() {
-
-    return new Docket(DocumentationType.OAS_30)
+//添加head参数配置start
+    return new Docket(DocumentationType.SWAGGER_2)
         .apiInfo(this.apiInfo())
         // 仅在非生产环境下生效
         .enable(!SPRING_PROFILE_PRODUCTION.equals(this.activeProfile))
         .select()
         .apis(RequestHandlerSelectors.basePackage(selector))
         .paths(PathSelectors.any())
-        .build();
+        .build()
+        .securitySchemes(securitySchemes())
+        .securityContexts(securityContexts());
   }
 
-  private ApiInfo apiInfo() {
-    return new ApiInfoBuilder()
-        .title(applicationName)
-        .version(applicationVersion)
-        .description(applicationDescription)
-        .termsOfServiceUrl(applicationServiceUrl)
-        .contact(new Contact(authorName, authorUrl, authorEmail))
-        .license(applicationLicense)
-        .licenseUrl(applicationLicenseUrl)
-        .build();
+  private List<SecurityScheme> securitySchemes(){
+    return Collections.singletonList(new ApiKey("Authorization", "Authorization", "header"));
+  }
+
+  private List<SecurityContext> securityContexts() {
+    return Collections.singletonList(
+            SecurityContext.builder()
+                    .securityReferences(defaultAuth())
+                    .operationSelector(null)
+                    .build()
+    );
+  }
+
+  private List<SecurityReference> defaultAuth() {
+    AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+    return Collections.singletonList(new SecurityReference("Authorization", new AuthorizationScope[]{authorizationScope}));
   }
 }
