@@ -33,8 +33,9 @@
         @ok="handleOk"
         @cancel="handleCancel"
         okText="提交"
+        width="80%"
     >
-      <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+      <a-form :form="form">
         <a-form-item hidden>
           <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
         </a-form-item>
@@ -49,6 +50,54 @@
               placeholder="请输入角色编号"
           />
         </a-form-item>
+        <a-form-item label="角色权限">
+          <a-transfer
+              v-decorator="['permissions',{ rules: [{ required: false }] },]"
+              :operations="['加入权限', '移除权限']"
+              :data-source="permissionList"
+              :target-keys="targetKeys"
+              :disabled="disabled"
+              :show-search="showSearch"
+              :filter-option="(inputValue, item) => item.title.indexOf(inputValue) !== -1"
+              :show-select-all="false"
+              @change="handleChange"
+          >
+            <template
+                slot="children"
+                slot-scope="{
+                props: { direction, filteredItems, selectedKeys, disabled: listDisabled },
+                on: { itemSelectAll, itemSelect },
+              }"
+            >
+              <a-table
+                  :row-selection="getRowSelection({ disabled: listDisabled, selectedKeys, itemSelectAll, itemSelect })"
+                  :columns="direction === 'left' ? leftColumns : rightColumns"
+                  :data-source="filteredItems"
+                  size="small"
+                  :style="{ pointerEvents: listDisabled ? 'none' : null }"
+                  :custom-row="({ key, disabled: itemDisabled }) => ({
+                  on: {
+                    click: () => {
+                      if (itemDisabled || listDisabled) return;
+                      itemSelect(key, !selectedKeys.includes(key));
+                    },
+                  },
+                })"
+              />
+            </template>
+            <a-button
+                slot="footer"
+                size="small"
+                style="float:right;margin: 5px"
+                @click="updateItem(reloadId)"
+            >
+              刷新所有权限
+            </a-button>
+            <span slot="notFoundContent">
+              没数据
+            </span>
+          </a-transfer>
+        </a-form-item>
       </a-form>
     </a-modal>
   </div>
@@ -56,6 +105,8 @@
 
 <script>
 import * as role from "@/services/role"
+import * as permission from "@/services/permission"
+import difference from 'lodash/difference';
 
 const columns = [
   {
@@ -75,6 +126,16 @@ const columns = [
     scopedSlots: {customRender: 'action'}
   }
 ]
+const permissionTableColumns = [
+  {
+    dataIndex: 'name',
+    title: '权限名称',
+  },
+  {
+    dataIndex: 'expression',
+    title: '权限表达式',
+  },
+];
 export default {
   name: 'Department',
   data() {
@@ -89,8 +150,17 @@ export default {
       title: '新增',
       visible: false,
       confirmLoading: false,
+      reloadId: null,
       // modal form
       form: this.$form.createForm(this, {name: 'coordinated'}),
+      // modal permission list
+      permissionList: [],
+      targetKeys: [],
+      selectedKeys: [],
+      disabled: false,
+      showSearch: false,
+      leftColumns: permissionTableColumns,
+      rightColumns: permissionTableColumns,
     }
   },
   authorize: {
@@ -117,14 +187,14 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list
+        this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
         this.pagination = pagination
         this.loading = false
       })
     },
     deleteItem(text) {
       const title = '删除'
-      role.deleteItem(text.id).then(({data})=>{
+      role.deleteItem(text.id).then(({data}) => {
         if (data.code !== 200) {
           this.$notification['error']({
             message: title + '角色信息出现错误',
@@ -139,12 +209,23 @@ export default {
       })
     },
     updateItem(id) {
+      if(this.confirmLoading){
+        this.confirmLoading=false
+      }
+      this.targetKeys = []
+      this.permissionList = []
       this.showModal('更改')
+      this.reloadId = id
       role.getDetail(id).then(({data}) => {
         // 这里不能循环
         this.form.setFieldsValue({"id": data.data["id"]})
         this.form.setFieldsValue({"sn": data.data["sn"]})
         this.form.setFieldsValue({"name": data.data["name"]})
+        const {permissions} = data.data
+        if (!permissions) return;
+        permissions.forEach(e => {
+          this.targetKeys.push(e.id + "")
+        })
       })
     },
     // modal
@@ -152,18 +233,29 @@ export default {
       this.visible = true;
       this.title = title || '新增'
       this.form.resetFields()
+      this.getAllPermissionList()
     },
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
-
         if (err) {
           console.log("form error");
           return;
         }
         let method = 'add';
         if (values.id) method = 'update';
-
+        if(values.permissions.length>=1){
+          let arr =[]
+          for(let i=0;i<values.permissions.length-1;i++){
+            const e = values.permissions[i]
+            arr.push({
+              id:this.permissionList[e].id,
+              name:this.permissionList[e].name,
+              expression:this.permissionList[e].expression
+            })
+          }
+          values.permissions = arr
+        }
         role[method](values).then(({data}) => {
           this.confirmLoading = false;
           if (data.code !== 200) {
@@ -183,9 +275,44 @@ export default {
     },
     handleCancel() {
       this.visible = false;
-      this.title=''
+      this.title = ''
+      this.confirmLoading = false
       this.form.resetFields()
-    }
+    },
+    // modal transfer
+    getAllPermissionList() {
+      permission.list({page: 1, size: 999999999}).then(({data}) => {
+        this.permissionList = data.data.list.map((e, i) => ({key: i + "", title: e.name, ...e}))
+      })
+    },
+    handleChange(targetKeys, direction, moveKeys) {
+      console.log(targetKeys, direction, moveKeys);
+      this.targetKeys = targetKeys;
+    },
+    handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
+      this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
+
+      console.log('sourceSelectedKeys: ', sourceSelectedKeys);
+      console.log('targetSelectedKeys: ', targetSelectedKeys);
+    },
+    getRowSelection({disabled, selectedKeys, itemSelectAll, itemSelect}) {
+      return {
+        getCheckboxProps: item => ({props: {disabled: disabled || item.disabled}}),
+        onSelectAll(selected, selectedRows) {
+          const treeSelectedKeys = selectedRows
+              .filter(item => !item.disabled)
+              .map(({key}) => key);
+          const diffKeys = selected
+              ? difference(treeSelectedKeys, selectedKeys)
+              : difference(selectedKeys, treeSelectedKeys);
+          itemSelectAll(diffKeys, selected);
+        },
+        onSelect({key}, selected) {
+          itemSelect(key, selected);
+        },
+        selectedRowKeys: selectedKeys,
+      };
+    },
   }
 }
 </script>
