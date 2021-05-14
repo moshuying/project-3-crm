@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
 * @author MoShuYing
@@ -19,5 +20,9 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
     @Resource
     private EmployeeMapper employeeMapper;
 
-
+    @Override
+    public List<Employee> listAll() {
+//        employeeMapper.
+        return super.listAll();
+    }
 }
