@@ -16,4 +16,5 @@ public interface RoleMapper extends MyMapper<RoleDO> {
    * @return 影响行数
    */
   int saveAsDefaultRole(@Param("accountId") Long accountId);
+  RoleDO getDetailById(Long id);
 }

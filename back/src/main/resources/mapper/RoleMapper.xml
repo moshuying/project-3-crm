@@ -7,9 +7,16 @@
         <result column="sn" jdbcType="VARCHAR" property="sn"/>
         <result column="permission" jdbcType="BIGINT" property="permission"/>
     </resultMap>
+    <resultMap id="" type="com.zoctan.seedling.entity.RoleWithPermissionDO" extends="RoleMap">
+        <collection property="roles" javaType="java.util.List" ofType="com.zoctan.seedling.entity.RoleDO">
+            <result column="role_name" jdbcType="VARCHAR" property="name"/>
+            <result column="role_id" jdbcType="BIGINT" property="id"/>
+        </collection>
+    </resultMap>
 
     <insert id="saveAsDefaultRole" parameterType="java.lang.Long">
         INSERT INTO account_role (account_id, role_id)
         VALUES (#{accountId}, (SELECT r.id FROM role r WHERE name = "USER"))
     </insert>
+    <select id="getDetailById" parameterMap=""
 </mapper>
