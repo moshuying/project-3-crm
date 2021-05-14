@@ -3,10 +3,10 @@ package com.zoctan.seedling.controller;
 import com.zoctan.seedling.core.response.Result;
 import com.zoctan.seedling.core.response.ResultGenerator;
 import com.zoctan.seedling.core.upload.UploadConfigurationProperties;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.util.unit.DataSize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +27,7 @@ import java.nio.file.Paths;
  * @author Zoctan
  * @date 2019/08/13
  */
-@Tag(name = "上传接口")
+@Api(tags={"上传接口"})
 @RestController
 @RequestMapping("/upload")
 public class UploadController {

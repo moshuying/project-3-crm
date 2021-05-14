@@ -7,8 +7,11 @@ import com.zoctan.seedling.core.response.ResultGenerator;
 import com.zoctan.seedling.dto.RoleDTO;
 import com.zoctan.seedling.entity.RoleDO;
 import com.zoctan.seedling.service.RoleService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +25,7 @@ import java.util.List;
  * @date 2018/05/27
  */
 @PreAuthorize("hasAuthority('ADMIN')")
-@Tag(name = "角色接口")
+@Api(tags={"角色接口"})
 @RestController
 @RequestMapping("/role")
 public class RoleController {
@@ -58,9 +61,14 @@ public class RoleController {
 
   @Operation(description = "角色列表")
   @GetMapping
+  @ApiOperation(value="分页查询角色", notes="分页查询角色列表")
+  @ApiImplicitParams({
+          @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
+          @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
+  })
   public Result list(
-      @RequestParam(defaultValue = "0") final Integer page,
-      @RequestParam(defaultValue = "0") final Integer size) {
+      @RequestParam(defaultValue = "1") final Integer page,
+      @RequestParam(defaultValue = "10") final Integer size) {
     PageHelper.startPage(page, size);
     final List<RoleDO> list = this.roleService.listAll();
     final PageInfo<RoleDO> pageInfo = new PageInfo<>(list);
