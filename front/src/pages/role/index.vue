@@ -13,14 +13,14 @@
             @change="handleTableChange"
         >
            <span slot="action" slot-scope="text">
-              <a @click="updateItem(text.id)">Update</a> |
+              <a @click="updateItem(text.id)">编辑</a> |
                <a-popconfirm
                    title="您真的要删除这行数据么？"
                    ok-text="是"
                    cancel-text="否"
                    @confirm="deleteItem(text)"
                >
-              <a>Delete</a>
+              <a>删除</a>
               </a-popconfirm>
            </span>
         </a-table>
@@ -151,6 +151,7 @@ export default {
     showModal(title) {
       this.visible = true;
       this.title = title || '新增'
+      this.form.resetFields()
     },
     handleOk() {
       this.confirmLoading = true;
