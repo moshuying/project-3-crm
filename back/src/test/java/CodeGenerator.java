@@ -60,7 +60,7 @@ class CodeGenerator {
       return;
     }
 //    CodeGenerator.genCode("department");
-     genCodeByCustomModelName("department",null);
+     genCodeByCustomModelName("employee",null);
   }
 
   /**

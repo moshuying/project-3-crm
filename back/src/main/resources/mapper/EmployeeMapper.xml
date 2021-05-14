@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zoctan.seedling.mapper.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.zoctan.seedling.entity.Employee">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="sn" jdbcType="VARCHAR" property="sn" />
+    <result column="salary" jdbcType="DECIMAL" property="salary" />
+    <result column="deptId" jdbcType="BIGINT" property="deptid" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="admin" jdbcType="BIT" property="admin" />
+  </resultMap>
+  <select id="listEmployeeWithRole" resultMap="BaseResultMap">
+
+  </select>
+</mapper>

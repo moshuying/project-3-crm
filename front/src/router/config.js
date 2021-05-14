@@ -57,6 +57,11 @@ const options = {
           component:()=>import('@/pages/department/index')
         },
         {
+          path:'/role',
+          name:'角色管理',
+          component:()=>import('@/pages/role/index')
+        },
+        {
           path: 'form',
           name: '表单页',
           meta: {

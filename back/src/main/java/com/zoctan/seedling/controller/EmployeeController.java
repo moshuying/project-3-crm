@@ -2,8 +2,8 @@ package com.zoctan.seedling.controller;
 
 import com.zoctan.seedling.core.response.Result;
 import com.zoctan.seedling.core.response.ResultGenerator;
-import com.zoctan.seedling.entity.Department;
-import com.zoctan.seedling.service.DepartmentService;
+import com.zoctan.seedling.entity.Employee;
+import com.zoctan.seedling.service.EmployeeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,51 +16,51 @@ import java.util.List;
 
 /**
  * @author MoShuYing
- * @date 2021/05/12
+ * @date 2021/05/13
  */
 @PreAuthorize("hasAuthority('ADMIN')")
-@Tag(name = "部门接口")
+@Tag(name = "员工接口")
 @RestController
-@RequestMapping("/department")
-public class DepartmentController {
+@RequestMapping("/employee")
+public class EmployeeController {
     @Resource
-    private DepartmentService departmentService;
+    private EmployeeService employeeService;
 
-    @Operation(description = "部门添加")
+    @Operation(description = "员工添加")
     @PostMapping
-    public Result add(@RequestBody Department department) {
-        departmentService.save(department);
+    public Result add(@RequestBody Employee employee) {
+        employeeService.save(employee);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "部门删除")
+    @Operation(description = "员工删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
-        departmentService.deleteById(id);
+        employeeService.deleteById(id);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "部门更新")
+    @Operation(description = "员工更新")
     @PatchMapping
-    public Result update(@RequestBody Department department) {
-        departmentService.update(department);
+    public Result update(@RequestBody Employee employee) {
+        employeeService.update(employee);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "获取部门详细信息")
+    @Operation(description = "员工信息细节")
     @GetMapping("/{id}")
     public Result detail(@PathVariable Long id) {
-        Department department = departmentService.getById(id);
-        return ResultGenerator.genOkResult(department);
+        Employee employee = employeeService.getById(id);
+        return ResultGenerator.genOkResult(employee);
     }
 
-    @Operation(description = "分页查询部门")
+    @Operation(description = "分页查询员工")
     @GetMapping
     public Result list(@RequestParam(defaultValue = "0") Integer page,
                        @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
-        List<Department> list = departmentService.listAll();
-        PageInfo<Department> pageInfo = PageInfo.of(list);
+        List<Employee> list = employeeService.listAll();
+        PageInfo<Employee> pageInfo = PageInfo.of(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }

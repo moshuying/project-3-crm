@@ -11,4 +11,5 @@ module.exports = {
   GOODS: `${BASE_URL}/goods`,
   GOODS_COLUMNS: `${BASE_URL}/columns`,
   DEPARTMENT:`${BASE_URL}/department`, // method CRUD
+  ROLE:`${BASE_URL}/role`, // method CRUD
 }

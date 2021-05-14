@@ -4,6 +4,8 @@
     <resultMap id="RoleMap" type="com.zoctan.seedling.entity.RoleDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="sn" jdbcType="VARCHAR" property="sn"/>
+        <result column="permission" jdbcType="BIGINT" property="permission"/>
     </resultMap>
 
     <insert id="saveAsDefaultRole" parameterType="java.lang.Long">
