@@ -15,4 +15,7 @@
     <result column="age" jdbcType="INTEGER" property="age" />
     <result column="admin" jdbcType="BIT" property="admin" />
   </resultMap>
+  <select id="listEmployeeWithRole" resultMap="BaseResultMap">
+
+  </select>
 </mapper>

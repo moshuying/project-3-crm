@@ -22,4 +22,12 @@ public class RoleDO {
   /** 角色名称 */
   @Column(name = "name")
   private String name;
+
+  /** 角色编号 */
+  @Column(name = "sn")
+  private String sn;
+
+  /** 角色权限 */
+  @Column(name = "permission")
+  private String permission;
 }
