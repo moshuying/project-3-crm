@@ -117,7 +117,7 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list
+        this.dataSource = res.list.map((e, i) => ({key: i + "",...e}))
         this.pagination = pagination
         this.loading = false
       })
@@ -184,6 +184,7 @@ export default {
     handleCancel() {
       this.visible = false;
       this.title=''
+      this.confirmLoading = false
       this.form.resetFields()
     }
   }

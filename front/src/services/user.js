@@ -14,14 +14,23 @@ export async function login(name, password) {
   })
 }
 
+/**
+ * 登出服务
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export async function logoutRequest() {
+  return request(LOGIN, METHOD.DELETE)
+}
+
 export async function getRoutesConfig() {
   return request(ROUTES, METHOD.GET)
 }
 
 /**
- * 退出登录
+ * 退出登录 使得token失效
  */
 export function logout() {
+  logoutRequest().then(()=>undefined);
   localStorage.removeItem(process.env.VUE_APP_ROUTES_KEY)
   localStorage.removeItem(process.env.VUE_APP_PERMISSIONS_KEY)
   localStorage.removeItem(process.env.VUE_APP_ROLES_KEY)

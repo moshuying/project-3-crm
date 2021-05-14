@@ -61,13 +61,13 @@ spring:
         # IP黑名单（存在共同时，deny优先于allow）
         deny:
       # Spring 监控，对内部各接口调用的监控
-      aop-patterns: com.zoctan.seedling.controller.*,com.zoctan.seedling.dto.*,com.zoctan.seedling.mapper.*,com.zoctan.seedling.service.*
+      aop-patterns: com.msy.plus.controller.*,com.msy.plus.dto.*,com.msy.plus.mapper.*,com.msy.plus.service.*
   cache:
     # 缓存类型
     type: redis
     redis:
       # key 前缀
-      key-prefix: seedlingDev
+      key-prefix: msy.plus[DEV]
       # 过期时间
       time-to-live: 60s
   redis:
@@ -91,7 +91,7 @@ spring:
 
 logging:
   # 日志级别
-  level.com.zoctan.seedling: debug
+  level.com.msy.plus: debug
 
 # Json web token
 jwt:

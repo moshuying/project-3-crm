@@ -35,13 +35,13 @@ jasypt:
 
 mybatis:
   # 存放实体的位置
-  type-aliases-package: com.zoctan.seedling.entity
+  type-aliases-package: com.msy.plus.entity
   # 存放 mapper 映射文件的位置
   mapper-locations: classpath:mapper/*.xml
 
 mapper:
   # 多个接口时逗号隔开
-  mappers: com.zoctan.seedling.core.mapper.MyMapper
+  mappers: com.msy.plus.core.mapper.MyMapper
   # insert 和 update 中，判断字符串类型 != ''
   not-empty: false
   # 取回主键的方式
@@ -64,6 +64,6 @@ pagehelper:
 # 日志
 #logging:
 #  # 以文件方式记录日志
-#  file: seedling.log
+#  file: plus.log
 #  # 设置目录
 #  path: /var/log

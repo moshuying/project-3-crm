@@ -1,15 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zoctan.seedling.mapper.RoleMapper">
-    <resultMap id="RoleMap" type="com.zoctan.seedling.entity.RoleDO">
+<mapper namespace="com.msy.plus.mapper.RoleMapper">
+    <resultMap id="RoleMap" type="com.msy.plus.entity.RoleDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="sn" jdbcType="VARCHAR" property="sn"/>
         <result column="permission" jdbcType="BIGINT" property="permission"/>
     </resultMap>
+    <resultMap id="RoleWithPermission" type="com.msy.plus.entity.RoleWithPermissionDO" extends="RoleMap">
+        <collection property="permissions" javaType="java.util.List" ofType="com.msy.plus.entity.Permission">
+            <result column="permission_id" jdbcType="BIGINT" property="id"/>
+            <result column="permission_name" jdbcType="VARCHAR" property="name"/>
+            <result column="expression" jdbcType="VARCHAR" property="expression"/>
+        </collection>
+    </resultMap>
 
     <insert id="saveAsDefaultRole" parameterType="java.lang.Long">
         INSERT INTO account_role (account_id, role_id)
-        VALUES (#{accountId}, (SELECT r.id FROM role r WHERE name = "USER"))
+        VALUES (#{accountId}, (SELECT r.id FROM role r WHERE name="USER"))
     </insert>
+    <insert id="savePermissions" parameterType="java.util.List">
+        insert into role_permission (role_id, permission_id) values
+        <foreach collection="permissions" item="item" index="index" separator=",">
+            (
+            #{roleId},
+            #{item}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteRolePermission" parameterType="java.util.List">
+        <foreach collection="permissions" item="item" index="index" separator=";">
+            delete
+            from role_permission
+            where role_id = #{roleId}
+            and permission_id = #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteRolePermissionItem" >
+        delete
+        from role_permission
+        where role_id = #{roleId}
+          and permission_id = #{permissionId}
+    </delete>
+    <select id="getAllRolePermissionTableRow" parameterType="java.lang.Long" resultType="com.msy.plus.entity.RolePermissionDO">
+        select * from role_permission where role_id = #{roleId}
+    </select>
+    <select id="getDetailById" parameterType="java.lang.Long" resultMap="RoleWithPermission">
+        select r.id         as id,
+               r.name       as name,
+               r.sn         as sn,
+               p.id         as permission_id,
+               p.name       as permission_name,
+               p.expression as expression
+        from role as r
+                 left join role_permission as rp on r.id = rp.role_id
+                 left join permission p on rp.permission_id = p.id
+        where r.id = #{id}
+    </select>
 </mapper>
