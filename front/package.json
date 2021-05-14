@@ -24,6 +24,7 @@
     "enquire.js": "^2.1.6",
     "highlight.js": "^10.2.1",
     "js-cookie": "^2.2.1",
+    "lodash": "^4.17.21",
     "mockjs": "^1.1.0",
     "nprogress": "^0.2.0",
     "viser-vue": "^2.4.8",
