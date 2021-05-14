@@ -3,7 +3,9 @@ package com.msy.plus.service.impl;
 import com.msy.plus.core.response.ResultCode;
 import com.msy.plus.core.service.AbstractService;
 import com.msy.plus.dto.RoleDTO;
+import com.msy.plus.entity.Permission;
 import com.msy.plus.entity.RoleDO;
+import com.msy.plus.entity.RolePermissionDO;
 import com.msy.plus.entity.RoleWithPermissionDO;
 import com.msy.plus.mapper.RoleMapper;
 import com.msy.plus.service.RoleService;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author MoShuying
@@ -43,5 +46,26 @@ public class RoleServiceImpl extends AbstractService<RoleDO> implements RoleServ
   @Override
   public RoleWithPermissionDO getDetailById(Long id) {
     return this.roleMapper.getDetailById(id);
+  }
+
+  @Override
+  public void savePermissions(Long roleId,List<Long> permissions) {
+    this.roleMapper.savePermissions(roleId,permissions);
+//    AssertUtils.asserts(success, ResultCode.SAVE_FAILED, "账户角色权限保存失败");
+  }
+
+  @Override
+  public void deleteRolePermission(Long roleId, List<Long> permissions) {
+    this.roleMapper.deleteRolePermission(roleId, permissions);
+  }
+
+  @Override
+  public void deleteRolePermissionItem(Long roleId, Long permissionId) {
+    this.roleMapper.deleteRolePermissionItem(roleId,permissionId);
+  }
+
+  @Override
+  public List<RolePermissionDO> getAllRolePermissionTableRow(Long roleId) {
+    return this.roleMapper.getAllRolePermissionTableRow(roleId);
   }
 }

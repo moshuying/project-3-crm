@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     /**
      * 权限名称

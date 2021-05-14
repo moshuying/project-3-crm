@@ -17,10 +17,42 @@
 
     <insert id="saveAsDefaultRole" parameterType="java.lang.Long">
         INSERT INTO account_role (account_id, role_id)
-        VALUES (#{accountId}, (SELECT r.id FROM role r WHERE name = "USER"))
+        VALUES (#{accountId}, (SELECT r.id FROM role r WHERE name="USER"))
     </insert>
+    <insert id="savePermissions" parameterType="java.util.List">
+        insert into role_permission (role_id, permission_id) values
+        <foreach collection="permissions" item="item" index="index" separator=",">
+            (
+            #{roleId},
+            #{item}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteRolePermission" parameterType="java.util.List">
+        <foreach collection="permissions" item="item" index="index" separator=";">
+            delete
+            from role_permission
+            where role_id = #{roleId}
+            and permission_id = #{item}
+        </foreach>
+    </delete>
+    <delete id="deleteRolePermissionItem" >
+        delete
+        from role_permission
+        where role_id = #{roleId}
+          and permission_id = #{permissionId}
+    </delete>
+    <select id="getAllRolePermissionTableRow" parameterType="java.lang.Long" resultType="com.msy.plus.entity.RolePermissionDO">
+        select * from role_permission where role_id = #{roleId}
+    </select>
     <select id="getDetailById" parameterType="java.lang.Long" resultMap="RoleWithPermission">
-        select r.id as id, r.name as name, r.sn as sn,p.id as permission_id, p.name as permission_name ,p.expression as expression
+        select r.id         as id,
+               r.name       as name,
+               r.sn         as sn,
+               p.id         as permission_id,
+               p.name       as permission_name,
+               p.expression as expression
         from role as r
                  left join role_permission as rp on r.id = rp.role_id
                  left join permission p on rp.permission_id = p.id
