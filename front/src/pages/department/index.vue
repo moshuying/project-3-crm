@@ -3,7 +3,7 @@
     <a-card>
       <div>
         <a-space class="operator">
-          <a-button type="primary" @click="showModal">新增</a-button>
+          <a-button type="primary" @click="showModal('新增')">新增</a-button>
         </a-space>
         <a-table
             :columns="columns"
