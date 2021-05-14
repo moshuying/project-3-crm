@@ -1,4 +1,4 @@
-import com.zoctan.seedling.core.rsa.RsaUtils;
+import com.msy.plus.core.rsa.RsaUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.Base64Utils;
@@ -11,7 +11,7 @@ import java.util.Base64;
 /**
  * RSA工具测试
  *
- * @author Zoctan
+ * @author MoShuying
  * @date 2018/05/27
  */
 public class RsaEncryptor {
@@ -27,7 +27,7 @@ public class RsaEncryptor {
     System.out.println("公钥：" + publicKey);
     System.out.println("私钥：" + privateKey);
 
-    final String data = "zoctan";
+    final String data = "msy";
     // 公钥加密
     final byte[] encrypted = this.rsaUtil.encrypt(data.getBytes());
     System.out.println("加密后：" + Base64Utils.encodeToString(encrypted));

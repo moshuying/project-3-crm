@@ -1,4 +1,4 @@
-import com.zoctan.seedling.Application;
+import com.msy.plus.Application;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
- * @author Zoctan
+ * @author MoShuying
  * @date 2018/05/27
  */
 @RunWith(SpringRunner.class)

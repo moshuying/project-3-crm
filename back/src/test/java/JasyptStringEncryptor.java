@@ -1,4 +1,4 @@
-import com.zoctan.seedling.Application;
+import com.msy.plus.Application;
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 /**
  * jasypt 用于加密配置文件 https://github.com/ulisesbocchio/jasypt-spring-boot
  *
- * @author Zoctan
+ * @author MoShuying
  * @date 2018/05/27
  */
 @RunWith(SpringRunner.class)

@@ -235,7 +235,7 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.zoctan.seedling.Application</mainClass>
+                            <mainClass>com.msy.plus.Application</mainClass>
                         </configuration>
                     </execution>
                 </executions>

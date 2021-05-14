@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.zoctan.seedling.core.constant.ProjectConstant.*;
+import static com.msy.plus.core.constant.ProjectConstant.*;
 
 /**
  * 代码生成器 根据数据表名称生成对应的 Entity、Mapper、Service、Controller 简化开发
  *
- * @author Zoctan
+ * @author MoShuying
  * @date 2018/05/27
  */
 class CodeGenerator {
