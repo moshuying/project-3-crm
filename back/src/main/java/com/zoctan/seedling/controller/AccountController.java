@@ -1,6 +1,5 @@
 package com.zoctan.seedling.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,17 +12,16 @@ import com.zoctan.seedling.dto.AccountLoginDTO;
 import com.zoctan.seedling.dto.LoginResultDTO;
 import com.zoctan.seedling.entity.AccountDO;
 import com.zoctan.seedling.entity.AccountWithRoleDO;
-import com.zoctan.seedling.entity.LoginResultDO;
 import com.zoctan.seedling.service.AccountService;
 import com.zoctan.seedling.service.impl.UserDetailsServiceImpl;
 import com.zoctan.seedling.util.JsonUtils;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,7 +41,7 @@ import java.util.*;
  * @date 2018/07/15
  */
 @Slf4j
-@Tag(name = "账户接口", description = "账户接口")
+@Api(tags={"账户操作接口(登录)"})
 @Validated
 @RestController
 @RequestMapping("/account")
