@@ -25,7 +25,7 @@ class CodeGenerator {
   private static final String JDBC_URL =
       "jdbc:mysql://localhost:3306/seedling_dev"
           + "?useUnicode=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=UTC";
-  private static final String JDBC_USERNAME = "root";
+  private static final String JDBC_USERNAME = "crm3";
   private static final String JDBC_PASSWORD = "123456";
   private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
   // 项目在硬盘上的基础路径
@@ -59,8 +59,8 @@ class CodeGenerator {
     if (!scanner.next().equals("y")) {
       return;
     }
-//    CodeGenerator.genCode("department");
-     genCodeByCustomModelName("employee",null);
+    CodeGenerator.genCode("permission");
+//     genCodeByCustomModelName("employee",null);
   }
 
   /**

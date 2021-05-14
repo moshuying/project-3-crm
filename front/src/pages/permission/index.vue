@@ -13,7 +13,7 @@
             @change="handleTableChange"
         >
            <span slot="action" slot-scope="text">
-              <a @click="updateItem(text.id)">编辑</a> |
+              <a disabled @click="updateItem(text.id)">编辑</a> |
                <a-popconfirm
                    title="您真的要删除这行数据么？"
                    ok-text="是"
@@ -38,15 +38,15 @@
         <a-form-item hidden>
           <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
         </a-form-item>
-        <a-form-item label="角色名称">
+        <a-form-item label="权限名称">
           <a-input
-              v-decorator="['name', { rules: [{ required: true, message: '请输入角色名称' }] }]"
+              v-decorator="['name', { rules: [{ required: true, message: '请输入权限名称' }] }]"
           />
         </a-form-item>
-        <a-form-item label="角色编号">
+        <a-form-item label="权限编号">
           <a-input
-              v-decorator="['sn',{ rules: [{ required: true, message: '请输入角色编号' }] },]"
-              placeholder="请输入角色编号"
+              v-decorator="['expression',{ rules: [{ required: true, message: '请输入权限编号' }] },]"
+              placeholder="请输入权限编号"
           />
         </a-form-item>
       </a-form>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import * as role from "@/services/role"
+import * as permission from "@/services/permission"
 
 const columns = [
   {
@@ -63,12 +63,12 @@ const columns = [
     dataIndex: 'id'
   },
   {
-    title: '角色名称',
+    title: '权限名称',
     dataIndex: 'name',
   },
   {
-    title: '角色编号',
-    dataIndex: 'sn',
+    title: '权限表达式',
+    dataIndex: 'expression',
   },
   {
     title: '操作',
@@ -112,7 +112,7 @@ export default {
     },
     fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
-      role.list(params || {"page": 1, "size": 10}).then(({data}) => {
+      permission.list(params || {"page": 1, "size": 10}).then(({data}) => {
         const res = data.data
         const pagination = {...this.pagination};
         pagination.total = res.total
@@ -124,34 +124,33 @@ export default {
     },
     deleteItem(text) {
       const title = '删除'
-      role.deleteItem(text.id).then(({data})=>{
+      permission.deleteItem(text.id).then(({data})=>{
         if (data.code !== 200) {
           this.$notification['error']({
-            message: title + '角色信息出现错误',
+            message: title + '权限信息出现错误',
             description: '建议检查网络连接或重新登陆',
           });
         }
         this.$notification.success({
           message: title + '成功',
-          description: title + '角色信息成功',
+          description: title + '权限信息成功',
         });
         this.fetch({"page": this.pagination.current, "size": 10})
       })
     },
     updateItem(id) {
       this.showModal('更改')
-      role.getDetail(id).then(({data}) => {
+      permission.getDetail(id).then(({data}) => {
         // 这里不能循环
         this.form.setFieldsValue({"id": data.data["id"]})
-        this.form.setFieldsValue({"sn": data.data["sn"]})
         this.form.setFieldsValue({"name": data.data["name"]})
+        this.form.setFieldsValue({"expression": data.data["expression"]})
       })
     },
     // modal
     showModal(title) {
       this.visible = true;
       this.title = title || '新增'
-      this.form.resetFields()
     },
     handleOk() {
       this.confirmLoading = true;
@@ -164,17 +163,17 @@ export default {
         let method = 'add';
         if (values.id) method = 'update';
 
-        role[method](values).then(({data}) => {
+        permission[method](values).then(({data}) => {
           this.confirmLoading = false;
           if (data.code !== 200) {
             this.$notification['error']({
-              message: this.title + '角色信息出现错误',
+              message: this.title + '权限信息出现错误',
               description: '建议检查网络连接或重新登陆',
             });
           }
           this.$notification.success({
             message: this.title + '成功',
-            description: this.title + '角色信息成功',
+            description: this.title + '权限信息成功',
           });
           this.visible = false
           this.fetch({"page": this.pagination.current, "size": 10})

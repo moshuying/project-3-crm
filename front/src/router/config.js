@@ -62,6 +62,11 @@ const options = {
           component:()=>import('@/pages/role/index')
         },
         {
+          path:'/permission',
+          name:'权限管理',
+          component:()=>import('@/pages/permission/index')
+        },
+        {
           path: 'form',
           name: '表单页',
           meta: {
