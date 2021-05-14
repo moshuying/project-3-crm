@@ -18,7 +18,7 @@ spring:
       # 连接，注意各个配置，尤其是要一次性执行多条 SQL 时，要 allowMultiQueries=true
       url: jdbc:mysql://localhost:3306/seedling_dev?useUnicode=true&useSSL=false&useLegacyDatetimeCode=false&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=UTC
       # 用户名 root
-      username: root
+      username: crm3
       # 密码 root
       password: 123456
       # 驱动类
