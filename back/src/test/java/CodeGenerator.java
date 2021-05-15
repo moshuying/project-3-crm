@@ -59,7 +59,7 @@ class CodeGenerator {
     if (!scanner.next().equals("y")) {
       return;
     }
-    CodeGenerator.genCode("permission");
+    CodeGenerator.genCode("employee");
 //     genCodeByCustomModelName("employee",null);
   }
 

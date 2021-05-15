@@ -1,5 +1,7 @@
 package com.msy.plus.service.impl;
 
+import com.msy.plus.entity.EmployeeDetail;
+import com.msy.plus.entity.EmployeeWithRoleDO;
 import com.msy.plus.mapper.EmployeeMapper;
 import com.msy.plus.entity.Employee;
 import com.msy.plus.service.EmployeeService;
@@ -12,7 +14,7 @@ import java.util.List;
 
 /**
 * @author MoShuYing
-* @date 2021/05/13
+* @date 2021/05/15
 */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -21,8 +23,12 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
     private EmployeeMapper employeeMapper;
 
     @Override
-    public List<Employee> listAll() {
-//        employeeMapper.
-        return super.listAll();
+    public EmployeeDetail getDetailById(Long id) {
+        return this.employeeMapper.getDetailById(id);
+    }
+
+    @Override
+    public List<EmployeeWithRoleDO> listEmployeeWithRole() {
+        return this.employeeMapper.listEmployeeWithRole();
     }
 }

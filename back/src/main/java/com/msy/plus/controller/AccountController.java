@@ -168,8 +168,7 @@ public class AccountController {
     final List<AccountDO> list = this.accountService.listAll();
     final PageInfo<AccountDO> pageInfo = PageInfo.of(list);
     // 不显示 password 字段
-    final PageInfo<JSONObject> objectPageInfo =
-        JsonUtils.deleteFields(pageInfo, PageInfo.class, "password");
+    final PageInfo<JSONObject> objectPageInfo = JsonUtils.deleteFields(pageInfo, PageInfo.class, "password");
     return ResultGenerator.genOkResult(objectPageInfo);
   }
 }
