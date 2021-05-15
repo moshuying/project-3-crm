@@ -208,14 +208,14 @@ export default {
         this.fetch({"page": this.pagination.current, "size": 10})
       })
     },
-    updateItem(id) {
+    async updateItem(id) {
       if(this.confirmLoading){
         this.confirmLoading=false
       }
       this.targetKeys = []
       this.permissionList = []
-      this.showModal('更改')
       this.reloadId = id
+      await this.showModal('更改')
       role.getDetail(id).then(({data}) => {
         // 这里不能循环
         this.form.setFieldsValue({"id": data.data["id"]})
@@ -223,17 +223,20 @@ export default {
         this.form.setFieldsValue({"name": data.data["name"]})
         const {permissions} = data.data
         if (!permissions) return;
-        permissions.forEach(e => {
-          this.targetKeys.push(e.id + "")
-        })
+
+        for(let i=0;i<permissions.length;i++){
+          const ps = permissions[i];
+          this.targetKeys.push(this.permissionList.find(e=>e.id===ps.id).key)
+        }
+
       })
     },
     // modal
-    showModal(title) {
+    async showModal(title) {
       this.visible = true;
       this.title = title || '新增'
       this.form.resetFields()
-      this.getAllPermissionList()
+      await this.getAllPermissionList()
     },
     handleOk() {
       this.confirmLoading = true;
@@ -246,7 +249,7 @@ export default {
         if (values.id) method = 'update';
         if(values.permissions.length>=1){
           let arr =[]
-          for(let i=0;i<values.permissions.length-1;i++){
+          for(let i=0;i<values.permissions.length;i++){
             const e = values.permissions[i]
             arr.push({
               id:this.permissionList[e].id,
@@ -281,13 +284,14 @@ export default {
     },
     // modal transfer
     getAllPermissionList() {
-      permission.list({page: 1, size: 999999999}).then(({data}) => {
+      return permission.list({page: 1, size: 999999999}).then(({data}) => {
         this.permissionList = data.data.list.map((e, i) => ({key: i + "", title: e.name, ...e}))
       })
     },
-    handleChange(targetKeys, direction, moveKeys) {
-      console.log(targetKeys, direction, moveKeys);
+    handleChange(targetKeys) {
+      // console.log(targetKeys, direction, moveKeys);
       this.targetKeys = targetKeys;
+      console.log(this.targetKeys,this.permissionList)
     },
     handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
       this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
