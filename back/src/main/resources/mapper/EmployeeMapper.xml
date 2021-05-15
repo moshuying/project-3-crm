@@ -5,17 +5,63 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="id" jdbcType="BIGINT" property="id" />
+    <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="sn" jdbcType="VARCHAR" property="sn" />
-    <result column="salary" jdbcType="DECIMAL" property="salary" />
-    <result column="deptId" jdbcType="BIGINT" property="deptid" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="age" jdbcType="INTEGER" property="age" />
-    <result column="admin" jdbcType="BIT" property="admin" />
+    <result column="dept" jdbcType="INTEGER" property="dept" />
+    <result column="hireDate" jdbcType="TIMESTAMP" property="hiredate" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="admin" jdbcType="INTEGER" property="admin" />
+    <result column="role" jdbcType="INTEGER" property="role" />
   </resultMap>
-  <select id="listEmployeeWithRole" resultMap="BaseResultMap">
-
+  <resultMap id="EmployeeWithRole" type="com.msy.plus.entity.EmployeeWithRoleDO">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="departmentName" jdbcType="VARCHAR" property="departmentName" />
+    <collection property="roleNames" javaType="java.util.List" ofType="java.lang.String">
+        <result column="roleNames" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+  <resultMap id="EmployeeDetail" type="com.msy.plus.entity.EmployeeDetail">
+      <id column="id" jdbcType="INTEGER" property="id" />
+      <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="age" jdbcType="INTEGER" property="age" />
+      <result column="email" jdbcType="VARCHAR" property="email" />
+      <result column="password" jdbcType="VARCHAR" property="password" />
+      <result column="department" jdbcType="VARCHAR" property="department" />
+      <result column="admin" jdbcType="INTEGER" property="admin" />
+      <collection property="roleIds" javaType="java.util.List" ofType="java.lang.String">
+          <result column="roleIds" jdbcType="VARCHAR" />
+      </collection>
+  </resultMap>
+  <select id="listEmployeeWithRole" resultMap="EmployeeWithRole">
+    select e.id as id,
+           e.name as name,
+           email,
+           age,
+           d.name as departmentName,
+           r.name as roleNames
+    from employee as e
+           left join employee_role er on er.employeeId = e.role
+           left join role r on er.id= r.id
+           left join department d on d.id = e.dept
   </select>
+    <select id="getDetailById" resultMap="EmployeeDetail">
+        select e.id       as id,
+               e.name     as name,
+               e.password as password,
+               email,
+               age,
+               e.dept     as department,
+               e.admin    as admin,
+               r.id       as roleIds
+        from employee as e
+                 left join employee_role er on er.employeeId = e.role
+                 left join role r on er.id = r.id
+        where e.id = #{id}
+    </select>
 </mapper>
