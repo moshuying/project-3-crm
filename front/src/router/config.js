@@ -52,19 +52,33 @@ const options = {
           ]
         },
         {
-          path:'/department',
-          name:'部门管理',
-          component:()=>import('@/pages/department/index')
-        },
-        {
-          path:'/role',
-          name:'角色管理',
-          component:()=>import('@/pages/role/index')
-        },
-        {
-          path:'/permission',
-          name:'权限管理',
-          component:()=>import('@/pages/permission/index')
+
+          path: 'system',
+          name: '系统设置',
+          meta: {
+            icon: 'setting',
+            page: {
+              cacheAble: false
+            }
+          },
+          component: PageView,
+          children: [
+            {
+            path:'/role',
+            name:'角色管理',
+            component:()=>import('@/pages/role/index')
+            },
+            {
+              path:'/permission',
+              name:'权限管理',
+              component:()=>import('@/pages/permission/index')
+            },
+            {
+              path:'/department',
+              name:'部门管理',
+              component:()=>import('@/pages/department/index')
+            }
+          ]
         },
         {
           path: 'form',
