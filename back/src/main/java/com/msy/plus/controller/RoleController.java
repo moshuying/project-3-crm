@@ -58,52 +58,27 @@ public class RoleController {
     List<RolePermissionDO> raw = this.roleService.getAllRolePermissionTableRow(roleWithPermissionDTO.getId());
 
     List<Long> nowPermissions = new ArrayList<>();
-    roleWithPermissionDTO.getPermissions().forEach(e->{
-      nowPermissions.add(e.getId());
-    });
-//    RoleWithPermissionDO raw = this.roleService.getDetailById(roleWithPermissionDTO.getId());
-//
-//    // 如果原来没有权限 那么直接全部新增
-//    if(raw.getPermissions().isEmpty()){
-//      this.roleService.savePermissions(roleWithPermissionDTO.getId(),roleWithPermissionDTO.getPermissions());
-//      return ResultGenerator.genOkResult();
-//    }
-//
-//    // 如果修改结果是清空权限 那么直接删除所有原来的权限
-//    if(roleWithPermissionDTO.getPermissions().isEmpty()){
-//        this.roleService.deleteRolePermission(roleWithPermissionDTO.getId(), raw.getPermissions());
-//      return ResultGenerator.genOkResult();
-//    }
+    roleWithPermissionDTO.getPermissions().forEach(e->{ nowPermissions.add(e.getId()); });
 
     // diff运算
-    List<Permission> now = roleWithPermissionDTO.getPermissions();
-
-    Set<Long> adds = new HashSet<>();
+      Set<Long> adds = new HashSet<>();
     Set<Long> removes = new HashSet<>();
-    // 中间表信息去重 （鲁棒性）
+    // 表中权限信息去重
     Set<Long> temp = new HashSet<>();
-    for(int i=0;i<raw.size()-1;i++){
-      long permissionId = raw.get(i).getPermission_id();
-      if(temp.contains(permissionId)){
-        removes.add(raw.get(i).getId());
-      }
-      temp.add(permissionId);
+    for(RolePermissionDO e: raw){
+      temp.add(e.getPermission_id());
     }
-    for(Long e:removes){
-      for(int i = 0; i<raw.size()-1; i++) {
-        if(raw.get(i).getId().equals(e)){
-          raw.remove(i);
+
+    // 中间表信息去重 （鲁棒性）
+    for(int i=0;i<raw.size()-1;i++){
+      for(int j=i+1;j<raw.size()-1;j++){
+        if(raw.get(i).getPermission_id().equals(raw.get(j).getPermission_id())){
+          removes.add(raw.get(j).getId());
         }
       }
     }
-//    for (RolePermissionDO e: raw) {
-//      long permissionId = e.getPermission_id();
-//      for(Long id : temp){
-//        if(id == permissionId){
-//          removes.add(e.getId());
-//        }
-//      }
-//    }
+
+    for(Long e:removes){ this.deleteItem(e,raw); }
 
     // 如果修改后的不包含原来的 那么为新增元素
     for(Long i:nowPermissions){
@@ -129,7 +104,14 @@ public class RoleController {
     }
     return ResultGenerator.genOkResult();
   }
-
+  private void deleteItem(Long e,List<RolePermissionDO> raw){
+    for(int i = 0; i<raw.size()-1; i++) {
+      if(raw.get(i).getId().equals(e)){
+        raw.remove(i);
+        return;
+      }
+    }
+  }
   @Operation(description = "角色详情")
   @GetMapping("/{id}")
   public Result detail(@PathVariable final Long id) {
