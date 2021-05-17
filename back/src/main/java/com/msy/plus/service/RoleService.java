@@ -51,9 +51,8 @@ public interface RoleService extends Service<RoleDO> {
   /**
    * 删除中间表信息
    * @param roleId
-   * @param permissions
+   * @param permissionId
    */
-  void deleteRolePermission(Long roleId, List<Long> permissions);
   void deleteRolePermissionItem(Long roleId,Long permissionId);
 
   /**

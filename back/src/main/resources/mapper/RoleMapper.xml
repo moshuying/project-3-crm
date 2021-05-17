@@ -28,15 +28,6 @@
             )
         </foreach>
     </insert>
-
-    <delete id="deleteRolePermission" parameterType="java.util.List">
-        <foreach collection="permissions" item="item" index="index" separator=";">
-            delete
-            from role_permission
-            where role_id = #{roleId}
-            and permission_id = #{item}
-        </foreach>
-    </delete>
     <delete id="deleteRolePermissionItem" >
         delete
         from role_permission

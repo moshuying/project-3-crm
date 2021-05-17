@@ -37,14 +37,23 @@ public class RoleController {
 
   @Operation(description = "角色添加")
   @PostMapping
-  public Result add(@RequestBody final RoleDTO roleDTO) {
+  public Result add(@RequestBody final RoleWithPermissionDTO roleDTO) {
     this.roleService.save(roleDTO);
+    List<Long> temp = new ArrayList<>();
+    roleDTO.getPermissions().forEach(e->{
+      temp.add(e.getId());
+    });
+    this.roleService.savePermissions(roleDTO.getId(),temp);
     return ResultGenerator.genOkResult();
   }
 
   @Operation(description = "角色删除")
   @DeleteMapping("/{id}")
   public Result delete(@PathVariable final Long id) {
+    List<RolePermissionDO> raw = this.roleService.getAllRolePermissionTableRow(id);
+    for(RolePermissionDO e :raw){
+      this.roleService.deleteRolePermissionItem(id,e.getPermission_id());
+    }
     this.roleService.deleteById(id);
     return ResultGenerator.genOkResult();
   }
@@ -53,7 +62,7 @@ public class RoleController {
   @PutMapping
   public Result update(@RequestBody final RoleWithPermissionDTO roleWithPermissionDTO) {
     // 更新用户基本信息
-    this.roleService.update((RoleDO) roleWithPermissionDTO);
+    this.roleService.update(roleWithPermissionDTO);
 
     List<RolePermissionDO> raw = this.roleService.getAllRolePermissionTableRow(roleWithPermissionDTO.getId());
 
@@ -61,7 +70,7 @@ public class RoleController {
     roleWithPermissionDTO.getPermissions().forEach(e->{ nowPermissions.add(e.getId()); });
 
     // diff运算
-      Set<Long> adds = new HashSet<>();
+    Set<Long> adds = new HashSet<>();
     Set<Long> removes = new HashSet<>();
     // 表中权限信息去重
     Set<Long> temp = new HashSet<>();

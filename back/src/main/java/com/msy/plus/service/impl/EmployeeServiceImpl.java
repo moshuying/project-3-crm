@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author MoShuYing
@@ -30,5 +31,25 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
     @Override
     public List<EmployeeWithRoleDO> listEmployeeWithRole() {
         return this.employeeMapper.listEmployeeWithRole();
+    }
+
+    @Override
+    public void saveRoles(Long id, List<Long> roles) {
+        this.employeeMapper.saveRoles(id,roles);
+    }
+
+    @Override
+    public int deleteEmployeeWithRole(Long id) {
+        return this.employeeMapper.deleteEmployeeWithRole(id);
+    }
+
+    @Override
+    public int deleteEmployeeWithRoleItem(Long id, Long roleId) {
+        return this.employeeMapper.deleteEmployeeWithRoleItem(id,roleId);
+    }
+
+    @Override
+    public List<Long> getAllEmployeeRoleTableRow(Long id) {
+        return this.employeeMapper.getAllEmployeeRoleTableRow(id);
     }
 }
