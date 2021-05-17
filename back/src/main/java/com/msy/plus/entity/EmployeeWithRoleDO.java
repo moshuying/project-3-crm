@@ -12,18 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class EmployeeWithRoleDO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    private String name;
-
-    private String email;
-
-    private Integer age;
-
+public class EmployeeWithRoleDO extends Employee{
     private String departmentName;
-
     List<String> roleNames;
 }

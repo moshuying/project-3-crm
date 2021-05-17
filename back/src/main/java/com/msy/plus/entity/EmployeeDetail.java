@@ -12,15 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class EmployeeDetail {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private String name;
-    private String email;
-    private String password;
-    private Integer age;
-    private Integer department;
-    private Integer admin;
-    List<Integer> roleIds;
+public class EmployeeDetail extends Employee{
+    List<Long> roleIds;
 }
