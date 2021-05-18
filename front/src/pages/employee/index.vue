@@ -3,7 +3,37 @@
     <a-card>
       <div>
         <a-space class="operator">
-          <a-button type="primary" @click="showModal('新增')">新增</a-button>
+          <a-form layout="inline" :form="queryForm">
+            <a-form-item label="关键字">
+              <a-input
+                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  placeholder="请输入姓名/邮箱"
+              />
+            </a-form-item>
+            <a-form-item label="员工部门">
+              <a-select
+                  style="width: 6rem"
+                  initial-value="0"
+                  v-decorator="['dept',{ rules: [{ required: true, message: '员工部门' }] }]">
+                <a-select-option value="0">
+                  全部
+                </a-select-option>
+                <a-select-option
+                    :value="item.id"
+                    :key="item.id"
+                    v-for="(item) in departmentNames">
+                  {{item.name}}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
+            <a-form-item>
+              <a-button @click="query()">查询</a-button>
+            </a-form-item>
+          </a-form>
+          <a-button type="success" @click="showModal('新增')">添加</a-button>
+          <a-button type="primary" >批量删除</a-button>
+          <a-button type="primary" >导出</a-button>
+          <a-button type="primary" >导入数据</a-button>
         </a-space>
         <a-table
             :columns="columns"
@@ -35,7 +65,7 @@
         okText="提交"
         width="80%"
     >
-      <a-form :form="form" :layout="'horizontal'">
+      <a-form :form="form" :layout="`horizontal`">
         <a-form-item hidden>
           <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
         </a-form-item>
@@ -185,6 +215,7 @@ export default {
   name: 'Department',
   data() {
     return {
+      queryForm:this.$form.createForm(this, {name: 'coordinated'}),
       departmentNames:[],
       // table
       columns: columns,
@@ -219,6 +250,16 @@ export default {
     })
   },
   methods: {
+    query(){
+      this.queryLoading = true
+      this.queryForm.validateFields((err, values) => {
+        if (err) {
+          console.log("form error");
+          return;
+        }
+        this.fetch({"page": 1, "size": 10,...values})
+      })
+    },
     // table
     handleTableChange(pagination) {
       const pager = {...this.pagination};
