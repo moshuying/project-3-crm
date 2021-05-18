@@ -22,44 +22,44 @@ import java.util.List;
 * @date 2021/05/18
 */
 @PreAuthorize("hasAuthority('ADMIN')")
-@Api(tags={"生成接口"})
+@Api(tags={"数据字典明细接口"})
 @RestController
 @RequestMapping("/dictionary/details")
 public class DictionaryDetailsController {
     @Resource
     private DictionaryDetailsService dictionaryDetailsService;
 
-    @Operation(description = "生成添加")
+    @Operation(description = "数据字典明细添加")
     @PostMapping
     public Result add(@RequestBody DictionaryDetails dictionaryDetails) {
         dictionaryDetailsService.save(dictionaryDetails);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成删除")
+    @Operation(description = "数据字典明细删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
     dictionaryDetailsService.deleteById(id);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成更新")
+    @Operation(description = "数据字典明细更新")
     @PutMapping
     public Result update(@RequestBody DictionaryDetails dictionaryDetails) {
     dictionaryDetailsService.update(dictionaryDetails);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成获取详细信息")
+    @Operation(description = "数据字典明细获取详细信息")
     @GetMapping("/{id}")
     public Result detail(@PathVariable Long id) {
     DictionaryDetails dictionaryDetails = dictionaryDetailsService.getById(id);
         return ResultGenerator.genOkResult(dictionaryDetails);
     }
 
-    @Operation(description = "生成分页查询")
+    @Operation(description = "数据字典明细分页查询")
     @GetMapping
-    @ApiOperation(value="分页查询生成", notes="分页查询 ")
+    @ApiOperation(value="分页查询数据字典明细", notes="分页查询 ")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
         @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")

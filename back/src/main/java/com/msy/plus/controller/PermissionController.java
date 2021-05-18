@@ -22,44 +22,44 @@ import java.util.List;
 * @date 2021/05/14
 */
 @PreAuthorize("hasAuthority('ADMIN')")
-@Api(tags={"生成接口"})
+@Api(tags={"权限接口"})
 @RestController
 @RequestMapping("/permission")
 public class PermissionController {
     @Resource
     private PermissionService permissionService;
 
-    @Operation(description = "生成添加")
+    @Operation(description = "权限添加")
     @PostMapping
     public Result add(@RequestBody Permission permission) {
         permissionService.save(permission);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成删除")
+    @Operation(description = "权限删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
     permissionService.deleteById(id);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成更新")
+    @Operation(description = "权限更新")
     @PutMapping
     public Result update(@RequestBody Permission permission) {
     permissionService.update(permission);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成获取详细信息")
+    @Operation(description = "权限获取详细信息")
     @GetMapping("/{id}")
     public Result detail(@PathVariable Long id) {
     Permission permission = permissionService.getById(id);
         return ResultGenerator.genOkResult(permission);
     }
 
-    @Operation(description = "生成分页查询")
+    @Operation(description = "权限分页查询")
     @GetMapping
-    @ApiOperation(value="分页查询生成", notes="分页查询 ")
+    @ApiOperation(value="分页查询权限", notes="分页查询 ")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
         @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
