@@ -35,26 +35,57 @@
         okText="提交"
         width="80%"
     >
-      <a-form :form="form">
+      <a-form :form="form" :layout="'horizontal'">
         <a-form-item hidden>
           <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
         </a-form-item>
-        <a-form-item label="角色名称">
+        <a-form-item label="员工名称">
           <a-input
-              v-decorator="['name', { rules: [{ required: true, message: '请输入角色名称' }] }]"
+              v-decorator="['name', { rules: [{ required: true, message: '请输入员工名称' }] }]"
           />
         </a-form-item>
-        <a-form-item label="角色编号">
+        <a-form-item label="员工密码">
           <a-input
-              v-decorator="['sn',{ rules: [{ required: true, message: '请输入角色编号' }] },]"
-              placeholder="请输入角色编号"
+              v-decorator="['password', { rules: [{ required: true, message: '请输入员工密码' }] }]"
           />
         </a-form-item>
-        <a-form-item label="角色权限">
+        <a-form-item label="验证密码">
+          <a-input
+              v-decorator="['rePassword', { rules: [{ required: true,validator:checkRePassword }] }]"
+          />
+        </a-form-item>
+        <a-form-item label="员工年龄">
+          <a-input-number
+              v-decorator="['age',{ rules: [{ required: true, message: '请输入员工年龄' }] }]"
+              placeholder="请输入员工年龄"
+          />
+        </a-form-item>
+        <a-form-item label="员工email">
+          <a-input
+              v-decorator="['email',{ rules: [{ required: true, message: '请输入员工email' }] }]"
+              placeholder="请输入员工email"
+          />
+        </a-form-item>
+        <a-form-item label="员工部门">
+          <a-select
+              v-decorator="['dept',{ rules: [{ required: true, message: '员工部门' }] }]">
+            <a-select-option
+                :value="item.id"
+                :key="item.id"
+                v-for="(item) in departmentNames">
+              {{item.name}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="超级管理员">
+          <a-checkbox :checked="form.getFieldValue('admin')" v-decorator="['admin',{ rules: [{ required: false }] }]">
+          </a-checkbox>
+        </a-form-item>
+        <a-form-item label="员工角色">
           <a-transfer
-              v-decorator="['permissions',{ rules: [{ required: false }] },]"
-              :operations="['加入权限', '移除权限']"
-              :data-source="permissionList"
+              v-decorator="['roleIds',{ rules: [{ required: false }] }]"
+              :operations="['加入角色', '移除角色']"
+              :data-source="roleIds"
               :target-keys="targetKeys"
               :disabled="disabled"
               :show-search="showSearch"
@@ -104,8 +135,9 @@
 </template>
 
 <script>
+import * as employee from "@/services/employee"
 import * as role from "@/services/role"
-import * as permission from "@/services/permission"
+import * as department from "@/services/department"
 import difference from 'lodash/difference';
 
 const columns = [
@@ -114,12 +146,25 @@ const columns = [
     dataIndex: 'id'
   },
   {
-    title: '角色名称',
+    title: '名称',
     dataIndex: 'name',
   },
   {
-    title: '角色编号',
-    dataIndex: 'sn',
+    title: 'email',
+    dataIndex: 'email',
+  },
+  {
+    title: '年龄',
+    dataIndex: 'age',
+  },
+  {
+    title: '部门',
+    dataIndex: 'departmentName',
+  },
+  {
+    title: '角色',
+    dataIndex: 'roleNames',
+    customRender:(text)=>text.toString(',')
   },
   {
     title: '操作',
@@ -128,18 +173,19 @@ const columns = [
 ]
 const permissionTableColumns = [
   {
+    title: '角色名称',
     dataIndex: 'name',
-    title: '权限名称',
   },
   {
-    dataIndex: 'expression',
-    title: '权限表达式',
+    title: '角色编号',
+    dataIndex: 'sn'
   },
 ];
 export default {
   name: 'Department',
   data() {
     return {
+      departmentNames:[],
       // table
       columns: columns,
       dataSource: [],
@@ -154,7 +200,7 @@ export default {
       // modal form
       form: this.$form.createForm(this, {name: 'coordinated'}),
       // modal permission list
-      permissionList: [],
+      roleIds: [],
       targetKeys: [],
       selectedKeys: [],
       disabled: false,
@@ -168,6 +214,9 @@ export default {
   },
   created() {
     this.fetch()
+    department.list({"page": 1, "size": 99999}).then(({data})=>{
+      this.departmentNames = data.data.list.map((e,i)=>({key:i+'',...e}))
+    })
   },
   methods: {
     // table
@@ -182,7 +231,7 @@ export default {
     },
     fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
-      role.list(params || {"page": 1, "size": 10}).then(({data}) => {
+      employee.list(params || {"page": 1, "size": 10}).then(({data}) => {
         const res = data.data
         const pagination = {...this.pagination};
         pagination.total = res.total
@@ -194,7 +243,7 @@ export default {
     },
     deleteItem(text) {
       const title = '删除'
-      role.deleteItem(text.id).then(({data}) => {
+      employee.deleteItem(text.id).then(({data}) => {
         if (data.code !== 200) {
           this.$notification['error']({
             message: title + '角色信息出现错误',
@@ -213,22 +262,26 @@ export default {
         this.confirmLoading=false
       }
       this.targetKeys = []
-      this.permissionList = []
+      this.roleIds = []
       this.reloadId = id
       await this.showModal('更改')
-      role.getDetail(id).then(({data}) => {
+      employee.getDetail(id).then(({data}) => {
+        if(!data.data) return;
         // 这里不能循环
         this.form.setFieldsValue({"id": data.data["id"]})
-        this.form.setFieldsValue({"sn": data.data["sn"]})
         this.form.setFieldsValue({"name": data.data["name"]})
-        const {permissions} = data.data
-        if (!permissions) return;
-
-        for(let i=0;i<permissions.length;i++){
-          const ps = permissions[i];
-          this.targetKeys.push(this.permissionList.find(e=>e.id===ps.id).key)
+        this.form.setFieldsValue({"admin": data.data["admin"] === 1})
+        this.form.setFieldsValue({"age": data.data["age"]})
+        this.form.setFieldsValue({"dept": data.data["dept"]})
+        this.form.setFieldsValue({"email": data.data["email"]})
+        this.form.setFieldsValue({"password": data.data["password"]})
+        const {roleIds} = data.data
+        if (!roleIds) return;
+        for(let i=0;i<roleIds.length;i++){
+          const find = this.roleIds.find(e=>roleIds[i]===(e.id+""))
+          this.targetKeys.push(find.key)
         }
-
+        console.log(this.targetKeys)
       })
     },
     // modal
@@ -237,7 +290,7 @@ export default {
       this.title = title || '新增'
       this.form.resetFields()
       this.targetKeys = []
-      await this.getAllPermissionList()
+      await this.getAllroleIds()
     },
     handleOk() {
       this.confirmLoading = true;
@@ -248,19 +301,16 @@ export default {
         }
         let method = 'add';
         if (values.id) method = 'update';
-        if(values.permissions.length>=1){
+        if(values.roleIds.length>=1){
           let arr =[]
-          for(let i=0;i<values.permissions.length;i++){
-            const e = values.permissions[i]
-            arr.push({
-              id:this.permissionList[e].id,
-              name:this.permissionList[e].name,
-              expression:this.permissionList[e].expression
-            })
+          for(let i=0;i<values.roleIds.length;i++){
+            const e = values.roleIds[i]
+            arr.push(this.roleIds[e].id)
           }
-          values.permissions = arr
+          values.roleIds = arr
         }
-        role[method](values).then(({data}) => {
+        console.log(values)
+        employee[method](values).then(({data}) => {
           this.confirmLoading = false;
           if (data.code !== 200) {
             this.$notification['error']({
@@ -283,22 +333,25 @@ export default {
       this.confirmLoading = false
       this.form.resetFields()
     },
+    checkRePassword(rule, value, callback) {
+      console.log(value,this.form.getFieldValue('password'))
+      if (value !== this.form.getFieldValue('password')) {
+        callback('两次密码输入不一致!');
+      }else {
+        callback()
+      }
+    },
     // modal transfer
-    getAllPermissionList() {
-      return permission.list({page: 1, size: 999999999}).then(({data}) => {
-        this.permissionList = data.data.list.map((e, i) => ({key: i + "", title: e.name, ...e}))
+    getAllroleIds() {
+      return role.list({page: 1, size: 999999999}).then(({data}) => {
+        this.roleIds = data.data.list.map((e, i) => ({key: i + "", title: e.name, ...e}))
       })
     },
     handleChange(targetKeys) {
-      // console.log(targetKeys, direction, moveKeys);
       this.targetKeys = targetKeys;
-      console.log(this.targetKeys,this.permissionList)
     },
     handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
       this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
-
-      console.log('sourceSelectedKeys: ', sourceSelectedKeys);
-      console.log('targetSelectedKeys: ', targetSelectedKeys);
     },
     getRowSelection({disabled, selectedKeys, itemSelectAll, itemSelect}) {
       return {

@@ -55,11 +55,6 @@ public class RoleServiceImpl extends AbstractService<RoleDO> implements RoleServ
   }
 
   @Override
-  public void deleteRolePermission(Long roleId, List<Long> permissions) {
-    this.roleMapper.deleteRolePermission(roleId, permissions);
-  }
-
-  @Override
   public void deleteRolePermissionItem(Long roleId, Long permissionId) {
     this.roleMapper.deleteRolePermissionItem(roleId,permissionId);
   }
