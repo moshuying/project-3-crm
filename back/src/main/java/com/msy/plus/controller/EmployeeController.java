@@ -43,10 +43,14 @@ public class EmployeeController {
         if (employee.getId()!=null){
             employee.setId(null);
         }
-        employeeService.save(employee);
-        if(employee.getRoleIds()!=null && employee.getRoleIds().size()>=1){
-            this.employeeService.saveRoles(employee.getId(),employee.getRoleIds());
+        if(employee.getDept() ==null){
+            return ResultGenerator.genFailedResult("请填写员工部门信息");
         }
+        if(employee.getRoleIds() ==null || employee.getRoleIds().size()<1){
+            return ResultGenerator.genFailedResult("请填写员工角色信息");
+        }
+        employeeService.save(employee);
+        employeeService.saveRoles(employee.getId(),employee.getRoleIds());
         return ResultGenerator.genOkResult();
     }
 
@@ -64,6 +68,9 @@ public class EmployeeController {
         // 更新员工基本信息
         employeeService.update((Employee) employee);
         List<Long> now= employee.getRoleIds();
+        if(now==null || now.size()<=0){
+            return ResultGenerator.genOkResult();
+        }
         List<Long> raw = this.employeeService.getAllEmployeeRoleTableRow(employee.getId());
         // diff运算
         List<Long> adds = new ArrayList<>();
