@@ -21,7 +21,7 @@ public interface EmployeeService extends Service<Employee> {
      * 分页查询员工
      * @return
      */
-    List<EmployeeWithRoleDO> listEmployeeWithRole();
+    List<EmployeeWithRoleDO> listEmployeeWithRole(String keyword,Integer dept);
 
     /**
      * 保存员工角色信息

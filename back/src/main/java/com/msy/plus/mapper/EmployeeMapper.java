@@ -14,7 +14,7 @@ public interface EmployeeMapper extends MyMapper<Employee> {
      * 分页查询员工
      * @return
      */
-    List<EmployeeWithRoleDO> listEmployeeWithRole();
+    List<EmployeeWithRoleDO> listEmployeeWithRole(String keyword,int dept);
 
     /**
      * 保存员工角色信息
