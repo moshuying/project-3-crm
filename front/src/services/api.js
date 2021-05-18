@@ -14,4 +14,6 @@ module.exports = {
   ROLE:`${BASE_URL}/role`, // method CRUD
   PERMISSION:`${BASE_URL}/permission`, // method CRUD
   EMPLOYEE:`${BASE_URL}/employee`, // method CRUD
+  DICTIONARY_CONTENTS:`${BASE_URL}/dictionary/contents`, // method CRUD
+  DICTIONARY_DETAILS:`${BASE_URL}/dictionary/details`, // method CRUD
 }

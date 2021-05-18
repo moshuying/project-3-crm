@@ -53,7 +53,7 @@ const options = {
         },
         {
 
-          path: 'system',
+          path: '/system',
           name: '系统设置',
           meta: {
             icon: 'setting',
@@ -64,25 +64,35 @@ const options = {
           component: PageView,
           children: [
             {
-            path:'/role',
+            path:'role',
             name:'角色管理',
             component:()=>import('@/pages/role/index')
             },
             {
-              path:'/permission',
+              path:'permission',
               name:'权限管理',
               component:()=>import('@/pages/permission/index')
             },
             {
-              path:'/department',
+              path:'department',
               name:'部门管理',
               component:()=>import('@/pages/department/index')
             },
             {
-              path:'/employee',
+              path:'employee',
               name:'员工管理',
               component:()=>import('@/pages/employee/index')
             },
+            {
+              path: 'dictionary/contents',
+              name: '字典列表',
+              component:()=>import('@/pages/dictionary/contents')
+            },
+            {
+              path: 'dictionary/details',
+              name: '字典明细',
+              component:()=>import('@/pages/dictionary/details')
+            }
           ]
         },
         {

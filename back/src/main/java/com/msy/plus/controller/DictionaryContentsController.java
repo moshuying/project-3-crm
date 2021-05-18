@@ -2,8 +2,8 @@ package com.msy.plus.controller;
 
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
-import com.msy.plus.entity.Permission;
-import com.msy.plus.service.PermissionService;
+import com.msy.plus.entity.DictionaryContents;
+import com.msy.plus.service.DictionaryContentsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,47 +19,47 @@ import java.util.List;
 
 /**
 * @author MoShuYing
-* @date 2021/05/14
+* @date 2021/05/18
 */
 @PreAuthorize("hasAuthority('ADMIN')")
-@Api(tags={"权限接口"})
+@Api(tags={"数据字典接口"})
 @RestController
-@RequestMapping("/permission")
-public class PermissionController {
+@RequestMapping("/dictionary/contents")
+public class DictionaryContentsController {
     @Resource
-    private PermissionService permissionService;
+    private DictionaryContentsService dictionaryContentsService;
 
-    @Operation(description = "权限添加")
+    @Operation(description = "数据字典添加")
     @PostMapping
-    public Result add(@RequestBody Permission permission) {
-        permissionService.save(permission);
+    public Result add(@RequestBody DictionaryContents dictionaryContents) {
+        dictionaryContentsService.save(dictionaryContents);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "权限删除")
+    @Operation(description = "数据字典删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
-    permissionService.deleteById(id);
+    dictionaryContentsService.deleteById(id);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "权限更新")
+    @Operation(description = "数据字典更新")
     @PutMapping
-    public Result update(@RequestBody Permission permission) {
-    permissionService.update(permission);
+    public Result update(@RequestBody DictionaryContents dictionaryContents) {
+    dictionaryContentsService.update(dictionaryContents);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "权限获取详细信息")
+    @Operation(description = "数据字典获取详细信息")
     @GetMapping("/{id}")
     public Result detail(@PathVariable Long id) {
-    Permission permission = permissionService.getById(id);
-        return ResultGenerator.genOkResult(permission);
+    DictionaryContents dictionaryContents = dictionaryContentsService.getById(id);
+        return ResultGenerator.genOkResult(dictionaryContents);
     }
 
-    @Operation(description = "权限分页查询")
+    @Operation(description = "数据字典分页查询")
     @GetMapping
-    @ApiOperation(value="分页查询权限", notes="分页查询 ")
+    @ApiOperation(value="分页查询数据字典", notes="分页查询 ")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
         @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
@@ -67,8 +67,8 @@ public class PermissionController {
     public Result list(@RequestParam(defaultValue = "1") Integer page,
     @RequestParam(defaultValue = "10") Integer size) {
         PageHelper.startPage(page, size);
-        List<Permission> list = permissionService.listAll();
-        PageInfo<Permission> pageInfo = PageInfo.of(list);
+        List<DictionaryContents> list = dictionaryContentsService.listAll();
+        PageInfo<DictionaryContents> pageInfo = PageInfo.of(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }

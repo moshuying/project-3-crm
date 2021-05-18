@@ -111,10 +111,25 @@ public class EmployeeController {
         @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
         @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
     })
-    public Result list(@RequestParam(defaultValue = "1") Integer page,
-    @RequestParam(defaultValue = "10") Integer size) {
+    public Result list(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "0") Integer dept,
+            @RequestParam(defaultValue = "null") String keyword) {
+        Integer inDept = null;
+        String inKeyword = null;
+        if (dept == null || dept.equals("null")) {
+            inDept = null;
+        } else {
+            inDept = Integer.valueOf(dept);
+        }
+        if (keyword == null || keyword.equals("null")) {
+            inKeyword = null;
+        } else {
+            inKeyword = keyword;
+        }
         PageHelper.startPage(page, size);
-        List<EmployeeWithRoleDO> list = employeeService.listEmployeeWithRole();
+        List<EmployeeWithRoleDO> list = employeeService.listEmployeeWithRole(inKeyword, inDept);
         PageInfo<EmployeeWithRoleDO> pageInfo = PageInfo.of(list);
         // 不显示 password 字段
         final PageInfo<JSONObject> objectPageInfo = JsonUtils.deleteFields(pageInfo, PageInfo.class, "password");

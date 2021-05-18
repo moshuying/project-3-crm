@@ -59,7 +59,7 @@ class CodeGenerator {
     if (!scanner.next().equals("y")) {
       return;
     }
-    CodeGenerator.genCode("employee");
+    CodeGenerator.genCode("dictionary_details");
 //     genCodeByCustomModelName("employee",null);
   }
 
