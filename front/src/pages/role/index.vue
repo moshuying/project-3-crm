@@ -236,6 +236,7 @@ export default {
       this.visible = true;
       this.title = title || '新增'
       this.form.resetFields()
+      this.targetKeys = []
       await this.getAllPermissionList()
     },
     handleOk() {
