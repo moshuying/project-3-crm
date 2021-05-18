@@ -31,7 +31,7 @@
             </a-form-item>
           </a-form>
           <a-button type="success" @click="showModal('新增')">添加</a-button>
-          <a-button type="primary" >批量删除</a-button>
+          <a-button type="primary" @click="mDelete()">批量删除</a-button>
           <a-button type="primary" >导出</a-button>
           <a-button type="primary" >导入数据</a-button>
         </a-space>
@@ -39,6 +39,7 @@
             :columns="columns"
             :data-source="dataSource"
             :pagination="pagination"
+            :row-selection="{selectedRowKeys: outSelectedRowKeys,onChange: onSelectChange }"
             :loading="loading"
             @change="handleTableChange"
         >
@@ -215,6 +216,8 @@ export default {
   name: 'Department',
   data() {
     return {
+      outSelectedRowKeys:[],
+      outSelectedRows:[],
       queryForm:this.$form.createForm(this, {name: 'coordinated'}),
       departmentNames:[],
       // table
@@ -250,6 +253,31 @@ export default {
     })
   },
   methods: {
+    onSelectChange(selectedRowKeys,selectedRows) {
+      this.outSelectedRowKeys = selectedRowKeys;
+      this.outSelectedRows = selectedRows;
+    },
+    mDelete(){
+      if(this.outSelectedRows.length<=0){
+        this.$message.warning("尚未批量选择")
+      }else {
+        let arr = []
+        for(let i=0;i<this.outSelectedRows.length;i++){
+          arr.push(employee.deleteItem(this.outSelectedRows[i].id))
+        }
+        Promise.all(arr).then(()=>{
+          this.$notification.success({
+            message: '删除成功！',
+          });
+          this.fetch()
+        }).catch(()=>{
+          this.$notification['error']({
+            message: '删除失败！',
+            description: '建议检查网络连接或重新登陆',
+          });
+        })
+      }
+    },
     query(){
       this.queryLoading = true
       this.queryForm.validateFields((err, values) => {
@@ -262,6 +290,8 @@ export default {
     },
     // table
     handleTableChange(pagination) {
+      this.outSelectedRowKeys=[]
+      this.outSelectedRows =[]
       const pager = {...this.pagination};
       pager.current = pagination.current;
       this.pagination = pager;
@@ -350,7 +380,6 @@ export default {
           }
           values.roleIds = arr
         }
-        console.log(values)
         employee[method](values).then(({data}) => {
           this.confirmLoading = false;
           if (data.code !== 200) {
@@ -375,7 +404,6 @@ export default {
       this.form.resetFields()
     },
     checkRePassword(rule, value, callback) {
-      console.log(value,this.form.getFieldValue('password'))
       if (value !== this.form.getFieldValue('password')) {
         callback('两次密码输入不一致!');
       }else {
