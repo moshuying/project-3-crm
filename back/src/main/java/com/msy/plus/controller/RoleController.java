@@ -63,10 +63,13 @@ public class RoleController {
   public Result update(@RequestBody final RoleWithPermissionDTO roleWithPermissionDTO) {
     // 更新用户基本信息
     this.roleService.update(roleWithPermissionDTO);
+    List<Long> nowPermissions = new ArrayList<>();
+    if(nowPermissions==null || nowPermissions.size()<=0){
+      return ResultGenerator.genOkResult();
+    }
 
     List<RolePermissionDO> raw = this.roleService.getAllRolePermissionTableRow(roleWithPermissionDTO.getId());
 
-    List<Long> nowPermissions = new ArrayList<>();
     roleWithPermissionDTO.getPermissions().forEach(e->{ nowPermissions.add(e.getId()); });
 
     // diff运算
