@@ -77,7 +77,12 @@ const options = {
               path:'/department',
               name:'部门管理',
               component:()=>import('@/pages/department/index')
-            }
+            },
+            {
+              path:'/employee',
+              name:'员工管理',
+              component:()=>import('@/pages/employee/index')
+            },
           ]
         },
         {
