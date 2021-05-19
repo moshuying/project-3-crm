@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
 * @author MoShuYing
@@ -19,4 +20,8 @@ public class DictionaryContentsServiceImpl extends AbstractService<DictionaryCon
     @Resource
     private DictionaryContentsMapper dictionaryContentsMapper;
 
+    @Override
+    public List<DictionaryContents> listWithKeyword(String keyword) {
+        return dictionaryContentsMapper.listWithKeyword(keyword);
+    }
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 
 /**
 * @author MoShuYing
@@ -65,9 +66,14 @@ public class DictionaryContentsController {
         @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
     })
     public Result list(@RequestParam(defaultValue = "1") Integer page,
-    @RequestParam(defaultValue = "10") Integer size) {
+                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "null") String keyword) {
+        String inKeyword = null;
+        if (!(keyword == null || keyword.equals("null"))) {
+            inKeyword = keyword;
+        }
         PageHelper.startPage(page, size);
-        List<DictionaryContents> list = dictionaryContentsService.listAll();
+        List<DictionaryContents> list = dictionaryContentsService.listWithKeyword(inKeyword);
         PageInfo<DictionaryContents> pageInfo = PageInfo.of(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
