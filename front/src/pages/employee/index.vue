@@ -13,9 +13,8 @@
             <a-form-item label="员工部门">
               <a-select
                   style="width: 6rem"
-                  initial-value="0"
                   v-decorator="['dept',{ rules: [{ required: true, message: '员工部门' }] }]">
-                <a-select-option value="0">
+                <a-select-option :value="0">
                   全部
                 </a-select-option>
                 <a-select-option
@@ -32,8 +31,17 @@
           </a-form>
           <a-button type="success" @click="showModal('新增')">添加</a-button>
           <a-button type="primary" @click="mDelete()">批量删除</a-button>
-          <a-button type="primary" >导出</a-button>
-          <a-button type="primary" >导入数据</a-button>
+          <a-popconfirm
+              title="您确定导出当前搜索条件下的所有结果么？"
+              ok-text="是"
+              cancel-text="否"
+              @confirm="exportFile()"
+          >
+            <a-button type="primary">导出</a-button>
+          </a-popconfirm>
+          <a-upload :showUploadList="false" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload">
+            <a-button> <a-icon type="upload" /> 导入数据</a-button>
+          </a-upload>
         </a-space>
         <a-table
             :columns="columns"
@@ -170,6 +178,7 @@ import * as employee from "@/services/employee"
 import * as role from "@/services/role"
 import * as department from "@/services/department"
 import difference from 'lodash/difference';
+import * as XLSX from 'xlsx'
 
 const columns = [
   {
@@ -216,6 +225,10 @@ export default {
   name: 'Department',
   data() {
     return {
+      // 上传
+      fileList: [],
+      uploading: false,
+      // 外层table 多选
       outSelectedRowKeys:[],
       outSelectedRows:[],
       queryForm:this.$form.createForm(this, {name: 'coordinated'}),
@@ -252,8 +265,122 @@ export default {
     department.list({"page": 1, "size": 99999}).then(({data})=>{
       this.departmentNames = data.data.list.map((e,i)=>({key:i+'',...e}))
     })
+    this.getAllroleIds()
+  },
+  mounted() {
+    this.queryForm.setFieldsValue({"dept":0})
   },
   methods: {
+    // 上传
+    handleRemove(file) {
+      const index = this.fileList.indexOf(file);
+      const newFileList = this.fileList.slice();
+      newFileList.splice(index, 1);
+      this.fileList = newFileList;
+    },
+    async beforeUpload(file) {
+      this.fileList = [...this.fileList, file];
+      // const xlsxRead = XLSX.read(file)
+      let res = await new Promise((resolve) => {
+        let fileReader = new FileReader()
+        fileReader.readAsBinaryString(file)
+        fileReader.onload=e=>{
+          /* Parse data */
+          const bstr = e.target.result;
+          const wb = XLSX.read(bstr, {type:'binary'});
+          /* Get first worksheet */
+          const wsname = wb.SheetNames[0];
+          const ws = wb.Sheets[wsname];
+          /* Convert array of arrays */
+          const data = XLSX.utils.sheet_to_json(ws, {header:1});
+          if(data[0].length!==5){
+            resolve("数据字段长度不合法，请下载模板后导入！")
+          }
+          for(let i=1;i<data.length;i++){
+            for(let j=0;j<data[i].length;j++){
+              if(data[i].length!==5){
+                resolve(`第${i}行数据内容不足！`)
+                break;
+              }
+              const booleanCheck = Object.prototype.toString.call(data[i][j])
+              if(data[i][j]==='' || booleanCheck === 'Null' || booleanCheck === '[object Undefined]'){
+                resolve(`第${i}行${j}列数据内容不合法！`)
+              }
+            }
+          }
+
+          const json =[]
+          for(let i=1;i<data.length;i++){
+            const obj = {}
+            for(let k=0;k<data[i].length;k++){
+              if(data[0][k]==='角色') {
+                const roleIds = this.roleIds
+                obj.roleIds = data[i][k].split(',').map(name=>{
+                  return roleIds.find(e=>e.name===name).id
+                })
+              }else if(data[0][k]==='部门'){
+                const find =this.departmentNames.find(e=>e.name===data[i][k])
+                if('[object Undefined]' === Object.prototype.toString.call(find)){
+                  resolve(`第${i}行${k}列数据内容不合法！无法找到此部门！`)
+                }
+                obj.dept = find.id
+              }else {
+                switch (data[0][k]){
+                  case '名称':obj.name = data[i][k];break;
+                  case '年龄':obj.age = data[i][k] ;break;
+                  case 'Email': obj.email = data[i][k];break;
+                }
+              }
+            }
+            json.push(obj)
+          }
+         resolve(json)
+        }
+      })
+      if( "[object Array]" !== Object.prototype.toString.call(res)){
+        this.$notification.warning({
+          message: res,
+          description: '建议检查您所上传的文件内容',
+        })
+      }else{
+        Promise
+            .all(res.map(e => new Promise((resolve, reject) => employee.add(e).then(({data}) => {
+              data.code === 200 ? resolve() : reject()
+            }))))
+            .then(() => {
+              this.$notification.success({message: "导入成功"})
+            })
+            .catch(() => {
+              this.$notification.error({message: "导入失败", description: "请检查您的网络，不建议一次上传过多内容"})
+            })
+      }
+      return false;
+    },
+    // excel
+    async exportFile(){
+      this.queryForm.validateFields((err, values) => {
+        if (err) {
+          console.log("form error");
+          return;
+        }
+        this.fetch({"page": 1, "size": 99999999,...values}).then(({data})=>{
+          const {list} = data
+          const res = list.map(e=>({
+            '部门':e.departmentName,
+            '名称':e.name,
+            '角色':e.roleNames.toString(','),
+            '年龄':e.age,
+            'Email':e.email
+          }))
+          /* convert state to workbook */
+          const ws = XLSX.utils.json_to_sheet(res);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+          /* generate file and send to client */
+          XLSX.writeFile(wb, (new Date()).toLocaleString().replaceAll('/','_')+"_员工信息.xlsx");
+        })
+      })
+    },
     onSelectChange(selectedRowKeys,selectedRows) {
       this.outSelectedRowKeys = selectedRowKeys;
       this.outSelectedRows = selectedRows;
@@ -301,18 +428,18 @@ export default {
         page: pagination.current,
       });
     },
-    fetch(params = {"page": 1, "size": 10}) {
+    async fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
-      employee.list(params || {"page": 1, "size": 10}).then(({data}) => {
-        const res = data.data
-        const pagination = {...this.pagination};
-        pagination.total = res.total
-        pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
-        this.pagination = pagination
-        this.loading = false
-        this.queryLoading=false
-      })
+      let {data} = await employee.list(params || {"page": 1, "size": 10})
+      const res = data.data
+      const pagination = {...this.pagination};
+      pagination.total = res.total
+      pagination.current = params.page
+      this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
+      this.pagination = pagination
+      this.loading = false
+      this.queryLoading=false
+      return data
     },
     deleteItem(text) {
       const title = '删除'
@@ -374,7 +501,10 @@ export default {
         }
         let method = 'add';
         if (values.id) method = 'update';
-        if(values.roleIds.length>=1){
+        if(!values.roleIds){
+          delete values.roleIds
+        }
+        if(values.roleIds && values.roleIds.length>=1){
           let arr =[]
           for(let i=0;i<values.roleIds.length;i++){
             const e = values.roleIds[i]

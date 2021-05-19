@@ -46,11 +46,10 @@ public class EmployeeController {
         if(employee.getDept() ==null){
             return ResultGenerator.genFailedResult("请填写员工部门信息");
         }
-        if(employee.getRoleIds() ==null || employee.getRoleIds().size()<1){
-            return ResultGenerator.genFailedResult("请填写员工角色信息");
+        if(!(employee.getRoleIds() ==null || employee.getRoleIds().size()<1)){
+            employeeService.saveRoles(employee.getId(),employee.getRoleIds());
         }
         employeeService.save(employee);
-        employeeService.saveRoles(employee.getId(),employee.getRoleIds());
         return ResultGenerator.genOkResult();
     }
 
