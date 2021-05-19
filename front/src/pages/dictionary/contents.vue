@@ -3,7 +3,18 @@
     <a-card>
       <div>
         <a-space class="operator">
-          <a-button type="primary" @click="showModal('新增')">新增</a-button>
+          <a-form layout="inline" :form="queryForm">
+            <a-form-item label="关键字">
+              <a-input
+                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  placeholder="请输入姓名/邮箱"
+              />
+            </a-form-item>
+            <a-form-item>
+              <a-button @click="query()" :loading="queryLoading">查询</a-button>
+            </a-form-item>
+          </a-form>
+          <a-button type="primary" @click="showModal('添加')">添加数据字典</a-button>
         </a-space>
         <a-table
             :columns="columns"
@@ -80,6 +91,8 @@ const columns = [
 export default {
   data() {
     return {
+      queryForm:this.$form.createForm(this, {name: 'coordinated'}),
+      queryLoading:false,
       // table
       columns: columns,
       dataSource: [],
@@ -87,7 +100,7 @@ export default {
       pagination: {},
       loading: false,
       // modal
-      title: '新增',
+      title: '添加',
       visible: false,
       confirmLoading: false,
       // modal form
@@ -98,6 +111,16 @@ export default {
     this.fetch()
   },
   methods: {
+    query(){
+      this.queryLoading = true
+      this.queryForm.validateFields((err, values) => {
+        if (err) {
+          console.log("form error");
+          return;
+        }
+        this.fetch({"page": 1, "size": 10,...values})
+      })
+    },
     // table
     handleTableChange(pagination) {
       const pager = {...this.pagination};
@@ -118,6 +141,7 @@ export default {
         this.dataSource = res.list.map((e, i) => ({key: i + "",...e}))
         this.pagination = pagination
         this.loading = false
+        this.queryLoading = false
       })
     },
     deleteItem(text) {
@@ -147,9 +171,9 @@ export default {
       })
     },
     // modal
-    showModal(title = '新增') {
+    showModal(title = '添加') {
       this.visible = true;
-      this.title = title || '新增'
+      this.title = title || '添加'
       this.form.resetFields()
     },
     handleOk() {

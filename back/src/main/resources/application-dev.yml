@@ -16,11 +16,11 @@ spring:
   datasource:
     druid:
       # 连接，注意各个配置，尤其是要一次性执行多条 SQL 时，要 allowMultiQueries=true
-      url: jdbc:mysql://localhost:3306/seedling_dev?useUnicode=true&useSSL=false&useLegacyDatetimeCode=false&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/crm3?useUnicode=true&useSSL=false&useLegacyDatetimeCode=false&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=UTC
       # 用户名 root
-      username: crm3
+      username: MyEnc({dk3tZdZOzV5l/jChvLJrAA==})
       # 密码 root
-      password: 123456
+      password: MyEnc({P6MPL9mKeXrXy6vRvuXHex/KhfYs0bpm6xCYO7Qk2gA=})
       # 驱动类
       driver-class-name: MyEnc({0COuoMacyjuWsmPnBUH9Zr5yWx1i1lZa+B/N0uwIJVyKwI7lpV1emg==})
       # 连接池配置 连接数量、最小、最大、获取连接等待超时的时间

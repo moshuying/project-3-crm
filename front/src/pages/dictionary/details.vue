@@ -1,9 +1,31 @@
 <template>
-  <div>
-    <a-card>
+  <div style="display: flex;">
+    <a-card style="width: 30%" title="数据字典分组">
+      <div :key="item.id" v-for="(item) in dContentsList">
+        <div
+            :style="{backgroundColor:leftFirstId===item.id?'#337ab7':''}"
+            @click="changeRight(item.id)">
+          <a-button
+              :style="{color:leftFirstId===item.id?'white':''}"
+              type="link">{{item.title}}</a-button>
+        </div>
+      </div>
+    </a-card>
+    <a-card style="width: 100%">
       <div>
         <a-space class="operator">
-          <a-button type="primary" @click="showModal('新增')">新增</a-button>
+          <a-form layout="inline" :form="queryForm">
+            <a-form-item label="关键字">
+              <a-input
+                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  placeholder="请输入姓名/邮箱"
+              />
+            </a-form-item>
+            <a-form-item>
+              <a-button @click="query()" :loading="queryLoading">查询</a-button>
+            </a-form-item>
+          </a-form>
+          <a-button type="primary" @click="showModal('添加')">添加字典明细</a-button>
         </a-space>
         <a-table
             :columns="columns"
@@ -13,15 +35,7 @@
             @change="handleTableChange"
         >
            <span slot="action" slot-scope="text">
-              <a @click="updateItem(text.id)">编辑</a> |
-               <a-popconfirm
-                   title="您真的要删除这行数据么？"
-                   ok-text="是"
-                   cancel-text="否"
-                   @confirm="deleteItem(text)"
-               >
-              <a>删除</a>
-              </a-popconfirm>
+              <a @click="updateItem(text.id)">编辑</a>
            </span>
         </a-table>
       </div>
@@ -38,15 +52,18 @@
         <a-form-item hidden>
           <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
         </a-form-item>
-        <a-form-item label="部门名称">
+        <a-form-item hidden>
+          <a-input v-decorator="['parentid',{ rules: [{ required: false}] }]"/>
+        </a-form-item>
+        <a-form-item label="字典明细名称">
           <a-input
-              v-decorator="['name', { rules: [{ required: true, message: '请输入部门名称' }] }]"
+              v-decorator="['title', { rules: [{ required: true, message: '请输入字典明细名称' }] }]"
           />
         </a-form-item>
-        <a-form-item label="部门编号">
+        <a-form-item label="字典明细序列">
           <a-input
-              v-decorator="['sn',{ rules: [{ required: true, message: '请输入部门编号' }] },]"
-              placeholder="请输入部门编号"
+              v-decorator="['sequence',{ rules: [{ required: true, message: '请输入字典明细序列' }] },]"
+              placeholder="请输入字典明细序列"
           />
         </a-form-item>
       </a-form>
@@ -55,7 +72,8 @@
 </template>
 
 <script>
-import * as department from "@/services/department"
+import * as dictionaryDetails from "@/services/dictionaryDetails"
+import * as dictionaryContents from "@/services/dictionaryContents"
 
 const columns = [
   {
@@ -63,12 +81,12 @@ const columns = [
     dataIndex: 'id'
   },
   {
-    title: '部门名称',
-    dataIndex: 'name',
+    title: '名称',
+    dataIndex: 'title',
   },
   {
-    title: '部门编号',
-    dataIndex: 'sn',
+    title: '序列',
+    dataIndex: 'sequence',
   },
   {
     title: '操作',
@@ -78,6 +96,8 @@ const columns = [
 export default {
   data() {
     return {
+      queryForm:this.$form.createForm(this, {name: 'coordinated'}),
+      queryLoading:false,
       // table
       columns: columns,
       dataSource: [],
@@ -85,20 +105,38 @@ export default {
       pagination: {},
       loading: false,
       // modal
-      title: '新增',
+      title: '添加',
       visible: false,
       confirmLoading: false,
+      dContentsList:[],
       // modal form
       form: this.$form.createForm(this, {name: 'coordinated'}),
+      // left card
+      leftFirstId:null,
     }
   },
-  authorize: {
-    deleteRecord: 'delete'
-  },
   created() {
-    this.fetch()
+    dictionaryContents.list({page:1,size:999999}).then(({data})=>{
+      this.dContentsList = data.data.list
+      this.leftFirstId = this.dContentsList[0].id
+      this.fetch({page:1,size:10,id:this.leftFirstId})
+    })
   },
   methods: {
+    changeRight(id){
+      this.leftFirstId = id
+      this.query()
+    },
+    query(){
+      this.queryLoading = true
+      this.queryForm.validateFields((err, values) => {
+        if (err) {
+          console.log("form error");
+          return;
+        }
+        this.fetch({"page": 1, "size": 10,id:this.leftFirstId,...values})
+      })
+    },
     // table
     handleTableChange(pagination) {
       const pager = {...this.pagination};
@@ -111,7 +149,7 @@ export default {
     },
     fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
-      department.list(params || {"page": 1, "size": 10}).then(({data}) => {
+      dictionaryDetails.list(params || {"page": 1, "size": 10,id:this.leftFirstId}).then(({data}) => {
         const res = data.data
         const pagination = {...this.pagination};
         pagination.total = res.total
@@ -119,38 +157,43 @@ export default {
         this.dataSource = res.list.map((e, i) => ({key: i + "",...e}))
         this.pagination = pagination
         this.loading = false
+        this.queryLoading = false
       })
     },
     deleteItem(text) {
       const title = '删除'
-      department.deleteItem(text.id).then(({data})=>{
+      dictionaryDetails.deleteItem(text.id).then(({data})=>{
         if (data.code !== 200) {
           this.$notification['error']({
-            message: title + '部门信息出现错误',
+            message: title + '字典明细信息出现错误',
             description: '建议检查网络连接或重新登陆',
           });
         }
         this.$notification.success({
           message: title + '成功',
-          description: title + '部门信息成功',
+          description: title + '字典明细信息成功',
         });
-        this.fetch({"page": this.pagination.current, "size": 10})
+        this.fetch({"page": this.pagination.current, "size": 10,id:this.leftFirstId})
       })
     },
     updateItem(id) {
       this.showModal('更改')
-      department.getDetail(id).then(({data}) => {
+      dictionaryDetails.getDetail(id).then(({data}) => {
         // 这里不能循环
         this.form.setFieldsValue({"id": data.data["id"]})
-        this.form.setFieldsValue({"sn": data.data["sn"]})
-        this.form.setFieldsValue({"name": data.data["name"]})
+        this.form.setFieldsValue({"sequence": data.data["sequence"]})
+        this.form.setFieldsValue({"title": data.data["title"]})
+        this.form.setFieldsValue({"parentid": data.data["parentid"]})
       })
     },
     // modal
-    showModal(title = '新增') {
+    showModal(title = '添加') {
       this.visible = true;
-      this.title = title || '新增'
+      this.title = title || '添加'
       this.form.resetFields()
+      this.$nextTick(()=>{
+        this.form.setFieldsValue({"parentid": this.leftFirstId})
+      })
     },
     handleOk() {
       this.confirmLoading = true;
@@ -162,21 +205,20 @@ export default {
         }
         let method = 'add';
         if (values.id) method = 'update';
-
-        department[method](values).then(({data}) => {
+        dictionaryDetails[method](values).then(({data}) => {
           this.confirmLoading = false;
           if (data.code !== 200) {
             this.$notification['error']({
-              message: this.title + '部门信息出现错误',
+              message: this.title + '字典明细信息出现错误',
               description: '建议检查网络连接或重新登陆',
             });
           }
           this.$notification.success({
             message: this.title + '成功',
-            description: this.title + '部门信息成功',
+            description: this.title + '字典明细信息成功',
           });
           this.visible = false
-          this.fetch({"page": this.pagination.current, "size": 10})
+          this.fetch({"page": this.pagination.current, "size": 10,id:this.leftFirstId})
         })
       });
     },

@@ -40,10 +40,10 @@
         where er.employeeId = e.id
           and er.roleId = r.id
           and d.id = e.dept # 测试数据有时没有部门
-         <if test="keyword !=null">
+         <if test="keyword != null">
              and (e.name like concat('%',#{keyword},'%') or e.email like concat('%',#{keyword},'%'))
          </if>
-        <if test="dept!=null and dept >0">
+        <if test="dept != null and dept >0">
             and e.dept = #{dept}
         </if>
     </select>

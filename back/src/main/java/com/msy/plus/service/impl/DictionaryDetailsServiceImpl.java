@@ -1,5 +1,6 @@
 package com.msy.plus.service.impl;
 
+import com.msy.plus.entity.DictionaryContents;
 import com.msy.plus.mapper.DictionaryDetailsMapper;
 import com.msy.plus.entity.DictionaryDetails;
 import com.msy.plus.service.DictionaryDetailsService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
 * @author MoShuYing
@@ -19,4 +21,8 @@ public class DictionaryDetailsServiceImpl extends AbstractService<DictionaryDeta
     @Resource
     private DictionaryDetailsMapper dictionaryDetailsMapper;
 
+    @Override
+    public List<DictionaryContents> listWithKeyword(int id,String keyword) {
+        return dictionaryDetailsMapper.listWithKeyword(id,keyword);
+    }
 }

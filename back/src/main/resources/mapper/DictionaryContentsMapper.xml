@@ -10,4 +10,13 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="intro" jdbcType="VARCHAR" property="intro" />
   </resultMap>
+  <select id="listWithKeyword" resultMap="BaseResultMap">
+    select *
+    from dictionary_contents as d
+    <if test="keyword != null and keyword != '' ">
+      where (d.intro like concat('%', #{keyword}, '%')
+      or d.sn like concat('%', #{keyword}, '%')
+      or d.title like concat('%', #{keyword}, '%'))
+    </if>
+  </select>
 </mapper>
