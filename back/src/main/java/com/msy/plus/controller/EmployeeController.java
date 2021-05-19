@@ -117,15 +117,11 @@ public class EmployeeController {
             @RequestParam(defaultValue = "0") Integer dept,
             @RequestParam(defaultValue = "null") String keyword) {
         Integer inDept = null;
-        String inKeyword = null;
-        if (dept == null || dept.equals("null")) {
-            inDept = null;
-        } else {
+        if (!(dept == null || dept.equals("null"))) {
             inDept = Integer.valueOf(dept);
         }
-        if (keyword == null || keyword.equals("null")) {
-            inKeyword = null;
-        } else {
+        String inKeyword = null;
+        if (!(keyword == null || keyword.equals("null"))) {
             inKeyword = keyword;
         }
         PageHelper.startPage(page, size);
