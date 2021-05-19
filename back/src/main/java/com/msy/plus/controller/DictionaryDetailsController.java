@@ -2,6 +2,7 @@ package com.msy.plus.controller;
 
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
+import com.msy.plus.entity.DictionaryContents;
 import com.msy.plus.entity.DictionaryDetails;
 import com.msy.plus.service.DictionaryDetailsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,10 +66,20 @@ public class DictionaryDetailsController {
         @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
     })
     public Result list(@RequestParam(defaultValue = "1") Integer page,
-    @RequestParam(defaultValue = "10") Integer size) {
+                       @RequestParam(defaultValue = "10") Integer size,
+                       @RequestParam(defaultValue = "1") Integer id,
+                       @RequestParam(defaultValue = "null") String keyword) {
+        String inKeyword = null;
+        if (!(keyword == null || keyword.equals("null"))) {
+            inKeyword = keyword;
+        }
+        Integer inId = Integer.valueOf(id);
+        if(inId==null){
+            inId = dictionaryDetailsService.listAll().get(0).getId();
+        }
         PageHelper.startPage(page, size);
-        List<DictionaryDetails> list = dictionaryDetailsService.listAll();
-        PageInfo<DictionaryDetails> pageInfo = PageInfo.of(list);
+        List<DictionaryContents> list = dictionaryDetailsService.listWithKeyword(inId.intValue(),inKeyword);
+        PageInfo<DictionaryContents> pageInfo = PageInfo.of(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }

@@ -10,4 +10,13 @@
     <result column="sequence" jdbcType="INTEGER" property="sequence" />
     <result column="parentId" jdbcType="INTEGER" property="parentid" />
   </resultMap>
+  <select id="listWithKeyword" resultMap="BaseResultMap">
+    select *
+    from dictionary_details as d
+    where d.parentId = #{id}
+    <if test="keyword != null and keyword != '' ">
+      (d.sequence like concat('%', #{keyword}, '%')
+      or d.title like concat('%', #{keyword}, '%'))
+    </if>
+  </select>
 </mapper>
