@@ -27,7 +27,7 @@
               </a-select>
             </a-form-item>
             <a-form-item>
-              <a-button @click="query()">查询</a-button>
+              <a-button :loading="queryLoading" @click="query()">查询</a-button>
             </a-form-item>
           </a-form>
           <a-button type="success" @click="showModal('新增')">添加</a-button>
@@ -219,6 +219,7 @@ export default {
       outSelectedRowKeys:[],
       outSelectedRows:[],
       queryForm:this.$form.createForm(this, {name: 'coordinated'}),
+      queryLoading:false,
       departmentNames:[],
       // table
       columns: columns,
@@ -310,6 +311,7 @@ export default {
         this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
         this.pagination = pagination
         this.loading = false
+        this.queryLoading=false
       })
     },
     deleteItem(text) {
