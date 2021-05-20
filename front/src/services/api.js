@@ -16,4 +16,5 @@ module.exports = {
   EMPLOYEE:`${BASE_URL}/employee`, // method CRUD
   DICTIONARY_CONTENTS:`${BASE_URL}/dictionary/contents`, // method CRUD
   DICTIONARY_DETAILS:`${BASE_URL}/dictionary/details`, // method CRUD
+  CUSTOMER_MANAGER:`${BASE_URL}/customer/manager`, // method CRUD
 }

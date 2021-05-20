@@ -24,8 +24,8 @@ public class JasyptStringEncryptor {
   @Test
   public void encode() throws Exception {
     final String mysql = this.stringEncryptor.encrypt("com.mysql.cj.jdbc.Driver");
-    final String name = this.stringEncryptor.encrypt("root");
-    final String password = this.stringEncryptor.encrypt("root");
+    final String name = this.stringEncryptor.encrypt("crm3");
+    final String password = this.stringEncryptor.encrypt("123456");
 
     System.err.println("name = " + name);
     System.err.println("mysql = " + mysql);

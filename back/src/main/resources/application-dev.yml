@@ -18,11 +18,11 @@ spring:
       # 连接，注意各个配置，尤其是要一次性执行多条 SQL 时，要 allowMultiQueries=true
       url: jdbc:mysql://localhost:3306/crm3?useUnicode=true&useSSL=false&useLegacyDatetimeCode=false&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=UTC
       # 用户名 root
-      username: MyEnc({dk3tZdZOzV5l/jChvLJrAA==})
+      username: MyEnc({VyDDg+W4dWMhNxblplNqvQ==})
       # 密码 root
-      password: MyEnc({P6MPL9mKeXrXy6vRvuXHex/KhfYs0bpm6xCYO7Qk2gA=})
+      password: MyEnc({2E5WwYMQpayZf1QjYYxzUoBRYii0M+V/})
       # 驱动类
-      driver-class-name: MyEnc({0COuoMacyjuWsmPnBUH9Zr5yWx1i1lZa+B/N0uwIJVyKwI7lpV1emg==})
+      driver-class-name: MyEnc({mfkB3F21902N35InZN3DR4jdSuJR1w2bo+3Z4w1jgtfWVkHRZuclaw==})
       # 连接池配置 连接数量、最小、最大、获取连接等待超时的时间
       initial-size: 1
       min-idle: 1

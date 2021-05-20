@@ -23,10 +23,10 @@ class CodeGenerator {
   private static final String DATABASE = "mysql";
   // JDBC配置，请修改为你项目的实际配置
   private static final String JDBC_URL =
-      "jdbc:mysql://localhost:3306/seedling_dev"
+      "jdbc:mysql://localhost:3306/crm3"
           + "?useUnicode=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=UTC";
   private static final String JDBC_USERNAME = "crm3";
-  private static final String JDBC_PASSWORD = "123456";
+  private static final String JDBC_PASSWORD = "a1Bks32BAsdj12";
   private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
   // 项目在硬盘上的基础路径
   private static final String PROJECT_PATH = System.getProperty("user.dir");
@@ -59,7 +59,7 @@ class CodeGenerator {
     if (!scanner.next().equals("y")) {
       return;
     }
-    CodeGenerator.genCode("dictionary_details");
+    CodeGenerator.genCode("customer_manager");
 //     genCodeByCustomModelName("employee",null);
   }
 
