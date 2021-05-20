@@ -19,4 +19,24 @@
     <result column="status" jdbcType="INTEGER" property="status" />
     <result column="positiveTime" jdbcType="TIMESTAMP" property="positivetime" />
   </resultMap>
+    <select id="listAllWithDictionary" resultType="com.msy.plus.dto.CustomerManagerList">
+        select c.id as id,
+        c.name as name,
+        c.age as age,
+        c.status as status,
+        gender,
+        tel,
+        qq,
+        dd1.title as job,
+        dd2.title as source,
+        e.name as inputUser
+        from customer_manager c
+        left join dictionary_details dd1 on c.job = dd1.id
+        left join dictionary_details dd2 on c.source = dd2.id
+        left join employee e on e.id = c.inputUser
+        where (c.name like concat('%',#{keyword},'%') or c.tel like concat('%',#{keyword},'%'))
+        <if test="status != null">
+            and c.status =#{status}
+        </if>
+    </select>
 </mapper>

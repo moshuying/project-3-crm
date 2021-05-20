@@ -2,6 +2,7 @@ package com.msy.plus.controller;
 
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
+import com.msy.plus.dto.CustomerManagerList;
 import com.msy.plus.entity.CustomerManager;
 import com.msy.plus.service.CustomerManagerService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -65,10 +66,12 @@ public class CustomerManagerController {
         @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
     })
     public Result list(@RequestParam(defaultValue = "1") Integer page,
-    @RequestParam(defaultValue = "10") Integer size) {
+       @RequestParam(defaultValue = "10") Integer size,
+       @RequestParam(defaultValue = "",required = false) String keyword,
+       @RequestParam(required = false) Integer status) {
         PageHelper.startPage(page, size);
-        List<CustomerManager> list = customerManagerService.listAll();
-        PageInfo<CustomerManager> pageInfo = PageInfo.of(list);
+        List<CustomerManagerList> list = customerManagerService.listAllWithDictionary(keyword,status);
+        PageInfo<CustomerManagerList> pageInfo = PageInfo.of(list);
         return ResultGenerator.genOkResult(pageInfo);
     }
 }
