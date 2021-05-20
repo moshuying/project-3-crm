@@ -96,6 +96,25 @@ const options = {
           ]
         },
         {
+
+          path: '/customer',
+          name: '客户管理',
+          meta: {
+            icon: 'setting',
+            page: {
+              cacheAble: false
+            }
+          },
+          component: PageView,
+          children: [
+            {
+              path:'manager',
+              name:'潜在客户管理',
+              component:()=>import('@/pages/customer/manager')
+            },
+          ]
+        },
+        {
           path: 'form',
           name: '表单页',
           meta: {
