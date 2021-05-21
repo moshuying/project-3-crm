@@ -37,7 +37,7 @@
         >
            <span slot="action" slot-scope="text">
              <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id)" >编辑</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" >跟进</a-button>
+             <a-button type="link" shape="round" icon="edit" size="small" @click="showFollowModal(text.id,text)" >跟进</a-button>
              <a-button type="link" shape="round" icon="edit" size="small" @click="showHandoverModal(text.id)">移交</a-button>
              <a-button type="link" shape="round" icon="edit" size="small" @click="showStatusModal(text.id)" >修改状态</a-button>
            </span>
@@ -119,6 +119,7 @@
         </a-form-item>
       </a-form>
     </a-modal>
+<!--    移交-->
     <a-modal
         title="移交"
         :visible="handoverVisible"
@@ -167,6 +168,77 @@
         </a-form-item>
       </a-form>
     </a-modal>
+<!--    跟进-->
+    <a-modal
+        title="跟进记录"
+        :visible="followVisible"
+        :confirm-loading="followConfirmLoading"
+        @ok="handleFollowOk"
+        @cancel="handleFollowCancel"
+        okText="保存">
+      <a-form :form="followForm" :layout="`horizontal`">
+        <a-form-item hidden>
+          <a-input v-decorator="['customerid',{ rules: [{ required: false}] }]"/>
+        </a-form-item>
+        <a-form-item disabled label="客户姓名">
+          <a-input
+              v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
+              disabled />
+        </a-form-item>
+        <a-form-item disabled label="跟进时间">
+          <a-date-picker
+              @change="followTransTime"
+              show-time
+              @ok="onOk"
+              v-decorator="['transtime', { rules: [{ required: true, message: '跟进时间'  }]}]"
+              />
+        </a-form-item><a-form-item disabled label="跟进内容">
+          <a-input
+              v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容'  }]}]"
+              />
+        </a-form-item>
+        <a-form-item disabled label="跟进方式">
+          <a-select
+              v-decorator="['tracetype', { rules: [{ required: true, message: '跟进方式'  }]}]">
+            <a-select-option
+                :value="value.id"
+                :key="index"
+                v-for="(value,key,index) in dictionaryDetailsFollow">
+              {{value.title}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item disabled label="跟进结果">
+          <a-select
+              v-decorator="['traceresult', { rules: [{ required: true, message: '跟进结果'  }]}]">
+            <a-select-option
+                :value="key"
+                :key="index"
+                v-for="(value,key,index) in followTraceResult">
+              {{value}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item disabled label="备注">
+          <a-textarea
+              v-decorator="['comment', { rules: [{ required: true, message: '备注'  }]}]"
+              :auto-size="{ minRows: 3, maxRows: 5 }"
+              />
+        </a-form-item>
+        <a-form-item disabled label="跟进类型">
+          <a-select
+              v-decorator="['type', { rules: [{ required: true, message: '跟进类型'  }]}]"
+              >
+            <a-select-option
+                :value="key"
+                :key="index"
+                v-for="(value,key,index) in followType">
+              {{value}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
@@ -175,6 +247,8 @@ import * as customerManager from "@/services/customerManager"
 import * as dictionaryDetails from "@/services/dictionaryDetails"
 import * as employee from "@/services/employee"
 import * as customerHandover from "@/services/customerHandover"
+import * as customerFollowUpHistory from "@/services/customerFollowUpHistory"
+import moment from "moment";
 
 
 const statusMap = {
@@ -262,9 +336,16 @@ export default {
       handoverForm:this.$form.createForm(this, {name: 'coordinated'}),
       handoverVisible :false,
       handoverConfirmLoading :false,
+      // 跟进
+      followForm:this.$form.createForm(this, {name: 'coordinated'}),
+      followVisible :false,
+      followConfirmLoading :false,
+      followType:customerFollowUpHistory.type,
+      followTraceResult:customerFollowUpHistory.traceresult,
       // 字典细节
       dictionaryDetailsJob:[],
       dictionaryDetailsSource:[],
+      dictionaryDetailsFollow:[],
       // 员工表
       employeeList:[]
     }
@@ -279,6 +360,10 @@ export default {
     // id 2 来源
     dictionaryDetails.list({page:1,size:999999,id:2}).then(({data})=>{
       this.dictionaryDetailsSource = data.data.list
+    })
+    // id 10 跟进方式
+    dictionaryDetails.list({page:1,size:999999,id:10}).then(({data})=>{
+      this.dictionaryDetailsFollow = data.data.list
     })
 
     employee.list({page:1,size:99999}).then(({data})=>{
@@ -394,7 +479,6 @@ export default {
           this.handoverConfirmLoading = false
           return;
         }
-        console.log(values)
         customerHandover['add'](values).then(({data}) => {
           this.handoverConfirmLoading = false;
           if (data.code !== 200) {
@@ -424,6 +508,60 @@ export default {
       this.handoverForm.setFieldsValue({oldseller:data.data["inputuser"]})
       this.handoverForm.setFieldsValue({customerid:data.data["id"]})
       this.handoverForm.setFieldsValue({name:data.data["name"]})
+    },
+    // 移交
+    handleFollowCancel(){
+      this.followVisible = false;
+      this.followConfirmLoading = false
+      this.followForm.resetFields()
+    },
+    handleFollowOk(){
+      this.followConfirmLoading = true;
+      this.followForm.validateFields((err, values) => {
+        if (err) {
+          console.log("form error");
+          this.followConfirmLoading = false
+          return;
+        }
+        values.transtime = values.transtime.toDate().getTime()
+
+        customerFollowUpHistory['add'](values).then(({data}) => {
+          this.followConfirmLoading = false;
+          if (data.code !== 200) {
+            this.$notification['error']({
+              message: this.title + '跟进记录出现错误',
+              description: '建议检查网络连接或重新登陆',
+            });
+          }else{
+            this.$notification.success({
+              message: this.title + '成功',
+              description: this.title + '跟进记录成功',
+            });
+          }
+          this.followVisible = false
+          this.query()
+        })
+      });
+    },
+    async showFollowModal(id,line){
+      this.followVisible = true;
+      this.followConfirmLoading = false
+      await this.followForm.resetFields()
+      // 这里不能循环
+      this.$nextTick(()=>{
+        this.followForm.setFieldsValue({customerid:line.id})
+        this.followForm.setFieldsValue({name:line.name})
+        this.followForm.setFieldsValue({transtime:new moment(new Date())})
+        this.followForm.setFieldsValue({tracetype:this.dictionaryDetailsFollow[0].id})
+        this.followForm.setFieldsValue({type:Object.keys(this.followType)[0]})
+        this.followForm.setFieldsValue({traceresult:Object.keys(this.followTraceResult)[0]})
+      })
+    },
+    followTransTime(date, dateString) {
+      console.log(date, dateString);
+    },
+    onOk(value) {
+      console.log('onOk: ', value);
     },
     // modal
     async showModal(title) {
