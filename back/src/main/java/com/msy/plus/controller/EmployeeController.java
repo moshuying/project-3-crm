@@ -132,7 +132,8 @@ public class EmployeeController {
     @GetMapping("/{id}")
     public Result detail(@PathVariable Long id) {
         EmployeeDetail employee = employeeService.getDetailById(id);
-        return ResultGenerator.genOkResult(employee);
+        final EmployeeDetail object = JsonUtils.deleteFields(employee, EmployeeDetail.class, "password");
+        return ResultGenerator.genOkResult(object);
     }
 
     @Operation(description = "员工分页查询")
