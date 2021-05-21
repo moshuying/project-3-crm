@@ -171,11 +171,12 @@ export default {
               message: this.title + '权限信息出现错误',
               description: '建议检查网络连接或重新登陆',
             });
+          }else {
+            this.$notification.success({
+              message: this.title + '成功',
+              description: this.title + '权限信息成功',
+            });
           }
-          this.$notification.success({
-            message: this.title + '成功',
-            description: this.title + '权限信息成功',
-          });
           this.visible = false
           this.fetch({"page": this.pagination.current, "size": 10})
         })
