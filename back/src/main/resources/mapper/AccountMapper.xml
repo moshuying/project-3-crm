@@ -23,9 +23,9 @@
         a.*,
         r.name AS role_name,
         r.id AS role_id
-        FROM account a
-        LEFT JOIN account_role ar ON a.id = ar.account_id
-        LEFT JOIN role r ON ar.role_id = r.id
+        FROM employee a
+        LEFT JOIN employee_role er ON a.id = er.employeeId
+        LEFT JOIN role r ON er.roleId = r.id
         <where>
             <if test="id != null">a.id = #{id}</if>
             <if test="name != null">a.name = #{name}</if>
@@ -35,7 +35,7 @@
 
     <!-- 按账户名更新最后登陆时间 -->
     <update id="updateLoginTimeByName">
-        UPDATE account
+        UPDATE employee
         SET login_time = NOW()
         WHERE name = #{name}
     </update>

@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * @date 2018/05/27
  */
 @Data
-@Table(name = "account")
+@Table(name = "employee")
 public class AccountDO {
   /** 账户Id */
   @Id

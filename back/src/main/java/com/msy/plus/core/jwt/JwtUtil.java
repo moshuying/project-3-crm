@@ -42,6 +42,10 @@ public class JwtUtil {
     final Optional<Claims> claims = this.parseToken(token);
     return claims.map(Claims::getSubject);
   }
+  public Optional<Claims> getPro(final String token){
+    final Optional<Claims> claims = this.parseToken(token);
+    return claims;
+  }
 
   /**
    * 签发 token
@@ -136,6 +140,7 @@ public class JwtUtil {
             + Jwts.builder()
                 // 设置账户名
                 .setSubject(name)
+                .setId("123")
                 // 添加权限属性
                 .claim(this.jwtProperties.getClaimKeyAuth(), authorities)
                 // 设置失效时间
