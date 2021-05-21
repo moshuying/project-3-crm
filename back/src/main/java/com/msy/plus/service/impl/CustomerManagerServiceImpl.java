@@ -22,6 +22,11 @@ public class CustomerManagerServiceImpl extends AbstractService<CustomerManager>
     private CustomerManagerMapper customerManagerMapper;
 
     @Override
+    public CustomerManager getById(Object id) {
+        return this.customerManagerMapper.getDetailById(id);
+    }
+
+    @Override
     public List<CustomerManagerList> listAllWithDictionary(String keyword, Integer status) {
         return customerManagerMapper.listAllWithDictionary(keyword,status);
     }

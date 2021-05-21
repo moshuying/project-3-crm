@@ -518,14 +518,15 @@ export default {
           if (data.code !== 200) {
             this.$notification['error']({
               message: this.title + '角色信息出现错误',
-              description: '建议检查网络连接或重新登陆',
+              description: data.message,
             });
+          }else{
+            this.$notification.success({
+              message: this.title + '成功',
+              description: this.title + '角色信息成功',
+            });
+            this.visible = false
           }
-          this.$notification.success({
-            message: this.title + '成功',
-            description: this.title + '角色信息成功',
-          });
-          this.visible = false
           this.fetch({"page": this.pagination.current, "size": 10})
         })
       });

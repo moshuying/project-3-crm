@@ -64,7 +64,10 @@ public class AccountController {
     // 签发 token
     final UserDetails userDetails =
         this.userDetailsService.loadUserByUsername(accountDTO.getName());
-    final String token = this.jwtUtil.sign(accountDTO.getName(), userDetails.getAuthorities());
+    final String token = this.jwtUtil.sign(
+            accountDTO.getName(),
+            userDetails.getAuthorities(),
+            accountService.getByNameWithRole(userDetails.getUsername()).getId());
     return ResultGenerator.genOkResult(token);
   }
 
@@ -87,7 +90,7 @@ public class AccountController {
     }
     // 更新登录时间
     this.accountService.updateLoginTimeByName(name);
-    final String token = this.jwtUtil.sign(name, userDetails.getAuthorities());
+    final String token = this.jwtUtil.sign(name, userDetails.getAuthorities(),accountService.getByNameWithRole(name).getId());
     // 返回Ant Design Admin提供的登录返回格式
     LoginResultDTO loginResultDTO = new LoginResultDTO();
 
