@@ -96,7 +96,7 @@ public class AccountController {
 
     // 设置过期时间，和application-*.yml文件中的过期时间设定一致
     final long expireTime = this.jwtUtil.getJwtProperties().getExpireTime().toMillis();
-    loginResultDTO.setExpireAt(new Date(new Date().getTime()+expireTime *60*1000));
+    loginResultDTO.setExpireAt(new Date(new Date().getTime() + expireTime * 60 * 1000));
     loginResultDTO.setToken(token);
     loginResultDTO.setUserName(name);
     Map<String,Object> roles = new HashMap<String,Object>();
