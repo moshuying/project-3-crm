@@ -56,6 +56,8 @@ public class CustomerManagerList {
     @Column(name = "inputUser")
     private String inputuser;
 
+    private String inputUserId;
+
     @Column(name = "inputTime")
     private Date inputtime;
 
