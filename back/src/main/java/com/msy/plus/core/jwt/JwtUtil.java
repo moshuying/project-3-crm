@@ -42,6 +42,10 @@ public class JwtUtil {
     final Optional<Claims> claims = this.parseToken(token);
     return claims.map(Claims::getSubject);
   }
+  public Optional<String> getId(final String token){
+    final Optional<Claims> claims = this.parseToken(token);
+    return claims.map(Claims::getId);
+  }
 
   /**
    * 签发 token
@@ -50,9 +54,9 @@ public class JwtUtil {
    * @param grantedAuthorities 账户权限信息[ADMIN, TEST, ...]
    */
   public String sign(
-      final String name, final Collection<? extends GrantedAuthority> grantedAuthorities) {
+      final String name, final Collection<? extends GrantedAuthority> grantedAuthorities,Long id) {
     // 函数式创建 token，避免重复书写
-    final Supplier<String> createToken = () -> this.createToken(name, grantedAuthorities);
+    final Supplier<String> createToken = () -> this.createToken(name, grantedAuthorities,id);
     // 看看缓存有没有账户token
     final String token = (String) this.redisUtils.getValue(name);
     // 没有登录过
@@ -117,7 +121,9 @@ public class JwtUtil {
 
   /** 生成 token */
   private String createToken(
-      final String name, final Collection<? extends GrantedAuthority> grantedAuthorities) {
+      final String name,
+      final Collection<? extends GrantedAuthority> grantedAuthorities,
+      Long id) {
     // 获取账户的角色字符串，如 USER,ADMIN
     final String authorities =
         grantedAuthorities.stream()
@@ -136,6 +142,7 @@ public class JwtUtil {
             + Jwts.builder()
                 // 设置账户名
                 .setSubject(name)
+                .setId(id.toString())
                 // 添加权限属性
                 .claim(this.jwtProperties.getClaimKeyAuth(), authorities)
                 // 设置失效时间

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.plus.mapper.CustomerHandoverMapper">
+  <resultMap id="BaseResultMap" type="com.msy.plus.entity.CustomerHandover">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="customerID" jdbcType="INTEGER" property="customerid" />
+    <result column="transUser" jdbcType="INTEGER" property="transuser" />
+    <result column="transTime" jdbcType="TIMESTAMP" property="transtime" />
+    <result column="oldSeller" jdbcType="INTEGER" property="oldseller" />
+    <result column="newSeller" jdbcType="INTEGER" property="newseller" />
+    <result column="transReason" jdbcType="VARCHAR" property="transreason" />
+  </resultMap>
+</mapper>

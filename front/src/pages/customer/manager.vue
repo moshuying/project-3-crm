@@ -37,8 +37,8 @@
         >
            <span slot="action" slot-scope="text">
              <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id)" >编辑</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" >跟进</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" >移交</a-button>
+             <a-button type="link" shape="round" icon="edit" size="small" @click="showFollowModal(text.id,text)" >跟进</a-button>
+             <a-button type="link" shape="round" icon="edit" size="small" @click="showHandoverModal(text.id)">移交</a-button>
              <a-button type="link" shape="round" icon="edit" size="small" @click="showStatusModal(text.id)" >修改状态</a-button>
            </span>
         </a-table>
@@ -87,6 +87,7 @@
         </div>
       </a-form>
     </a-modal>
+<!--    修改客户状态-->
     <a-modal
         title="修改客户状态"
         :visible="statusVisible"
@@ -118,12 +119,138 @@
         </a-form-item>
       </a-form>
     </a-modal>
+<!--    移交-->
+    <a-modal
+        title="移交"
+        :visible="handoverVisible"
+        :confirm-loading="handoverConfirmLoading"
+        @ok="handleHandoverOk"
+        @cancel="handleHandoverCancel"
+        okText="保存">
+      <a-form :form="handoverForm" :layout="`horizontal`">
+        <a-form-item hidden>
+          <a-input v-decorator="['oldseller',{ rules: [{ required: false}] }]"/>
+        </a-form-item>
+        <a-form-item hidden>
+          <a-input v-decorator="['customerid',{ rules: [{ required: false}] }]"/>
+        </a-form-item>
+        <a-form-item hidden>
+          <a-input v-decorator="['transuser',{ rules: [{ required: false}] }]"/>
+        </a-form-item>
+        <a-form-item lable="客户姓名">
+          <a-input
+              disabled
+              v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
+          />
+        </a-form-item>
+        <a-form-item label="旧营销人员">
+          <a-input
+              disabled
+              v-decorator="['oldsellerName',{ rules: [{ required: true, message: '旧营销人员' }] }]"
+          />
+        </a-form-item>
+        <a-form-item label="新营销人员">
+          <a-select
+              v-decorator="['newseller',{ rules: [{ required: true, message: '状态' }] }]">
+            <a-select-option
+                :value="key"
+                :key="index"
+                v-for="(value,key,index) in employeeList">
+              {{value.name}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item label="移交原因">
+          <a-textarea
+              v-decorator="['transreason',{ rules: [{ required: true, message: '移交原因' }] }]"
+              :auto-size="{ minRows: 3, maxRows: 5 }"
+          />
+        </a-form-item>
+      </a-form>
+    </a-modal>
+<!--    跟进-->
+    <a-modal
+        title="跟进记录"
+        :visible="followVisible"
+        :confirm-loading="followConfirmLoading"
+        @ok="handleFollowOk"
+        @cancel="handleFollowCancel"
+        okText="保存">
+      <a-form :form="followForm" :layout="`horizontal`">
+        <a-form-item hidden>
+          <a-input v-decorator="['customerid',{ rules: [{ required: false}] }]"/>
+        </a-form-item>
+        <a-form-item disabled label="客户姓名">
+          <a-input
+              v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
+              disabled />
+        </a-form-item>
+        <a-form-item disabled label="跟进时间">
+          <a-date-picker
+              @change="followTransTime"
+              show-time
+              @ok="onOk"
+              v-decorator="['transtime', { rules: [{ required: true, message: '跟进时间'  }]}]"
+              />
+        </a-form-item><a-form-item disabled label="跟进内容">
+          <a-input
+              v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容'  }]}]"
+              />
+        </a-form-item>
+        <a-form-item disabled label="跟进方式">
+          <a-select
+              v-decorator="['tracetype', { rules: [{ required: true, message: '跟进方式'  }]}]">
+            <a-select-option
+                :value="value.id"
+                :key="index"
+                v-for="(value,key,index) in dictionaryDetailsFollow">
+              {{value.title}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item disabled label="跟进结果">
+          <a-select
+              v-decorator="['traceresult', { rules: [{ required: true, message: '跟进结果'  }]}]">
+            <a-select-option
+                :value="key"
+                :key="index"
+                v-for="(value,key,index) in followTraceResult">
+              {{value}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+        <a-form-item disabled label="备注">
+          <a-textarea
+              v-decorator="['comment', { rules: [{ required: true, message: '备注'  }]}]"
+              :auto-size="{ minRows: 3, maxRows: 5 }"
+              />
+        </a-form-item>
+        <a-form-item disabled label="跟进类型">
+          <a-select
+              v-decorator="['type', { rules: [{ required: true, message: '跟进类型'  }]}]"
+              >
+            <a-select-option
+                :value="key"
+                :key="index"
+                v-for="(value,key,index) in followType">
+              {{value}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script>
 import * as customerManager from "@/services/customerManager"
 import * as dictionaryDetails from "@/services/dictionaryDetails"
+import * as employee from "@/services/employee"
+import * as customerHandover from "@/services/customerHandover"
+import * as customerFollowUpHistory from "@/services/customerFollowUpHistory"
+import moment from "moment";
+
+
 const statusMap = {
   "-2": "流失",
   "-1": "开发失败",
@@ -170,7 +297,7 @@ const columns = [
     ...baseColumns,
   {
     title: '营销人员',
-    dataIndex: 'inputuser',
+    dataIndex: 'inputuser'
   },
   {
     title: '状态',
@@ -193,7 +320,7 @@ export default {
       columns: columns,
       dataSource: [],
       selectedRows: [],
-      pagination: {},
+      pagination: {current:1},
       loading: false,
       // 新增修改
       baseColumns,
@@ -205,9 +332,22 @@ export default {
       statusForm:this.$form.createForm(this, {name: 'coordinated'}),
       statusConfirmLoading:false,
       statusVisible:false,
+      // 移交
+      handoverForm:this.$form.createForm(this, {name: 'coordinated'}),
+      handoverVisible :false,
+      handoverConfirmLoading :false,
+      // 跟进
+      followForm:this.$form.createForm(this, {name: 'coordinated'}),
+      followVisible :false,
+      followConfirmLoading :false,
+      followType:customerFollowUpHistory.type,
+      followTraceResult:customerFollowUpHistory.traceresult,
       // 字典细节
       dictionaryDetailsJob:[],
-      dictionaryDetailsSource:[]
+      dictionaryDetailsSource:[],
+      dictionaryDetailsFollow:[],
+      // 员工表
+      employeeList:[]
     }
   },
   mounted() {
@@ -221,7 +361,14 @@ export default {
     dictionaryDetails.list({page:1,size:999999,id:2}).then(({data})=>{
       this.dictionaryDetailsSource = data.data.list
     })
+    // id 10 跟进方式
+    dictionaryDetails.list({page:1,size:999999,id:10}).then(({data})=>{
+      this.dictionaryDetailsFollow = data.data.list
+    })
 
+    employee.list({page:1,size:99999}).then(({data})=>{
+      this.employeeList = data.data.list
+    })
   },
   methods: {
     query(){
@@ -232,7 +379,7 @@ export default {
           this.queryLoading = false
           return;
         }
-        this.fetch({"page": 1, "size": 10,...values})
+        this.fetch({"page": this.pagination.current, "size": 10,...values})
       })
     },
     // table
@@ -291,13 +438,14 @@ export default {
               message: this.title + '角色信息出现错误',
               description: '建议检查网络连接或重新登陆',
             });
+          }else {
+            this.$notification.success({
+              message: this.title + '成功',
+              description: this.title + '角色信息成功',
+            });
           }
-          this.$notification.success({
-            message: this.title + '成功',
-            description: this.title + '角色信息成功',
-          });
           this.statusVisible = false
-          this.fetch({"page": this.pagination.current, "size": 10})
+          this.query()
         })
       });
     },
@@ -308,6 +456,7 @@ export default {
     },
     async showStatusModal(id){
       this.statusVisible = true;
+      this.statusConfirmLoading = false
       await this.statusForm.resetFields()
       const {data} = await customerManager.getDetail(id)
       if(!data.data) return;
@@ -315,6 +464,104 @@ export default {
       this.statusForm.setFieldsValue({id:data.data["id"]})
       this.statusForm.setFieldsValue({name:data.data["name"]})
       this.statusForm.setFieldsValue({status:data.data["status"]+""})
+    },
+    // 移交
+    handleHandoverCancel(){
+      this.handoverVisible = false;
+      this.handoverConfirmLoading = false
+      this.handoverForm.resetFields()
+    },
+    handleHandoverOk(){
+      this.handoverConfirmLoading = true;
+      this.handoverForm.validateFields((err, values) => {
+        if (err) {
+          console.log("form error");
+          this.handoverConfirmLoading = false
+          return;
+        }
+        customerHandover['add'](values).then(({data}) => {
+          this.handoverConfirmLoading = false;
+          if (data.code !== 200) {
+            this.$notification['error']({
+              message: this.title + '角色信息出现错误',
+              description: '建议检查网络连接或重新登陆',
+            });
+          }else{
+            this.$notification.success({
+              message: this.title + '成功',
+              description: this.title + '角色信息成功',
+            });
+          }
+          this.handoverVisible = false
+          this.query()
+        })
+      });
+    },
+    async showHandoverModal(id){
+      this.handoverVisible = true;
+      this.handoverConfirmLoading = false
+      await this.handoverForm.resetFields()
+      const {data} = await customerManager.getDetail(id)
+      if(!data.data) return;
+      // 这里不能循环
+      this.handoverForm.setFieldsValue({oldsellerName:this.employeeList.find(e=>e.id===data.data["inputuser"]).name})
+      this.handoverForm.setFieldsValue({oldseller:data.data["inputuser"]})
+      this.handoverForm.setFieldsValue({customerid:data.data["id"]})
+      this.handoverForm.setFieldsValue({name:data.data["name"]})
+    },
+    // 移交
+    handleFollowCancel(){
+      this.followVisible = false;
+      this.followConfirmLoading = false
+      this.followForm.resetFields()
+    },
+    handleFollowOk(){
+      this.followConfirmLoading = true;
+      this.followForm.validateFields((err, values) => {
+        if (err) {
+          console.log("form error");
+          this.followConfirmLoading = false
+          return;
+        }
+        values.transtime = values.transtime.toDate().getTime()
+
+        customerFollowUpHistory['add'](values).then(({data}) => {
+          this.followConfirmLoading = false;
+          if (data.code !== 200) {
+            this.$notification['error']({
+              message: this.title + '跟进记录出现错误',
+              description: '建议检查网络连接或重新登陆',
+            });
+          }else{
+            this.$notification.success({
+              message: this.title + '成功',
+              description: this.title + '跟进记录成功',
+            });
+          }
+          this.followVisible = false
+          this.query()
+        })
+      });
+    },
+    async showFollowModal(id,line){
+      this.followVisible = true;
+      this.followConfirmLoading = false
+      await this.followForm.resetFields()
+      // 这里不能循环
+      this.$nextTick(()=>{
+        this.followForm.setFieldsValue({customerid:line.id})
+        this.followForm.setFieldsValue({name:line.name})
+        this.followForm.setFieldsValue({transtime:new moment(new Date())})
+        this.followForm.setFieldsValue({tracetype:this.dictionaryDetailsFollow[0].id})
+        this.followForm.setFieldsValue({type:Object.keys(this.followType)[0]})
+        this.followForm.setFieldsValue({traceresult:Object.keys(this.followTraceResult)[0]})
+      })
+    },
+    followTransTime(date, dateString) {
+      console.log(date, dateString);
+    },
+    onOk(value) {
+      console.log('onOk: ', value);
     },
     // modal
     async showModal(title) {
@@ -355,13 +602,14 @@ export default {
               message: this.title + '角色信息出现错误',
               description: '建议检查网络连接或重新登陆',
             });
+          }else{
+            this.$notification.success({
+              message: this.title + '成功',
+              description: this.title + '角色信息成功',
+            });
           }
-          this.$notification.success({
-            message: this.title + '成功',
-            description: this.title + '角色信息成功',
-          });
           this.visible = false
-          this.fetch({"page": this.pagination.current, "size": 10})
+          this.query()
         })
       });
     },

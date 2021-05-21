@@ -1,17 +1,20 @@
 package com.msy.plus.service.impl;
 
+import com.msy.plus.entity.AccountDO;
 import com.msy.plus.entity.EmployeeDetail;
 import com.msy.plus.entity.EmployeeWithRoleDO;
 import com.msy.plus.mapper.EmployeeMapper;
 import com.msy.plus.entity.Employee;
 import com.msy.plus.service.EmployeeService;
 import com.msy.plus.core.service.AbstractService;
+import com.msy.plus.service.RoleService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
 * @author MoShuYing
@@ -20,6 +23,16 @@ import java.util.Map;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class EmployeeServiceImpl extends AbstractService<Employee> implements EmployeeService {
+
+    @Override
+    public void update(Employee entity) {
+        final String name = entity.getName();
+        // 按 name 字段更新
+        final Condition condition = new Condition(Employee.class);
+        condition.createCriteria().andCondition("name = ", name);
+        this.updateByCondition(entity,condition);
+    }
+
     @Resource
     private EmployeeMapper employeeMapper;
 

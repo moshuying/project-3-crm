@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CustomerManagerMapper extends MyMapper<CustomerManager> {
     List<CustomerManagerList> listAllWithDictionary(String keyword,Integer status);
-
+    CustomerManager getDetailById(Object id);
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.msy.plus.mapper.CustomerFollowUpHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.msy.plus.entity.CustomerFollowUpHistory">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="traceTime" jdbcType="TIMESTAMP" property="tracetime" />
+    <result column="traceType" jdbcType="INTEGER" property="tracetype" />
+    <result column="traceResult" jdbcType="INTEGER" property="traceresult" />
+    <result column="customerID" jdbcType="INTEGER" property="customerid" />
+    <result column="inputUser" jdbcType="INTEGER" property="inputuser" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="traceDetails" jdbcType="LONGVARCHAR" property="tracedetails" />
+    <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
+  </resultMap>
+</mapper>
