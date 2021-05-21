@@ -1,9 +1,11 @@
 package com.msy.plus.controller;
 
+import com.msy.plus.core.jwt.JwtUtil;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.entity.CustomerHandover;
 import com.msy.plus.service.CustomerHandoverService;
+import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
 * @author MoShuYing
@@ -28,10 +32,19 @@ import java.util.List;
 public class CustomerHandoverController {
     @Resource
     private CustomerHandoverService customerHandoverService;
+    @Resource
+    private JwtUtil jwtUtil;
 
     @Operation(description = "移交历史添加")
     @PostMapping
-    public Result add(@RequestBody CustomerHandover customerHandover) {
+    public Result add(@RequestBody CustomerHandover customerHandover,@RequestHeader Map<String, String> headers) {
+        if(customerHandover.getId()!=null){
+            customerHandover.setId(null);
+        }
+        String header = jwtUtil.getJwtProperties().getHeader();
+        String id= jwtUtil.getId(headers.get(header)).get();
+
+        customerHandover.setTransuser(Integer.valueOf(id));
         customerHandoverService.save(customerHandover);
         return ResultGenerator.genOkResult();
     }
