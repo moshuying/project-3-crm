@@ -37,7 +37,7 @@
               cancel-text="否"
               @confirm="exportFile()"
           >
-            <a-button type="primary">导出</a-button>
+            <a-button icon="download" type="primary">导出</a-button>
           </a-popconfirm>
           <a-upload :showUploadList="false" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload">
             <a-button> <a-icon type="upload" /> 导入数据</a-button>
