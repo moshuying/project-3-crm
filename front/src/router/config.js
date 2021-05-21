@@ -112,6 +112,16 @@ const options = {
               name:'潜在客户管理',
               component:()=>import('@/pages/customer/manager')
             },
+            {
+              path:'official',
+              name:'正式客户管理',
+              component:()=>import('@/pages/customer/official')
+            },
+            {
+              path:'resource',
+              name:'客户资源池',
+              component:()=>import('@/pages/customer/resource')
+            },
           ]
         },
         {

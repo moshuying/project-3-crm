@@ -43,7 +43,6 @@ public class CustomerHandoverController {
         }
         String header = jwtUtil.getJwtProperties().getHeader();
         String id= jwtUtil.getId(headers.get(header)).get();
-
         customerHandover.setTransuser(Integer.valueOf(id));
         customerHandoverService.save(customerHandover);
         return ResultGenerator.genOkResult();

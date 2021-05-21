@@ -72,7 +72,7 @@
                c.job        as job,
                c.source     as source,
                c.seller     as seller,
-               ch.newSeller as inputUser
+               if(ch.newSeller is null,c.inputUser,ch.newSeller) as inputUser
         from customer_manager as c
                  left join (select *
                             from (select * from customer_handover order by transTime desc Limit 10000) as chG
