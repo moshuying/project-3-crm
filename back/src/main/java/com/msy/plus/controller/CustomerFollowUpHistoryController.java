@@ -22,44 +22,47 @@ import java.util.List;
 * @date 2021/05/21
 */
 @PreAuthorize("hasAuthority('ADMIN')")
-@Api(tags={"生成接口"})
+@Api(tags={"客户跟进记录接口"})
 @RestController
 @RequestMapping("/customer/follow/up/history")
 public class CustomerFollowUpHistoryController {
     @Resource
     private CustomerFollowUpHistoryService customerFollowUpHistoryService;
 
-    @Operation(description = "生成添加")
+    @Operation(description = "客户跟进记录添加")
     @PostMapping
     public Result add(@RequestBody CustomerFollowUpHistory customerFollowUpHistory) {
+        if(customerFollowUpHistory.getId()!=null){
+            customerFollowUpHistory.setId(null);
+        }
         customerFollowUpHistoryService.save(customerFollowUpHistory);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成删除")
+    @Operation(description = "客户跟进记录删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
     customerFollowUpHistoryService.deleteById(id);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成更新")
+    @Operation(description = "客户跟进记录更新")
     @PutMapping
     public Result update(@RequestBody CustomerFollowUpHistory customerFollowUpHistory) {
     customerFollowUpHistoryService.update(customerFollowUpHistory);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成获取详细信息")
+    @Operation(description = "客户跟进记录获取详细信息")
     @GetMapping("/{id}")
     public Result detail(@PathVariable Long id) {
     CustomerFollowUpHistory customerFollowUpHistory = customerFollowUpHistoryService.getById(id);
         return ResultGenerator.genOkResult(customerFollowUpHistory);
     }
 
-    @Operation(description = "生成分页查询")
+    @Operation(description = "客户跟进记录分页查询")
     @GetMapping
-    @ApiOperation(value="分页查询生成", notes="分页查询 ")
+    @ApiOperation(value="分页查询客户跟进记录", notes="分页查询 ")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
         @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
