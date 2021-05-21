@@ -59,7 +59,7 @@ class CodeGenerator {
     if (!scanner.next().equals("y")) {
       return;
     }
-    CodeGenerator.genCode("customer_handover");
+    CodeGenerator.genCode("customer_follow_up_history");
 //     genCodeByCustomModelName("employee",null);
   }
 
