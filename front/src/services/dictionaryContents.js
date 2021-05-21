@@ -2,7 +2,7 @@ import {request, METHOD} from '@/utils/request'
 import {DICTIONARY_CONTENTS} from './api'
 
 /**
- * 获取角色信息，分页获取
+ * 获取字典列表信息，分页获取
  * @param page {{size: number, page: number}}
  * @returns {Promise<AxiosResponse<T>>}
  */
@@ -11,7 +11,7 @@ export async function list(page ) {
 }
 
 /**
- * 删除一个角色信息
+ * 删除一个字典列表信息
  * @param id {string|number}
  * @returns {Promise<AxiosResponse<T>>}
  */
@@ -20,7 +20,7 @@ export async function deleteItem(id) {
 }
 
 /**
- * 获取单个角色的详细信息
+ * 获取单个字典列表的详细信息
  * @param id
  * @returns {Promise<AxiosResponse<T>>}
  */
@@ -29,7 +29,7 @@ export async function getDetail(id) {
 }
 
 /**
- * 修改角色信息
+ * 修改字典列表信息
  * @returns {Promise<AxiosResponse<T>>}
  */
 export async function update(object) {
@@ -37,7 +37,7 @@ export async function update(object) {
 }
 
 /**
- * 添加角色信息
+ * 添加字典列表信息
  * @returns {Promise<AxiosResponse<T>>}
  */
 export async function add(object) {
