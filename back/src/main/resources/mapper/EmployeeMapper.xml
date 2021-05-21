@@ -27,22 +27,19 @@
         </collection>
     </resultMap>
     <select id="listEmployeeWithRole" resultMap="EmployeeWithRole">
-        select e.id   as id,
-               e.name as name,
-               email,
-               age,
-               d.name as departmentName,
-               r.name as roleNames
-        from employee as e,
-             employee_role as er,
-             role as r,
-             department as d
-        where er.employeeId = e.id
-          and er.roleId = r.id
-          and d.id = e.dept # 测试数据有时没有部门
-         <if test="keyword != null">
-             and (e.name like concat('%',#{keyword},'%') or e.email like concat('%',#{keyword},'%'))
-         </if>
+        select e.id as id,
+        e.name as name,
+        email,
+        age,
+        d.name as departmentName,
+        r.name as roleNames
+        from employee as e
+        left join employee_role as er on er.employeeId = e.id
+        left join role as r on er.roleId = r.id
+        left join department as d on d.id = e.dept
+        <if test="keyword != null">
+            and (e.name like concat('%',#{keyword},'%') or e.email like concat('%',#{keyword},'%'))
+        </if>
         <if test="dept != null and dept >0">
             and e.dept = #{dept}
         </if>

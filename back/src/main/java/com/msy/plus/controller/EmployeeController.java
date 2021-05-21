@@ -6,7 +6,6 @@ import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.entity.Employee;
 import com.msy.plus.entity.EmployeeDetail;
 import com.msy.plus.entity.EmployeeWithRoleDO;
-import com.msy.plus.entity.RolePermissionDO;
 import com.msy.plus.service.EmployeeService;
 import com.msy.plus.util.JsonUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,7 +66,7 @@ public class EmployeeController {
         // 更新员工基本信息
         employeeService.update((Employee) employee);
         List<Long> now= employee.getRoleIds();
-        if(now==null || now.size()<=0){
+        if(now==null) {
             return ResultGenerator.genOkResult();
         }
         List<Long> raw = this.employeeService.getAllEmployeeRoleTableRow(employee.getId());
