@@ -190,7 +190,7 @@
               @change="followTransTime"
               show-time
               @ok="onOk"
-              v-decorator="['transtime', { rules: [{ required: true, message: '跟进时间'  }]}]"
+              v-decorator="['tracetime', { rules: [{ required: true, message: '跟进时间'  }]}]"
               />
         </a-form-item><a-form-item disabled label="跟进内容">
           <a-input
@@ -523,7 +523,7 @@ export default {
           this.followConfirmLoading = false
           return;
         }
-        values.transtime = values.transtime.toDate().getTime()
+        values.tracetime = values.tracetime.toDate()
 
         customerFollowUpHistory['add'](values).then(({data}) => {
           this.followConfirmLoading = false;
@@ -551,7 +551,7 @@ export default {
       this.$nextTick(()=>{
         this.followForm.setFieldsValue({customerid:line.id})
         this.followForm.setFieldsValue({name:line.name})
-        this.followForm.setFieldsValue({transtime:new moment(new Date())})
+        this.followForm.setFieldsValue({tracetime:new moment(new Date())})
         this.followForm.setFieldsValue({tracetype:this.dictionaryDetailsFollow[0].id})
         this.followForm.setFieldsValue({type:Object.keys(this.followType)[0]})
         this.followForm.setFieldsValue({traceresult:Object.keys(this.followTraceResult)[0]})
