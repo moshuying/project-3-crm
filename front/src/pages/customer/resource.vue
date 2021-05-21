@@ -10,23 +10,11 @@
                   placeholder="请输入姓名/电话"
               />
             </a-form-item>
-            <a-form-item label="状态">
-              <a-select
-                  style="width: 6rem"
-                  v-decorator="['status',{ rules: [{ required: true, message: '状态' }] }]">
-                <a-select-option
-                    :value="key"
-                    :key="index"
-                    v-for="(value,key,index) in statusMap">
-                  {{value}}
-                </a-select-option>
-              </a-select>
-            </a-form-item>
             <a-form-item>
               <a-button :loading="queryLoading" @click="query()">查询</a-button>
             </a-form-item>
           </a-form>
-          <a-button type="primary" @click="showModal('新增')">添加</a-button>
+          <!--          <a-button type="primary" @click="showModal('新增')">添加</a-button>-->
         </a-space>
         <a-table
             :columns="columns"
@@ -36,15 +24,16 @@
             @change="handleTableChange"
         >
            <span slot="action" slot-scope="text">
-             <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id)" >编辑</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" @click="showFollowModal(text.id,text)" >跟进</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" @click="showHandoverModal(text.id)">移交</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" @click="showStatusModal(text.id)" >修改状态</a-button>
+<!--             <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id)" >编辑</a-button>-->
+<!--             <a-button type="link" shape="round" icon="edit" size="small" @click="showFollowModal(text.id,text)" >跟进</a-button>-->
+             <a-button type="link" shape="round" icon="edit" size="small" @click="showHandoverModal(text.id,text,true)">移交给我</a-button>
+             <a-button type="link" shape="round" icon="edit" size="small" @click="showHandoverModal(text.id,text)">移交</a-button>
+<!--             <a-button type="link" shape="round" icon="edit" size="small" @click="showStatusModal(text.id)" >修改状态</a-button>-->
            </span>
         </a-table>
       </div>
     </a-card>
-<!--    新增修改-->
+    <!--    新增修改-->
     <a-modal
         :title="title"
         :visible="visible"
@@ -54,14 +43,14 @@
         okText="提交"
     >
       <a-form :form="form" :layout="`horizontal`">
-          <a-form-item hidden>
-            <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
-          </a-form-item>
+        <a-form-item hidden>
+          <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
+        </a-form-item>
         <div v-for="(item) in baseColumns" :key="item.dataIndex">
           <a-form-item :label="item.title">
             <a-select v-if="item.dataIndex==='gender'"
-                style="width: 6rem"
-                v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">
+                      style="width: 6rem"
+                      v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">
               <a-select-option :value="1">
                 男
               </a-select-option>
@@ -80,14 +69,14 @@
               </a-select-option>
             </a-select>
             <a-input v-else
-                v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]"
-                :placeholder="`请输入`+item.title"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]"
+                     :placeholder="`请输入`+item.title"
             />
           </a-form-item>
         </div>
       </a-form>
     </a-modal>
-<!--    修改客户状态-->
+    <!--    修改客户状态-->
     <a-modal
         title="修改客户状态"
         :visible="statusVisible"
@@ -102,8 +91,8 @@
         </a-form-item>
         <a-form-item lable="姓名">
           <a-input
-               v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
-               :placeholder="`请输入姓名`"
+              v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
+              :placeholder="`请输入姓名`"
           />
         </a-form-item>
         <a-form-item label="状态">
@@ -119,9 +108,9 @@
         </a-form-item>
       </a-form>
     </a-modal>
-<!--    移交-->
+    <!--    移交-->
     <a-modal
-        title="移交"
+        :title="handoverForMe?`移交给我`:`移交`"
         :visible="handoverVisible"
         :confirm-loading="handoverConfirmLoading"
         @ok="handleHandoverOk"
@@ -151,6 +140,7 @@
         </a-form-item>
         <a-form-item label="新营销人员">
           <a-select
+              :disabled="handoverForMe"
               v-decorator="['newseller',{ rules: [{ required: true, message: '状态' }] }]">
             <a-select-option
                 :value="key"
@@ -168,7 +158,7 @@
         </a-form-item>
       </a-form>
     </a-modal>
-<!--    跟进-->
+    <!--    跟进-->
     <a-modal
         title="跟进记录"
         :visible="followVisible"
@@ -191,12 +181,12 @@
               show-time
               @ok="onOk"
               v-decorator="['tracetime', { rules: [{ required: true, message: '跟进时间'  }]}]"
-              />
+          />
         </a-form-item><a-form-item disabled label="跟进内容">
-          <a-input
-              v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容'  }]}]"
-              />
-        </a-form-item>
+        <a-input
+            v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容'  }]}]"
+        />
+      </a-form-item>
         <a-form-item disabled label="跟进方式">
           <a-select
               v-decorator="['tracetype', { rules: [{ required: true, message: '跟进方式'  }]}]">
@@ -223,12 +213,12 @@
           <a-textarea
               v-decorator="['comment', { rules: [{ required: true, message: '备注'  }]}]"
               :auto-size="{ minRows: 3, maxRows: 5 }"
-              />
+          />
         </a-form-item>
         <a-form-item disabled label="跟进类型">
           <a-select
               v-decorator="['type', { rules: [{ required: true, message: '跟进类型'  }]}]"
-              >
+          >
             <a-select-option
                 :value="key"
                 :key="index"
@@ -250,12 +240,7 @@ import * as customerHandover from "@/services/customerHandover"
 import * as customerFollowUpHistory from "@/services/customerFollowUpHistory"
 import moment from "moment";
 
-
 const statusMap = {
-  "-2": "流失",
-  "-1": "开发失败",
-  "0": "潜在客户",
-  "1": "正式客户",
   "2": "资源池客户",
 }
 const baseColumns =[
@@ -294,7 +279,7 @@ const columns = [
     title: '编号',
     dataIndex: 'id'
   },
-    ...baseColumns,
+  ...baseColumns,
   {
     title: '营销人员',
     dataIndex: 'inputuser'
@@ -333,6 +318,7 @@ export default {
       statusConfirmLoading:false,
       statusVisible:false,
       // 移交
+      handoverForMe:false,
       handoverForm:this.$form.createForm(this, {name: 'coordinated'}),
       handoverVisible :false,
       handoverConfirmLoading :false,
@@ -351,7 +337,6 @@ export default {
     }
   },
   mounted() {
-    this.queryForm.setFieldsValue({"status":"0"})
     this.query()
     // id 1 职业
     dictionaryDetails.list({page:1,size:999999,id:1}).then(({data})=>{
@@ -379,7 +364,7 @@ export default {
           this.queryLoading = false
           return;
         }
-        this.fetch({"page": this.pagination.current, "size": 10,...values})
+        this.fetch({"page": this.pagination.current, "size": 10,status:2,...values})
       })
     },
     // table
@@ -497,17 +482,23 @@ export default {
         })
       });
     },
-    async showHandoverModal(id){
+    async showHandoverModal(id,line,handoverForMe){
       this.handoverVisible = true;
       this.handoverConfirmLoading = false
       await this.handoverForm.resetFields()
       const {data} = await customerManager.getDetail(id)
+      this.handoverForMe = handoverForMe === true;
       if(!data.data) return;
       // 这里不能循环
       this.handoverForm.setFieldsValue({oldsellerName:this.employeeList.find(e=>e.id===data.data["inputuser"]).name})
       this.handoverForm.setFieldsValue({oldseller:data.data["inputuser"]})
+      let name = JSON.parse(localStorage.getItem("admin.roles"))[0]["id"]
+      if(Object.prototype.toString.call(name)!=="[object Undefined]"){
+        this.handoverForm.setFieldsValue({newseller:name})
+      }
       this.handoverForm.setFieldsValue({customerid:data.data["id"]})
-      this.handoverForm.setFieldsValue({name:data.data["name"]})
+      this.handoverForm.setFieldsValue({name:line["name"]})
+
     },
     // 移交
     handleFollowCancel(){
@@ -539,6 +530,7 @@ export default {
             });
           }
           this.followVisible = false
+          this.handoverForMe = false
           this.query()
         })
       });

@@ -474,7 +474,6 @@ export default {
         this.form.setFieldsValue({"age": data.data["age"]})
         this.form.setFieldsValue({"dept": data.data["dept"]})
         this.form.setFieldsValue({"email": data.data["email"]})
-        this.form.setFieldsValue({"password": data.data["password"]})
         const {roleIds} = data.data
         if (!roleIds) return;
         for(let i=0;i<roleIds.length;i++){
