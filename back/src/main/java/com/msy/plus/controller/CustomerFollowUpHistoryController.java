@@ -1,5 +1,6 @@
 package com.msy.plus.controller;
 
+import com.msy.plus.core.jwt.JwtUtil;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.entity.CustomerFollowUpHistory;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author MoShuYing
@@ -28,13 +30,17 @@ import java.util.List;
 public class CustomerFollowUpHistoryController {
     @Resource
     private CustomerFollowUpHistoryService customerFollowUpHistoryService;
-
+    @Resource
+    private JwtUtil jwtUtil;
     @Operation(description = "客户跟进记录添加")
     @PostMapping
-    public Result add(@RequestBody CustomerFollowUpHistory customerFollowUpHistory) {
+    public Result add(@RequestBody CustomerFollowUpHistory customerFollowUpHistory,@RequestHeader Map<String, String> headers) {
         if(customerFollowUpHistory.getId()!=null){
             customerFollowUpHistory.setId(null);
         }
+        String header = jwtUtil.getJwtProperties().getHeader();
+        String id= jwtUtil.getId(headers.get(header)).get();
+        customerFollowUpHistory.setInputuser(Integer.valueOf(id));
         customerFollowUpHistoryService.save(customerFollowUpHistory);
         return ResultGenerator.genOkResult();
     }
