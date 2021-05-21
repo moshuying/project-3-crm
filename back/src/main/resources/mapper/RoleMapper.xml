@@ -16,7 +16,7 @@
     </resultMap>
 
     <insert id="saveAsDefaultRole" parameterType="java.lang.Long">
-        INSERT INTO account_role (account_id, role_id)
+        INSERT INTO employee_role (employeeId, roleId)
         VALUES (#{accountId}, (SELECT r.id FROM role r WHERE name="USER"))
     </insert>
     <insert id="savePermissions" parameterType="java.util.List">

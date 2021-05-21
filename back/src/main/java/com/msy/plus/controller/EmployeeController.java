@@ -16,13 +16,12 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
 * @author MoShuYing
@@ -35,6 +34,7 @@ import java.util.Set;
 public class EmployeeController {
     @Resource
     private EmployeeService employeeService;
+    @Resource private PasswordEncoder passwordEncoder;
 
     @Operation(description = "员工添加")
     @PostMapping
@@ -45,10 +45,25 @@ public class EmployeeController {
         if(employee.getDept() ==null){
             return ResultGenerator.genFailedResult("请填写员工部门信息");
         }
+        if(employee.getPassword().length()<=5){
+            return ResultGenerator.genFailedResult("密码长度不能少于或等于五位");
+        }
+        employee.setPassword(this.passwordEncoder.encode(employee.getPassword().trim()));
+        try{
+            employeeService.save(employee);
+        }catch (Exception e){
+            e.printStackTrace();
+            String msg = "信息有误";
+            if(e.toString().contains("for key 'employee.employee_name_uindex'")){
+                msg = "已有同名员工，请检查员工名称";
+            }else if(e.toString().contains("for key 'employee.employee_email_uindex'")){
+                msg = "已有同名邮箱，请检查员工邮箱";
+            }
+            return ResultGenerator.genFailedResult(msg);
+        }
         if(!(employee.getRoleIds() ==null || employee.getRoleIds().size()<1)){
             employeeService.saveRoles(employee.getId(),employee.getRoleIds());
         }
-        employeeService.save(employee);
         return ResultGenerator.genOkResult();
     }
 
@@ -64,7 +79,25 @@ public class EmployeeController {
     @PutMapping
     public Result update(@RequestBody EmployeeDetail employee) {
         // 更新员工基本信息
-        employeeService.update((Employee) employee);
+        if(employee.getDept() ==null){
+            return ResultGenerator.genFailedResult("请填写员工部门信息");
+        }
+        if(employee.getPassword().length()<=5){
+            return ResultGenerator.genFailedResult("密码长度不能少于或等于五位");
+        }
+        employee.setPassword(this.passwordEncoder.encode(employee.getPassword().trim()));
+        try{
+            employeeService.update((Employee) employee);
+        }catch (Exception e){
+            e.printStackTrace();
+            String msg = "信息有误";
+            if(e.toString().contains("for key 'employee.employee_name_uindex'")){
+                msg = "已有同名员工，请检查员工名称";
+            }else if(e.toString().contains("for key 'employee.employee_email_uindex'")){
+                msg = "已有同名邮箱，请检查员工邮箱";
+            }
+            return ResultGenerator.genFailedResult(msg);
+        }
         List<Long> now= employee.getRoleIds();
         if(now==null) {
             return ResultGenerator.genOkResult();
