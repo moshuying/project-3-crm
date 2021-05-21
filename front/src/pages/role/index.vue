@@ -228,7 +228,6 @@ export default {
           const ps = permissions[i];
           this.targetKeys.push(this.permissionList.find(e=>e.id===ps.id).key)
         }
-
       })
     },
     // modal
@@ -248,7 +247,7 @@ export default {
         }
         let method = 'add';
         if (values.id) method = 'update';
-        if(values.permissions.length>=1){
+        if(values.permissions && values.permissions.length>=1){
           let arr =[]
           for(let i=0;i<values.permissions.length;i++){
             const e = values.permissions[i]
@@ -273,6 +272,8 @@ export default {
             description: this.title + '角色信息成功',
           });
           this.visible = false
+          this.form.resetFields()
+          this.getAllPermissionList()
           this.fetch({"page": this.pagination.current, "size": 10})
         })
       });

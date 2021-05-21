@@ -23,44 +23,44 @@ import java.util.List;
 * @date 2021/05/20
 */
 @PreAuthorize("hasAuthority('ADMIN')")
-@Api(tags={"生成接口"})
+@Api(tags={"客户管理接口"})
 @RestController
 @RequestMapping("/customer/manager")
 public class CustomerManagerController {
     @Resource
     private CustomerManagerService customerManagerService;
 
-    @Operation(description = "生成添加")
+    @Operation(description = "客户管理添加")
     @PostMapping
     public Result add(@RequestBody CustomerManager customerManager) {
         customerManagerService.save(customerManager);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成删除")
+    @Operation(description = "客户管理删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
     customerManagerService.deleteById(id);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成更新")
+    @Operation(description = "客户管理更新")
     @PutMapping
     public Result update(@RequestBody CustomerManager customerManager) {
     customerManagerService.update(customerManager);
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "生成获取详细信息")
+    @Operation(description = "客户管理获取详细信息")
     @GetMapping("/{id}")
     public Result detail(@PathVariable Long id) {
     CustomerManager customerManager = customerManagerService.getById(id);
         return ResultGenerator.genOkResult(customerManager);
     }
 
-    @Operation(description = "生成分页查询")
+    @Operation(description = "客户管理分页查询")
     @GetMapping
-    @ApiOperation(value="分页查询生成", notes="分页查询 ")
+    @ApiOperation(value="分页查询客户管理", notes="分页查询 ")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
         @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
