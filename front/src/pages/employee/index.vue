@@ -497,6 +497,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (err) {
           console.log("form error");
+          this.confirmLoading = false
           return;
         }
         let method = 'add';
