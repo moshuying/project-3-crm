@@ -20,26 +20,63 @@
     <result column="positiveTime" jdbcType="TIMESTAMP" property="positivetime" />
   </resultMap>
     <select id="listAllWithDictionary" resultType="com.msy.plus.dto.CustomerManagerList">
-        select c.id                                     as id,
-        c.name                                   as name,
-        c.age                                    as age,
-        c.status                                 as status,
+        select c.id as id,
+        c.name as name,
+        c.age as age,
+        c.status as status,
         gender,
         tel,
         qq,
-        dd1.title                                as job,
-        dd2.title                                as source,
-        if(e2.name is not null, e2.name, e.name) as inputUser,
-        if(e2.id is not null, e2.id, e.id) as inputUserId
+        dd1.title as job,
+        dd2.title as source,
+        if(e2.name is not null, e2.name, e.name)
+        as inputUser,
+        if(e2.id is not null, e2.id, e.id)
+        as inputUserId
         from customer_manager c
-        left join dictionary_details dd1 on c.job = dd1.id
-        left join dictionary_details dd2 on c.source = dd2.id
-        left join employee e on e.id = c.inputUser
-        left join customer_handover ch on ch.oldSeller = e.id and ch.customerID = c.id
-        left join employee e2 on e2.id = ch.newSeller
+        left join
+        dictionary_details dd1
+        on c.job = dd1.id
+        left join
+        dictionary_details dd2
+        on c.source = dd2.id
+        left join
+        employee e
+        on e.id = c.inputUser
+        left join (
+        select *
+        from (select *
+        from customer_handover
+        order by transTime
+        desc
+        Limit 10000)
+        as chG
+        group by customerID
+        ) ch
+        on ch.oldSeller = e.id
+        and ch.customerID = c.id
+        left join
+        employee e2
+        on e2.id = ch.newSeller
         where (c.name like concat('%',#{keyword},'%') or c.tel like concat('%',#{keyword},'%'))
         <if test="status != null">
             and c.status =#{status}
         </if>
+    </select>
+    <select id="getDetailById" resultType="com.msy.plus.entity.CustomerManager">
+        select c.id         as id,
+               c.name       as name,
+               c.gender     as gender,
+               c.tel        as tel,
+               c.qq         as qq,
+               c.job        as job,
+               c.source     as source,
+               c.seller     as seller,
+               ch.newSeller as inputUser
+        from customer_manager as c
+                 left join (select *
+                            from (select * from customer_handover order by transTime desc Limit 10000) as chG
+                            group by customerID) ch on ch.customerID = c.id
+        where c.id =#{id}
     </select>
 </mapper>
