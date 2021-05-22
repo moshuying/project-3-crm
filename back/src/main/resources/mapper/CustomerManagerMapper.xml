@@ -82,7 +82,7 @@
     <select id="queryAnalysis" resultType="com.msy.plus.entity.Analysis">
         select
         <if test="groupType == null or groupType == 1 or groupType == 0">
-            count(cm.id) as count,
+            count(cm.inputUser) as count,
             e.name as name
         </if>
         <if test="groupType != null and groupType > 1">
@@ -104,7 +104,7 @@
             and cm.inputTime between #{startTime} and #{endTime}
         </if>
         <if test="groupType == null or groupType == 1 or groupType == 0">
-            group by cm.id
+            group by e.name
         </if>
         <if test="groupType != null and groupType > 1">
             group by date_format(cm.inputTime,'%Y-%m')
