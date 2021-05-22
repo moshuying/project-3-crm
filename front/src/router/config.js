@@ -122,6 +122,11 @@ const options = {
               name:'客户资源池',
               component:()=>import('@/pages/customer/resource')
             },
+            {
+              path:'followHistory',
+              name:'跟进历史',
+              component:()=>import('@/pages/customer/followHistory')
+            },
           ]
         },
         {
