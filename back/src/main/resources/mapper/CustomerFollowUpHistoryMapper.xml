@@ -31,7 +31,7 @@
       <if test="startTime != null and startTime != ''">
         and cfuh.traceTime between #{startTime} and #{endTime}
       </if>
-      <if test="type != null and type != 0">
+      <if test="type != null and type != 9999999">
         and cfuh.type = #{type}
       </if>
   </select>
