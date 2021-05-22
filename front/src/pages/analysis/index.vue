@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-card>
-      <div>
+      <div style="width: 100%">
         <a-space class="operator">
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
@@ -26,7 +26,7 @@
                     :key="index"
                     :value="key"
                     v-for="(value,key,index) in groupType">
-                  {{value}}
+                  {{ value }}
                 </a-select-option>
               </a-select>
             </a-form-item>
@@ -34,6 +34,11 @@
               <a-button @click="query()" :loading="queryLoading">查询</a-button>
             </a-form-item>
           </a-form>
+        </a-space>
+      </div>
+        <a-space>
+          <a-button @click="showCharts()">柱状图</a-button>
+          <a-button @click="showChartsPie()">饼状图</a-button>
         </a-space>
         <a-table
             :columns="columns"
@@ -43,17 +48,22 @@
             @change="handleTableChange"
         >
         </a-table>
-      </div>
     </a-card>
-    <a-model>
-
-    </a-model>
+    <a-modal
+        :title="title"
+        @cancel="handleChartCancel"
+        width="100%"
+        centered
+        :footer="null"
+        :visible="chartsVisible">
+      <div :style="{width: '100%', height:'90vh' }" ref="chart" />
+    </a-modal>
   </div>
 </template>
 
 <script>
 import * as analysis from "@/services/analysis"
-
+import * as Echarts from "echarts"
 const groupType = {
   "1": '员工',
   "2": '年',
@@ -73,8 +83,10 @@ const columns = [
 export default {
   data() {
     return {
-      queryForm:this.$form.createForm(this, {name: 'coordinated'}),
-      queryLoading:false,
+      title:'',
+      chartsVisible:false,
+      queryForm: this.$form.createForm(this, {name: 'coordinated'}),
+      queryLoading: false,
       groupType,
       // table
       columns: columns,
@@ -85,26 +97,99 @@ export default {
     }
   },
   async mounted() {
-    this.queryForm.setFieldsValue({"groupType":"1"})
+    this.queryForm.setFieldsValue({"groupType": "1"})
+    this.query()
   },
   methods: {
-    query(){
-      this.queryLoading = true
-      this.queryForm.validateFields((err, values) => {
-        if (err) {
-          console.log("form error");
-          this.queryLoading = false
-          return;
-        }
-        if(values.rangeTime){
-          if(values.rangeTime.length!==0){
-            values.startTime=values.rangeTime[0].toDate().toISOString()
-            values.endTime=values.rangeTime[1].toDate().toISOString()
+    showCharts(){
+      this.chartsVisible = true
+      this.init()
+      this.title = "潜在客户报表-柱状图"
+    },
+    handleChartCancel(){
+      this.chartsVisible = false
+      Echarts.dispose(this.$refs.chart)
+      window.removeEventListener("resize",this.listenHandal,false)
+    },
+    showChartsPie(){
+      this.chartsVisible = true
+      this.init2()
+      this.title = "潜在客户报表-饼状图"
+    },
+    init2(){
+      this.$nextTick(async ()=>{
+        //2.初始化
+        this.chart = Echarts.init(this.$refs.chart);
+        const data =(await this.query(999999999)).data.list
+        //3.配置数据
+        let option = {
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            orient: 'vertical',
+            left: 'left',
+          },
+          series: [
+            {
+              name: '访问来源',
+              type: 'pie',
+              radius: '50%',
+              data: data.map(e=>({value:e.count,name:e.name})),
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+        };
+        // 4.传入数据
+        this.chart.setOption(option);
+        window.addEventListener('resize', this.listenHandal,false);
+      })
+    },
+    listenHandal(){
+        this.chart.resize();
+    },
+    init() {
+      this.$nextTick(async ()=>{
+        //2.初始化
+        this.chart = Echarts.init(this.$refs.chart);
+        const data =(await this.query(999999999)).data.list
+        //3.配置数据
+        let option = {
+          xAxis: { type: 'category', data: data.map(e=>e.name) }, //X轴
+          yAxis: { type: 'value' }, //Y轴
+          series: [{ data: data.map(e=>e.count), type: 'bar' }] //配置项
+        };
+        // 4.传入数据
+        this.chart.setOption(option);
+        window.addEventListener('resize', this.listenHandal,false);
+      })
+    },
+    async query(size) {
+      return new Promise((resolve) => {
+        this.queryLoading = true
+        this.queryForm.validateFields(async (err, values) => {
+          if (err) {
+            console.log("form error");
+            this.queryLoading = false
+            return;
           }
-          delete values.rangeTime
-        }
-        values.groupType = parseInt(values.groupType)
-        this.fetch({"page": 1, "size": 10,...values})
+          if (values.rangeTime) {
+            if (values.rangeTime.length !== 0) {
+              values.startTime = values.rangeTime[0].toDate().toISOString()
+              values.endTime = values.rangeTime[1].toDate().toISOString()
+            }
+            delete values.rangeTime
+          }
+          values.groupType = parseInt(values.groupType)
+          let res = await this.fetch({"page": 1, "size": size||10, ...values})
+          resolve(res)
+        })
       })
     },
     // table
@@ -117,9 +202,9 @@ export default {
         page: pagination.current,
       });
     },
-    fetch(params = {"page": 1, "size": 10}) {
+    async fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
-      analysis.list(params || {"page": 1, "size": 10}).then(({data}) => {
+      const {data} =await analysis.list(params || {"page": 1, "size": 10})
         const res = data.data
         const pagination = {...this.pagination};
         pagination.total = res.total
@@ -128,13 +213,17 @@ export default {
         this.pagination = pagination
         this.loading = false
         this.queryLoading = false
-      })
-    },
+      return data
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
+.ant-modal-content{
+  width: 100%;
+  height: 100%;
+}
 .search {
   margin-bottom: 54px;
 }
