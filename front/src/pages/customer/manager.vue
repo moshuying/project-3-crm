@@ -187,9 +187,7 @@
         </a-form-item>
         <a-form-item disabled label="跟进时间">
           <a-date-picker
-              @change="followTransTime"
               show-time
-              @ok="onOk"
               v-decorator="['tracetime', { rules: [{ required: true, message: '跟进时间'  }]}]"
               />
         </a-form-item><a-form-item disabled label="跟进内容">
@@ -556,12 +554,6 @@ export default {
         this.followForm.setFieldsValue({type:Object.keys(this.followType)[0]})
         this.followForm.setFieldsValue({traceresult:Object.keys(this.followTraceResult)[0]})
       })
-    },
-    followTransTime(date, dateString) {
-      console.log(date, dateString);
-    },
-    onOk(value) {
-      console.log('onOk: ', value);
     },
     // modal
     async showModal(title) {
