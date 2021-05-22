@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.msy.plus.mapper.CustomerManagerMapper">
-  <resultMap id="BaseResultMap" type="com.msy.plus.entity.CustomerManager">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="age" jdbcType="INTEGER" property="age" />
-    <result column="gender" jdbcType="INTEGER" property="gender" />
-    <result column="tel" jdbcType="VARCHAR" property="tel" />
-    <result column="qq" jdbcType="VARCHAR" property="qq" />
-    <result column="job" jdbcType="INTEGER" property="job" />
-    <result column="source" jdbcType="INTEGER" property="source" />
-    <result column="seller" jdbcType="INTEGER" property="seller" />
-    <result column="inputUser" jdbcType="INTEGER" property="inputuser" />
-    <result column="inputTime" jdbcType="TIMESTAMP" property="inputtime" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="positiveTime" jdbcType="TIMESTAMP" property="positivetime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.msy.plus.entity.CustomerManager">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="gender" jdbcType="INTEGER" property="gender"/>
+        <result column="tel" jdbcType="VARCHAR" property="tel"/>
+        <result column="qq" jdbcType="VARCHAR" property="qq"/>
+        <result column="job" jdbcType="INTEGER" property="job"/>
+        <result column="source" jdbcType="INTEGER" property="source"/>
+        <result column="seller" jdbcType="INTEGER" property="seller"/>
+        <result column="inputUser" jdbcType="INTEGER" property="inputuser"/>
+        <result column="inputTime" jdbcType="TIMESTAMP" property="inputtime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="positiveTime" jdbcType="TIMESTAMP" property="positivetime"/>
+    </resultMap>
     <select id="listAllWithDictionary" resultType="com.msy.plus.dto.CustomerManagerList">
         select c.id as id,
         c.name as name,
@@ -64,19 +64,50 @@
         </if>
     </select>
     <select id="getDetailById" resultType="com.msy.plus.entity.CustomerManager">
-        select c.id         as id,
-               c.name       as name,
-               c.gender     as gender,
-               c.tel        as tel,
-               c.qq         as qq,
-               c.job        as job,
-               c.source     as source,
-               c.seller     as seller,
-               if(ch.newSeller is null,c.inputUser,ch.newSeller) as inputUser
+        select c.id                                                as id,
+               c.name                                              as name,
+               c.gender                                            as gender,
+               c.tel                                               as tel,
+               c.qq                                                as qq,
+               c.job                                               as job,
+               c.source                                            as source,
+               c.seller                                            as seller,
+               if(ch.newSeller is null, c.inputUser, ch.newSeller) as inputUser
         from customer_manager as c
                  left join (select *
                             from (select * from customer_handover order by transTime desc Limit 10000) as chG
                             group by customerID) ch on ch.customerID = c.id
-        where c.id =#{id}
+        where c.id = #{id}
+    </select>
+    <select id="queryAnalysis" resultType="com.msy.plus.entity.Analysis">
+        select
+        <if test="groupType == null or groupType == 1 or groupType == 0">
+            count(cm.id) as count,
+            e.name as name
+        </if>
+        <if test="groupType != null and groupType > 1">
+            count(cm.inputTime) as count,
+        </if>
+        <if test="groupType != null and groupType == 2">
+            date_format(cm.inputTime,'%Y') as name
+        </if>
+        <if test="groupType != null and groupType == 3">
+            date_format(cm.inputTime,'%Y-%m') as name
+        </if>
+        <if test="groupType != null and groupType == 4">
+            date_format(cm.inputTime,'%Y-%m-%d') as name
+        </if>
+        from customer_manager as cm
+        left join employee e on cm.inputUser = e.id
+        where e.name like concat('%',#{name},'%')
+        <if test="startTime != null and endTime != null">
+            and cm.inputTime between #{startTime} and #{endTime}
+        </if>
+        <if test="groupType == null or groupType == 1 or groupType == 0">
+            group by cm.id
+        </if>
+        <if test="groupType != null and groupType > 1">
+            group by date_format(cm.inputTime,'%Y-%m')
+        </if>
     </select>
 </mapper>
