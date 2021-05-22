@@ -19,7 +19,7 @@ export async function login(name, password) {
  * @returns {Promise<AxiosResponse<T>>}
  */
 export async function logoutRequest() {
-  return request(LOGIN, METHOD.DELETE)
+  return request(LOGIN+'name='+JSON.parse(localStorage.getItem("admin.roles"))[0]["id"], METHOD.DELETE,)
 }
 
 export async function getRoutesConfig() {

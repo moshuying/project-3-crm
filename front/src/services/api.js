@@ -19,4 +19,5 @@ module.exports = {
   CUSTOMER_MANAGER:`${BASE_URL}/customer/manager`, // method CRUD
   CUSTOMER_HANDOVER:`${BASE_URL}/customer/handover`, // method CRUD
   CUSTOMER_FOLLOW_UP_HISTORY:`${BASE_URL}/customer/follow/up/history`, // method CRUD
+  ANALYSIS:`${BASE_URL}/analysis`, // method CRUD
 }
