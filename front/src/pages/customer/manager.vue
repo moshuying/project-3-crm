@@ -509,7 +509,7 @@ export default {
       this.handoverForm.setFieldsValue({customerid:data.data["id"]})
       this.handoverForm.setFieldsValue({name:data.data["name"]})
     },
-    // 移交
+    // 跟进
     handleFollowCancel(){
       this.followVisible = false;
       this.followConfirmLoading = false
@@ -529,13 +529,13 @@ export default {
           this.followConfirmLoading = false;
           if (data.code !== 200) {
             this.$notification['error']({
-              message: this.title + '跟进记录出现错误',
+              message: '跟进记录出现错误',
               description: '建议检查网络连接或重新登陆',
             });
           }else{
             this.$notification.success({
-              message: this.title + '成功',
-              description: this.title + '跟进记录成功',
+              message: '成功',
+              description: '跟进记录成功',
             });
           }
           this.followVisible = false

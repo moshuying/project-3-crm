@@ -34,5 +34,6 @@
       <if test="type != null and type != 9999999">
         and cfuh.type = #{type}
       </if>
+      order by cfuh.traceTime desc
   </select>
 </mapper>
