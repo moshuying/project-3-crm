@@ -20,6 +20,21 @@
                   @ok="onOk"
               />
             </a-form-item>
+            <a-form-item label="跟进类型">
+              <a-select
+                  style="width: 8rem"
+                  v-decorator="['type', { rules: [{ required: false}] }]">
+                <a-select-option :value="9999999">
+                  全部
+                </a-select-option>
+                <a-select-option
+                    :key="index"
+                    :value="key"
+                    v-for="(value,key,index) in cfuhType">
+                  {{value}}
+                </a-select-option>
+              </a-select>
+            </a-form-item>
             <a-form-item>
               <a-button @click="query()" :loading="queryLoading">查询</a-button>
             </a-form-item>
@@ -76,6 +91,7 @@
 import * as customerFollowUpHistory from "@/services/customerFollowUpHistory"
 import * as employee from "@/services/employee"
 import * as dictionaryDetails from "@/services/dictionaryDetails";
+import moment from "moment";
 
 const columns = [
   {
@@ -89,6 +105,7 @@ const columns = [
   {
     title: '跟进日期',
     dataIndex: 'tracetime',
+    customRender:(text)=>moment(text).format("YYYY-MM-DD")
   },
   {
     title: '跟进内容',
@@ -122,7 +139,7 @@ export default {
     return {
       queryForm:this.$form.createForm(this, {name: 'coordinated'}),
       queryLoading:false,
-
+      cfuhType:customerFollowUpHistory.type,
       // table
       columns: columns,
       dataSource: [],
@@ -149,6 +166,7 @@ export default {
     this.employeeList = employeeData.data.data.list
 
     await this.query()
+    this.queryForm.setFieldsValue({"type":9999999})
   },
   methods: {
     query(){
