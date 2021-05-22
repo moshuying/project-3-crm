@@ -292,15 +292,10 @@ export default {
       })
     },
     handleChange(targetKeys) {
-      // console.log(targetKeys, direction, moveKeys);
       this.targetKeys = targetKeys;
-      console.log(this.targetKeys,this.permissionList)
     },
     handleSelectChange(sourceSelectedKeys, targetSelectedKeys) {
       this.selectedKeys = [...sourceSelectedKeys, ...targetSelectedKeys];
-
-      console.log('sourceSelectedKeys: ', sourceSelectedKeys);
-      console.log('targetSelectedKeys: ', targetSelectedKeys);
     },
     getRowSelection({disabled, selectedKeys, itemSelectAll, itemSelect}) {
       return {

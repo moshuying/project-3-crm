@@ -480,7 +480,6 @@ export default {
           const find = this.roleIds.find(e=>roleIds[i]===(e.id+""))
           this.targetKeys.push(find.key)
         }
-        console.log(this.targetKeys)
       })
     },
     // modal

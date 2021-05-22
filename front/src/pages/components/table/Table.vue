@@ -131,7 +131,6 @@
         })
       },
       onSearch(conditions, searchOptions) {
-        console.log(searchOptions)
         this.page = 1
         this.conditions = conditions
         this.getGoodList()

@@ -16,8 +16,6 @@
                   v-decorator="['rangeTime', { rules: [{ required: false}] }]"
                   format="YYYY/MM/DD HH:mm:ss"
                   :placeholder="['开始时间', '结束时间']"
-                  @change="onChange"
-                  @ok="onOk"
               />
             </a-form-item>
             <a-form-item label="跟进类型">
@@ -72,9 +70,7 @@
         </a-form-item>
         <a-form-item disabled label="跟进时间">
           <a-date-picker
-              @change="followTransTime"
               show-time
-              @ok="onOk"
               v-decorator="['tracetime', { rules: [{ required: true, message: '跟进时间'  }]}]"
           />
         </a-form-item><a-form-item disabled label="跟进内容">
@@ -217,7 +213,6 @@ export default {
           this.queryLoading = false
           return;
         }
-        console.log(values)
         if(values.rangeTime){
           if(values.rangeTime.length!==0){
             values.startTime=values.rangeTime[0].toDate().toISOString()
@@ -315,17 +310,7 @@ export default {
         this.followForm.setFieldsValue({type:Object.keys(this.followType)[0]})
         this.followForm.setFieldsValue({traceresult:Object.keys(this.followTraceResult)[0]})
       })
-    },
-    followTransTime(date, dateString) {
-      console.log(date, dateString);
-    },
-    onChange(value, dateString) {
-      console.log('Selected Time: ', value);
-      console.log('Formatted Selected Time: ', dateString);
-    },
-    onOk(value) {
-      console.log('onOk: ', value);
-    },
+    }
   }
 }
 </script>
