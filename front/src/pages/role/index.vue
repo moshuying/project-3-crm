@@ -52,7 +52,7 @@
         </a-form-item>
         <a-form-item label="角色权限">
           <a-transfer
-              v-decorator="['permissions',{ rules: [{ required: false }] },]"
+              v-decorator="['permissions',{ rules: [{ required: true }] },]"
               :operations="['加入权限', '移除权限']"
               :data-source="permissionList"
               :target-keys="targetKeys"
@@ -238,11 +238,11 @@ export default {
       this.targetKeys = []
       await this.getAllPermissionList()
     },
-    handleOk() {
+    async handleOk() {
       this.confirmLoading = true;
-      this.form.validateFields((err, values) => {
+      this.form.validateFields(async (err, values) => {
         if (err) {
-          console.log("form error");
+          this.confirmLoading = false;
           return;
         }
         let method = 'add';
@@ -259,24 +259,24 @@ export default {
           }
           values.permissions = arr
         }
-        role[method](values).then(({data}) => {
-          this.confirmLoading = false;
-          if (data.code !== 200) {
-            this.$notification['error']({
-              message: this.title + '角色信息出现错误',
-              description: '建议检查网络连接或重新登陆',
-            });
-          }else{
-            this.$notification.success({
-              message: this.title + '成功',
-              description: this.title + '角色信息成功',
-            });
-          }
+        const {data} = await role[method](values)
+        console.log(data)
+        this.confirmLoading = false;
+        if (data["code"] !== 200) {
+          this.$notification['error']({
+            message: this.title + '角色信息出现错误',
+            description: data.message || '建议检查网络连接或重新登陆',
+          });
+        } else {
+          this.$notification.success({
+            message: this.title + '成功',
+            description: this.title + '角色信息成功',
+          });
           this.visible = false
           this.form.resetFields()
           this.getAllPermissionList()
           this.fetch({"page": this.pagination.current, "size": 10})
-        })
+        }
       });
     },
     handleCancel() {

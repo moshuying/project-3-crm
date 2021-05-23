@@ -96,7 +96,7 @@ logging:
 # Json web token
 jwt:
   # 过期时间（分钟）
-  expire-time: 30m
+  expire-time: 300m
   # claim 权限 key
   claim-key-auth: auth
   # 请求头或请求参数的 key
