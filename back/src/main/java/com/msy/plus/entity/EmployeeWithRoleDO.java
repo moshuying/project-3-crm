@@ -14,5 +14,5 @@ import java.util.List;
 @ToString
 public class EmployeeWithRoleDO extends Employee{
     private String departmentName;
-    List<String> roleNames;
+    String roleNames;
 }

@@ -31,28 +31,28 @@ import Cookie from 'js-cookie'
 //   }
 // }
 //
-// const resp403 = {
-//   onFulfilled(response, options) {
-//     const {message} = options
-//     if (response.code === 403) {
-//       message.error('请求被拒绝')
-//     }
-//     return response
-//   },
-//   onRejected(error, options) {
-//     const {message} = options
-//     const {response} = error
-//     if (response.status === 403) {
-//       message.error('请求被拒绝')
-//     }
-//     return Promise.reject(error)
-//   }
-// }
+const resp403 = {
+  onFulfilled(response, options) {
+    const {message} = options
+    if (response.code === 1000) {
+      message.error('没有权限访问！')
+    }
+    return response
+  },
+  onRejected(error, options) {
+    const {message} = options
+    const {response} = error
+    if (response.status === 403) {
+      message.error('请求被拒绝！没有权限访问！')
+    }
+    return Promise.reject(error)
+  }
+}
 const resp500 = {
   onFulfilled(response, options) {
     const {message} = options
     if (response.code === 500) {
-      message.error('服务器错误1')
+      message.error('服务器错误')
     }
     return response
   },
@@ -60,7 +60,7 @@ const resp500 = {
     const {message} = options
     const {response} = error
     if (response.status === 500) {
-      message.error('服务器错误2')
+      message.error('服务器错误')
     }
     return Promise.reject(error)
   }
@@ -96,5 +96,5 @@ const reqCommon = {
 
 export default {
   request: [reqCommon], // 请求拦截
-  response: [resp500] // 响应拦截
+  response: [resp500,resp403] // 响应拦截
 }

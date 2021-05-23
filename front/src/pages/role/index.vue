@@ -52,7 +52,7 @@
         </a-form-item>
         <a-form-item label="角色权限">
           <a-transfer
-              v-decorator="['permissions',{ rules: [{ required: true }] },]"
+              v-decorator="['permissions',{ rules: [{ required: this.title==='新增' }] },]"
               :operations="['加入权限', '移除权限']"
               :data-source="permissionList"
               :target-keys="targetKeys"
