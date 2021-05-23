@@ -15,7 +15,7 @@
     from dictionary_details as d
     where d.parentId = #{id}
     <if test="keyword != null and keyword != '' ">
-      (d.sequence like concat('%', #{keyword}, '%')
+      and (d.sequence like concat('%', #{keyword}, '%')
       or d.title like concat('%', #{keyword}, '%'))
     </if>
   </select>
