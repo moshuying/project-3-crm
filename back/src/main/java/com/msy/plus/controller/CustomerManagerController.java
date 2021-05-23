@@ -1,5 +1,6 @@
 package com.msy.plus.controller;
 
+import com.msy.plus.core.jwt.JwtUtil;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.dto.CustomerManagerList;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author MoShuYing
@@ -27,12 +29,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer/manager")
 public class CustomerManagerController {
-    @Resource
-    private CustomerManagerService customerManagerService;
+    @Resource private CustomerManagerService customerManagerService;
+    @Resource private JwtUtil jwtUtil;
 
     @Operation(description = "客户管理添加")
     @PostMapping
-    public Result add(@RequestBody CustomerManager customerManager) {
+    public Result add(@RequestBody CustomerManager customerManager,@RequestHeader Map<String, String> headers) {
+        if(customerManager.getId()!=null){
+            customerManager.setId(null);
+        }
+        String header = jwtUtil.getJwtProperties().getHeader();
+        String id= jwtUtil.getId(headers.get(header)).get();
+        customerManager.setInputuser(Integer.valueOf(id));
+        customerManager.setSeller(Integer.valueOf(id));
         customerManagerService.save(customerManager);
         return ResultGenerator.genOkResult();
     }
