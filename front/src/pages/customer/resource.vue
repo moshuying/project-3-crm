@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,validator:validators.length({min:1,max:120})}] }]"
                   placeholder="请输入姓名/电话"
               />
             </a-form-item>
@@ -22,6 +22,7 @@
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
+            :scroll="{ x: 1500, y: 300 }"
         >
            <span slot="action" slot-scope="text">
 <!--             <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id)" >编辑</a-button>-->
@@ -236,6 +237,7 @@ import * as dictionaryDetails from "@/services/dictionaryDetails"
 import * as employee from "@/services/employee"
 import * as customerHandover from "@/services/customerHandover"
 import * as customerFollowUpHistory from "@/services/customerFollowUpHistory"
+import validators from "@/utils/validators";
 import moment from "moment";
 
 const statusMap = {
@@ -243,8 +245,11 @@ const statusMap = {
 }
 const baseColumns =[
   {
+    width:120,
     title: '姓名',
     dataIndex: 'name',
+    ellipsis: true,
+    fixed: 'left'
   },
   {
     title: '年龄',
@@ -266,16 +271,21 @@ const baseColumns =[
   {
     title: '职业',
     dataIndex: 'job',
+    ellipsis: true,
   },
   {
+    width:60,
     title: '来源',
     dataIndex: 'source',
+    ellipsis: true,
   }
 ]
 const columns = [
   {
+    width:60,
     title: '编号',
-    dataIndex: 'id'
+    dataIndex: 'id',
+    fixed: 'left'
   },
   ...baseColumns,
   {
@@ -288,14 +298,17 @@ const columns = [
     customRender:(text)=>statusMap[parseInt(text)]
   },
   {
+    width:220,
     title: '操作',
-    scopedSlots: {customRender: 'action'}
+    scopedSlots: {customRender: 'action'},
+    fixed: 'right'
   }
 ]
 export default {
   name: 'Department',
   data() {
     return {
+      validators,
       queryForm:this.$form.createForm(this, {name: 'coordinated'}),
       queryLoading:false,
       statusMap,
@@ -574,6 +587,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (err) {
           console.log("form error");
+          this.confirmLoading = true;
           return;
         }
         let method = 'add';

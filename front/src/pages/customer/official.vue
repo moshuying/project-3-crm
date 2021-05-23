@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,validator:validators.length({min:1,max:120})}] }]"
                   placeholder="请输入姓名/电话"
               />
             </a-form-item>
@@ -34,6 +34,7 @@
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
+            :scroll="{ x: 1500, y: 300 }"
         >
            <span slot="action" slot-scope="text">
              <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id)" >编辑</a-button>
@@ -79,6 +80,19 @@
                 {{list.title}}
               </a-select-option>
             </a-select>
+            <a-input-number v-else-if="item.dataIndex==='age'" :min="0" :max="200" v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]" />
+            <a-input v-else-if="item.dataIndex==='name'"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,validator:validators.length({min:1,max:20})  }]}]"
+                     :placeholder="`请输入`+item.title"
+            />
+            <a-input v-else-if="item.dataIndex==='tel'"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,validator:validators.phone()  }]}]"
+                     :placeholder="`请输入`+item.title"
+            />
+            <a-input v-else-if="item.dataIndex==='qq'"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,validator:validators.qq()  }]}]"
+                     :placeholder="`请输入`+item.title"
+            />
             <a-input v-else
                      v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]"
                      :placeholder="`请输入`+item.title"
@@ -112,7 +126,7 @@
             <a-select-option
                 :value="key"
                 :key="index"
-                v-for="(value,key,index) in statusMap">
+                v-for="(value,key,index) in cmStatusMap">
               {{value}}
             </a-select-option>
           </a-select>
@@ -246,6 +260,7 @@ import * as dictionaryDetails from "@/services/dictionaryDetails"
 import * as employee from "@/services/employee"
 import * as customerHandover from "@/services/customerHandover"
 import * as customerFollowUpHistory from "@/services/customerFollowUpHistory"
+import validators from "@/utils/validators";
 import moment from "moment";
 
 const queryAll = "9999999"
@@ -256,8 +271,11 @@ const statusMap = {
 }
 const baseColumns =[
   {
+    width:120,
     title: '姓名',
     dataIndex: 'name',
+    ellipsis: true,
+    fixed: 'left'
   },
   {
     title: '年龄',
@@ -279,36 +297,47 @@ const baseColumns =[
   {
     title: '职业',
     dataIndex: 'job',
+    ellipsis: true,
   },
   {
+    width:60,
     title: '来源',
     dataIndex: 'source',
+    ellipsis: true,
   }
 ]
 const columns = [
   {
+    width:60,
     title: '编号',
-    dataIndex: 'id'
+    dataIndex: 'id',
+    fixed: 'left'
   },
   ...baseColumns,
   {
+    width: 120,
     title: '营销人员',
     dataIndex: 'inputuser'
   },
   {
     title: '状态',
+    width: 140,
     dataIndex: 'status',
-    customRender:(text)=>statusMap[parseInt(text)]
+    customRender:(text)=>customerManager.statusMap[parseInt(text)]
   },
   {
+    width:380,
     title: '操作',
-    scopedSlots: {customRender: 'action'}
+    scopedSlots: {customRender: 'action'},
+    fixed: 'right'
   }
 ]
 export default {
   name: 'Department',
   data() {
     return {
+      validators,
+      cmStatusMap:customerManager.statusMap,
       queryForm:this.$form.createForm(this, {name: 'coordinated'}),
       queryLoading:false,
       statusMap,
@@ -583,6 +612,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (err) {
           console.log("form error");
+          this.confirmLoading = true;
           return;
         }
         let method = 'add';

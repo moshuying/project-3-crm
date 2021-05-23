@@ -40,12 +40,12 @@
         </a-form-item>
         <a-form-item label="权限名称">
           <a-input
-              v-decorator="['name', { rules: [{ required: true, message: '请输入权限名称' }] }]"
+              v-decorator="['name', { rules: [{ required: true,validator:validators.length({min:1,max:15}) }] }]"
           />
         </a-form-item>
         <a-form-item label="权限编号">
           <a-input
-              v-decorator="['expression',{ rules: [{ required: true, message: '请输入权限编号' }] },]"
+              v-decorator="['expression',{ rules: [{ required: true,validator:validators.length({min:1,max:30}) }] },]"
               placeholder="请输入权限编号"
           />
         </a-form-item>
@@ -56,7 +56,7 @@
 
 <script>
 import * as permission from "@/services/permission"
-
+import validators from "@/utils/validators";
 const columns = [
   {
     title: '编号',
@@ -65,10 +65,12 @@ const columns = [
   {
     title: '权限名称',
     dataIndex: 'name',
+    ellipsis: true,
   },
   {
     title: '权限表达式',
     dataIndex: 'expression',
+    ellipsis: true,
   },
   {
     title: '操作',
@@ -79,6 +81,7 @@ export default {
   name: 'Department',
   data() {
     return {
+      validators,
       // table
       columns: columns,
       dataSource: [],
@@ -156,8 +159,8 @@ export default {
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
-
         if (err) {
+          this.confirmLoading = true;
           console.log("form error");
           return;
         }

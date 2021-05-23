@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,validator:validators.length({min:0,max:120})}] }]"
                   placeholder="请输入姓名/邮箱"
               />
             </a-form-item>
@@ -43,18 +43,18 @@
         </a-form-item>
         <a-form-item label="数据字典名称">
           <a-input
-              v-decorator="['title', { rules: [{ required: true, message: '请输入数据字典名称' }] }]"
+              v-decorator="['title', { rules: [{ required: true, validator:validators.length({min:1,max:15}) }] }]"
           />
         </a-form-item>
         <a-form-item label="数据字典编号">
           <a-input
-              v-decorator="['sn',{ rules: [{ required: true, message: '请输入数据字典编号' }] },]"
+              v-decorator="['sn',{ rules: [{ required: true, validator:validators.length({min:1,max:50}) }] },]"
               placeholder="请输入数据字典编号"
           />
         </a-form-item>
         <a-form-item label="数据字典简介">
           <a-input
-              v-decorator="['intro',{ rules: [{ required: true, message: '请输入数据字典简介' }] },]"
+              v-decorator="['intro',{ rules: [{ required: true, validator:validators.length({min:3,max:100}) }] },]"
               placeholder="请输入数据字典简介"
           />
         </a-form-item>
@@ -65,7 +65,7 @@
 
 <script>
 import * as dictionaryContents from "@/services/dictionaryContents"
-
+import validators from "@/utils/validators";
 const columns = [
   {
     title: '编号',
@@ -74,14 +74,17 @@ const columns = [
   {
     title: '名称',
     dataIndex: 'title',
+    ellipsis: true,
   },
   {
     title: '编码',
     dataIndex: 'sn',
+    ellipsis: true,
   },
   {
     title: '简介',
     dataIndex: 'intro',
+    ellipsis: true,
   },
   {
     title: '操作',
@@ -91,6 +94,7 @@ const columns = [
 export default {
   data() {
     return {
+      validators,
       queryForm:this.$form.createForm(this, {name: 'coordinated'}),
       queryLoading:false,
       // table
@@ -115,10 +119,11 @@ export default {
       this.queryLoading = true
       this.queryForm.validateFields((err, values) => {
         if (err) {
+          this.queryLoading = false
           console.log("form error");
           return;
         }
-        this.fetch({"page": 1, "size": 10,...values})
+        this.fetch({"page": this.pagination.current, "size": 10,...values})
       })
     },
     // table
@@ -179,8 +184,8 @@ export default {
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
-
         if (err) {
+          this.confirmLoading = true;
           console.log("form error");
           return;
         }
@@ -201,7 +206,7 @@ export default {
             });
           }
           this.visible = false
-          this.fetch({"page": this.pagination.current, "size": 10})
+          this.query()
         })
       });
     },

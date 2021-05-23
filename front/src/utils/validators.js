@@ -32,6 +32,26 @@ const validators = {
             }
         }
     },
+    phone(){
+        return function(rule, value,callback){
+            let reg = /(13\d|14[579]|15[^4\D]|17[^49\D]|18\d)\d{8}/
+            const msg = "您输入的手机号不正确"
+            if(!reg.test(value)){
+                if(!callback)return msg;
+                callback(msg)
+            }
+        }
+    },
+    qq(){
+        return function(rule, value,callback){
+            let reg = /^[1-9][0-9]{4,9}$/gim
+            const msg = "您输入的QQ号不正确"
+            if(!reg.test(value)){
+                if(!callback)return msg;
+                callback(msg)
+            }
+        }
+    },
     install:function(Vue) {
         Vue.prototype.validators = validators;
     }

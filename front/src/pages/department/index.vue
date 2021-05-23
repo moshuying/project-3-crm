@@ -40,12 +40,12 @@
         </a-form-item>
         <a-form-item label="部门名称">
           <a-input
-              v-decorator="['name', { rules: [{ required: true, message: '请输入部门名称' }] }]"
+              v-decorator="['name', { rules: [{ required: true, validator:validators.length({min:1,max:15}) }] }]"
           />
         </a-form-item>
         <a-form-item label="部门编号">
           <a-input
-              v-decorator="['sn',{ rules: [{ required: true, message: '请输入部门编号' }] },]"
+              v-decorator="['sn',{ rules: [{ required: true, validator:validators.length({min:1,max:50}) }] },]"
               placeholder="请输入部门编号"
           />
         </a-form-item>
@@ -56,7 +56,7 @@
 
 <script>
 import * as department from "@/services/department"
-
+import validators from "@/utils/validators";
 const columns = [
   {
     title: '编号',
@@ -65,10 +65,12 @@ const columns = [
   {
     title: '部门名称',
     dataIndex: 'name',
+    ellipsis: true,
   },
   {
     title: '部门编号',
     dataIndex: 'sn',
+    ellipsis: true,
   },
   {
     title: '操作',
@@ -79,6 +81,7 @@ export default {
   name: 'Department',
   data() {
     return {
+      validators,
       // table
       columns: columns,
       dataSource: [],
@@ -156,9 +159,9 @@ export default {
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
-
         if (err) {
           console.log("form error");
+          this.confirmLoading = true;
           return;
         }
         let method = 'add';

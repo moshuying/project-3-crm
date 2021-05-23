@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,validator:validators.length({min:0,max:120})}] }]"
                   placeholder="请输入姓名/邮箱"
               />
             </a-form-item>
@@ -86,12 +86,12 @@
         </a-form-item>
         <a-form-item label="员工密码">
           <a-input
-              v-decorator="['password', { rules: [{ required: title==='新增', validators:validators.password() }] }]"
+              v-decorator="['password', { rules: [{ required: title==='新增', validator: title==='新增' && validators.password() }] }]"
           />
         </a-form-item>
         <a-form-item label="验证密码">
           <a-input
-              v-decorator="['rePassword', { rules: [{ required: title==='新增',validator:checkRePassword }] }]"
+              v-decorator="['rePassword', { rules: [{ required: title==='新增',validator: title==='新增' && checkRePassword }] }]"
           />
         </a-form-item>
         <a-form-item label="员工年龄">
@@ -104,7 +104,7 @@
         </a-form-item>
         <a-form-item label="员工email">
           <a-input
-              v-decorator="['email',{ rules: [{ required: true, validators:validators.email() }] }]"
+              v-decorator="['email',{ rules: [{ required: true, validator:validators.email() }] }]"
               placeholder="请输入员工email"
           />
         </a-form-item>
@@ -192,10 +192,12 @@ const columns = [
   {
     title: '名称',
     dataIndex: 'name',
+    ellipsis: true,
   },
   {
     title: 'email',
     dataIndex: 'email',
+    ellipsis: true,
   },
   {
     title: '年龄',
@@ -204,6 +206,7 @@ const columns = [
   {
     title: '部门',
     dataIndex: 'departmentName',
+    ellipsis: true,
   },
   {
     title: '角色',
@@ -243,7 +246,7 @@ export default {
       columns: columns,
       dataSource: [],
       selectedRows: [],
-      pagination: {},
+      pagination: {current:1},
       loading: false,
       // modal
       title: '新增',
@@ -273,7 +276,7 @@ export default {
   },
   mounted() {
     this.queryForm.setFieldsValue({"dept":0})
-    this.query()
+    this.fetch()// 这里不能query
   },
   methods: {
     // 上传
@@ -455,6 +458,7 @@ export default {
       this.queryLoading = true
       this.queryForm.validateFields((err, values) => {
         if (err) {
+          this.queryLoading = false
           console.log("form error");
           return;
         }
