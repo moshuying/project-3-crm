@@ -29,10 +29,6 @@ public class RoleDTO extends AbstractConverter<RoleDTO, RoleDO> implements Seria
   @Column(name = "sn")
   private String sn;
 
-  /** 角色权限 */
-  @Column(name = "permission")
-  private String permission;
-
   @Override
   protected RoleDTO setDTO() {
     return this;

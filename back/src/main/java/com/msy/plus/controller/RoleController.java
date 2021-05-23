@@ -13,6 +13,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,11 +36,16 @@ public class RoleController {
   @Operation(description = "角色添加")
   @PostMapping
   public Result add(@RequestBody final RoleWithPermissionDTO roleDTO) {
-    this.roleService.save(roleDTO);
+    if(roleDTO.getPermissions()==null){
+      return ResultGenerator.genFailedResult("尚未添加角色权限");
+    }
+    try{
+      this.roleService.save(roleDTO);
+    }catch (DuplicateKeyException e){
+      return ResultGenerator.genFailedResult("提交的信息中包含已存在的字段");
+    }
     List<Long> temp = new ArrayList<>();
-    roleDTO.getPermissions().forEach(e->{
-      temp.add(e.getId());
-    });
+    roleDTO.getPermissions().forEach(e->{ temp.add(e.getId()); });
     this.roleService.savePermissions(roleDTO.getId(),temp);
     return ResultGenerator.genOkResult();
   }
