@@ -42,6 +42,7 @@
           <a-upload :showUploadList="false" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload">
             <a-button> <a-icon type="upload" /> 导入数据</a-button>
           </a-upload>
+          <a-button icon="download" @click="downloadTemplate" type="link">导入模板</a-button>
         </a-space>
         <a-table
             :columns="columns"
@@ -80,34 +81,36 @@
         </a-form-item>
         <a-form-item label="员工名称">
           <a-input
-              v-decorator="['name', { rules: [{ required: true, message: '请输入员工名称' }] }]"
+              v-decorator="['name', { rules: [{ required: true,validator:validators.length({min:3,max:20})}] }]"
           />
         </a-form-item>
         <a-form-item label="员工密码">
           <a-input
-              v-decorator="['password', { rules: [{ required: true, message: '请输入员工密码' }] }]"
+              v-decorator="['password', { rules: [{ required: title==='新增', validators:validators.password() }] }]"
           />
         </a-form-item>
         <a-form-item label="验证密码">
           <a-input
-              v-decorator="['rePassword', { rules: [{ required: true,validator:checkRePassword }] }]"
+              v-decorator="['rePassword', { rules: [{ required: title==='新增',validator:checkRePassword }] }]"
           />
         </a-form-item>
         <a-form-item label="员工年龄">
           <a-input-number
+              :max="200"
+              :min="1"
               v-decorator="['age',{ rules: [{ required: true, message: '请输入员工年龄' }] }]"
               placeholder="请输入员工年龄"
           />
         </a-form-item>
         <a-form-item label="员工email">
           <a-input
-              v-decorator="['email',{ rules: [{ required: true, message: '请输入员工email' }] }]"
+              v-decorator="['email',{ rules: [{ required: true, validators:validators.email() }] }]"
               placeholder="请输入员工email"
           />
         </a-form-item>
         <a-form-item label="员工部门">
           <a-select
-              v-decorator="['dept',{ rules: [{ required: true, message: '员工部门' }] }]">
+              v-decorator="['dept',{ rules: [{ required: true, message: '请输入员工部门' }] }]">
             <a-select-option
                 :value="item.id"
                 :key="item.id"
@@ -179,6 +182,7 @@ import * as role from "@/services/role"
 import * as department from "@/services/department"
 import difference from 'lodash/difference';
 import * as XLSX from 'xlsx'
+import validators from "@/utils/validators";
 
 const columns = [
   {
@@ -204,7 +208,7 @@ const columns = [
   {
     title: '角色',
     dataIndex: 'roleNames',
-    customRender:(text)=>text.toString(',')
+    ellipsis: true,
   },
   {
     title: '操作',
@@ -225,6 +229,7 @@ export default {
   name: 'Department',
   data() {
     return {
+      validators,
       // 上传
       fileList: [],
       uploading: false,
@@ -261,7 +266,6 @@ export default {
     deleteRecord: 'delete'
   },
   created() {
-    this.fetch()
     department.list({"page": 1, "size": 99999}).then(({data})=>{
       this.departmentNames = data.data.list.map((e,i)=>({key:i+'',...e}))
     })
@@ -269,6 +273,7 @@ export default {
   },
   mounted() {
     this.queryForm.setFieldsValue({"dept":0})
+    this.query()
   },
   methods: {
     // 上传
@@ -293,18 +298,19 @@ export default {
           const ws = wb.Sheets[wsname];
           /* Convert array of arrays */
           const data = XLSX.utils.sheet_to_json(ws, {header:1});
-          if(data[0].length!==5){
-            resolve("数据字段长度不合法，请下载模板后导入！")
+          const sLen =6
+          if(data[0].length!==sLen){
+            resolve("数据内容不合法，请先导出数据当作模板！")
           }
           for(let i=1;i<data.length;i++){
             for(let j=0;j<data[i].length;j++){
-              if(data[i].length!==5){
+              if(data[i].length!==sLen){
                 resolve(`第${i}行数据内容不足！`)
                 break;
               }
               const booleanCheck = Object.prototype.toString.call(data[i][j])
               if(data[i][j]==='' || booleanCheck === 'Null' || booleanCheck === '[object Undefined]'){
-                resolve(`第${i}行${j}列数据内容不合法！`)
+                resolve(`第${i+1}行${j+1}列数据内容不合法！`)
               }
             }
           }
@@ -313,22 +319,43 @@ export default {
           for(let i=1;i<data.length;i++){
             const obj = {}
             for(let k=0;k<data[i].length;k++){
+              const value = data[i][k].trim()
               if(data[0][k]==='角色') {
                 const roleIds = this.roleIds
-                obj.roleIds = data[i][k].split(',').map(name=>{
-                  return roleIds.find(e=>e.name===name).id
+                const roles = value.split(',')
+                const find=[]
+                roles.forEach(name => {
+                  const r = roleIds.find(e => e.name === name)
+                  if (r) {
+                    find.push(r.id)
+                  }else {
+                    resolve(`第${i+1}行${k+1}列数据内容不合法！无法找到此角色！请校验数据并刷新页面后重新导入！`)
+                  }
                 })
+                obj.roleIds = find
               }else if(data[0][k]==='部门'){
-                const find =this.departmentNames.find(e=>e.name===data[i][k])
+                const find =this.departmentNames.find(e=>e.name===value)
                 if('[object Undefined]' === Object.prototype.toString.call(find)){
-                  resolve(`第${i}行${k}列数据内容不合法！无法找到此部门！`)
+                  resolve(`第${i+1}行${k+1}列数据内容不合法！无法找到此部门！请校验数据并刷新页面后重新导入！`)
                 }
                 obj.dept = find.id
+              }else if(data[0][k]==='密码'){
+                const msg = validators.password()(null,value)
+                if(msg){
+                  resolve(`第${i+1}行${k+1}列数据内容不合法!${msg}`)
+                }
+                obj.password = value
+              }else if(data[0][k]==='密码'){
+                const msg = validators.email()(null,value)
+                if(msg){
+                  resolve(`第${i+1}行${k+1}列数据内容不合法!${msg}`)
+                }
+                obj.password = value
               }else {
                 switch (data[0][k]){
-                  case '名称':obj.name = data[i][k];break;
-                  case '年龄':obj.age = data[i][k] ;break;
-                  case 'Email': obj.email = data[i][k];break;
+                  case '名称':obj.name = value;break;
+                  case '年龄':obj.age = value ;break;
+                  case 'Email': obj.email = value;break;
                 }
               }
             }
@@ -343,17 +370,17 @@ export default {
           description: '建议检查您所上传的文件内容',
         })
       }else{
-        Promise
-            .all(res.map(e => new Promise((resolve, reject) => employee.add(e).then(({data}) => {
-              data.code === 200 ? resolve() : reject()
-            }))))
-            .then(() => {
-              this.$notification.success({message: "导入成功"})
-            })
-            .catch(() => {
-              this.$notification.error({message: "导入失败", description: "请检查您的网络，不建议一次上传过多内容"})
-            })
+        for(let i=0;i<res.length;i++){
+          const {data} = await employee.add(res[i])
+          if(data.code!==200){
+            this.$notification.error({message: `第${i+1}条信息导入失败`, description: data.message||"请检查您的网络，不建议一次上传过多内容"})
+            break;
+          }else{
+            this.$notification.success({message: "导入成功"})
+          }
+        }
       }
+      this.query()
       return false;
     },
     // excel
@@ -368,7 +395,7 @@ export default {
           const res = list.map(e=>({
             '部门':e.departmentName,
             '名称':e.name,
-            '角色':e.roleNames.toString(','),
+            '角色':e.roleNames,
             '年龄':e.age,
             'Email':e.email
           }))
@@ -377,9 +404,27 @@ export default {
           const wb = XLSX.utils.book_new();
           XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
           /* generate file and send to client */
-          XLSX.writeFile(wb, (new Date()).toLocaleString().replaceAll('/','_')+"_员工信息.xlsx");
+          XLSX.writeFile(wb, "员工信息.xlsx");
         })
       })
+    },
+    downloadTemplate(){
+      const res = [
+        {
+          '部门':'test部门',
+          '名称':'test名称',
+          '角色':'test角色',
+          '密码':'testPassword',
+          '年龄':'18',
+          'Email':'c@c.c'
+        }
+      ]
+      /* convert state to workbook */
+      const ws = XLSX.utils.json_to_sheet(res);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
+      /* generate file and send to client */
+      XLSX.writeFile(wb, "员工信息模板.xlsx");
     },
     onSelectChange(selectedRowKeys,selectedRows) {
       this.outSelectedRowKeys = selectedRowKeys;
@@ -413,7 +458,7 @@ export default {
           console.log("form error");
           return;
         }
-        this.fetch({"page": 1, "size": 10,...values})
+        this.fetch({"page": this.pagination.current, "size": 10,...values})
       })
     },
     // table
@@ -423,10 +468,7 @@ export default {
       const pager = {...this.pagination};
       pager.current = pagination.current;
       this.pagination = pager;
-      this.fetch({
-        size: pagination.pageSize,
-        page: pagination.current,
-      });
+      this.query()
     },
     async fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
@@ -434,8 +476,10 @@ export default {
       const res = data.data
       const pagination = {...this.pagination};
       pagination.total = res.total
-      pagination.current = params.page
-      this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
+      pagination.current = res.pageNum
+      if(res.list){
+        this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
+      }
       this.pagination = pagination
       this.loading = false
       this.queryLoading=false
@@ -477,7 +521,7 @@ export default {
         const {roleIds} = data.data
         if (!roleIds) return;
         for(let i=0;i<roleIds.length;i++){
-          const find = this.roleIds.find(e=>roleIds[i]===(e.id+""))
+          const find = this.roleIds.find(e=>roleIds[i]==(e.id))
           this.targetKeys.push(find.key)
         }
       })
@@ -525,7 +569,7 @@ export default {
             });
             this.visible = false
           }
-          this.fetch({"page": this.pagination.current, "size": 10})
+          this.query()
         })
       });
     },

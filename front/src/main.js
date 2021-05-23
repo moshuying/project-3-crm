@@ -14,7 +14,6 @@ import 'moment/locale/zh-cn'
 
 const router = initRouter(store.state.setting.asyncRoutes)
 const i18n = initI18n('CN', 'US')
-
 Vue.use(Antd)
 Vue.config.productionTip = false
 Vue.use(Viser)

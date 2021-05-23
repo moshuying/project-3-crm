@@ -19,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Generated;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,16 @@ import java.util.List;
 * @author MoShuYing
 * @date 2021/05/15
 */
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize(
+        "hasAuthority('ADMIN') " +
+        "or hasAuthority('董事长') " +
+        "or hasAuthority('主席') " +
+        "or hasAuthority('高级主席') " +
+        "or hasAuthority('副主席') " +
+        "or hasAuthority('总裁') " +
+        "or hasAuthority('会长') " +
+        "or hasAuthority('高级总裁') " +
+        "or hasAuthority('高级副总裁')")
 @Api(tags={"员工接口"})
 @RestController
 @RequestMapping("/employee")
@@ -45,7 +55,7 @@ public class EmployeeController {
         if(employee.getDept() ==null){
             return ResultGenerator.genFailedResult("请填写员工部门信息");
         }
-        if(employee.getPassword().length()<=5){
+        if(employee.getPassword()!=null && employee.getPassword().length()<=5){
             return ResultGenerator.genFailedResult("密码长度不能少于或等于五位");
         }
         employee.setPassword(this.passwordEncoder.encode(employee.getPassword().trim()));
@@ -78,14 +88,19 @@ public class EmployeeController {
     @Operation(description = "员工更新")
     @PutMapping
     public Result update(@RequestBody EmployeeDetail employee) {
+        if(employee.getName().equals("ADMIN")){
+            return ResultGenerator.genFailedResult("禁止修改管理员角色！");
+        }
         // 更新员工基本信息
         if(employee.getDept() ==null){
             return ResultGenerator.genFailedResult("请填写员工部门信息");
         }
-        if(employee.getPassword().length()<=5){
-            return ResultGenerator.genFailedResult("密码长度不能少于或等于五位");
+        if(employee.getPassword()!=null){
+            if(employee.getPassword().length()<=5){
+                return ResultGenerator.genFailedResult("密码长度不能少于或等于五位");
+            }
+            employee.setPassword(this.passwordEncoder.encode(employee.getPassword().trim()));
         }
-        employee.setPassword(this.passwordEncoder.encode(employee.getPassword().trim()));
         try{
             employeeService.update((Employee) employee);
         }catch (Exception e){
@@ -146,18 +161,10 @@ public class EmployeeController {
     public Result list(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
-            @RequestParam(defaultValue = "0") Integer dept,
-            @RequestParam(defaultValue = "null") String keyword) {
-        Integer inDept = null;
-        if (!(dept == null || dept.equals("null"))) {
-            inDept = Integer.valueOf(dept);
-        }
-        String inKeyword = null;
-        if (!(keyword == null || keyword.equals("null"))) {
-            inKeyword = keyword;
-        }
+            @RequestParam(required = false) Integer dept,
+            @RequestParam(defaultValue = "") String keyword) {
         PageHelper.startPage(page, size);
-        List<EmployeeWithRoleDO> list = employeeService.listEmployeeWithRole(inKeyword, inDept);
+        List<EmployeeWithRoleDO> list = employeeService.listEmployeeWithRole(keyword, dept);
         PageInfo<EmployeeWithRoleDO> pageInfo = PageInfo.of(list);
         // 不显示 password 字段
         final PageInfo<JSONObject> objectPageInfo = JsonUtils.deleteFields(pageInfo, PageInfo.class, "password");

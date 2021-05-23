@@ -43,7 +43,8 @@ public class EmployeeServiceImpl extends AbstractService<Employee> implements Em
 
     @Override
     public List<EmployeeWithRoleDO> listEmployeeWithRole(String keyword,Integer dept){
-        return this.employeeMapper.listEmployeeWithRole(keyword,dept.intValue());
+        if(dept==null){ dept=0; }
+        return this.employeeMapper.listEmployeeWithRole(keyword,dept);
     }
 
     @Override

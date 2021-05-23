@@ -67,7 +67,7 @@ public class RoleController {
     // 更新用户基本信息
     this.roleService.update(roleWithPermissionDTO);
     List<Long> nowPermissions = new ArrayList<>();
-    if(nowPermissions==null){
+    if(roleWithPermissionDTO.getPermissions()==null){
       return ResultGenerator.genOkResult();
     }
 
