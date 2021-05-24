@@ -29,15 +29,33 @@ import java.util.List;
 * @date 2021/05/15
 */
 @PreAuthorize(
-        "hasAuthority('ADMIN') " +
-        "or hasAuthority('董事长') " +
-        "or hasAuthority('主席') " +
-        "or hasAuthority('高级主席') " +
-        "or hasAuthority('副主席') " +
-        "or hasAuthority('总裁') " +
-        "or hasAuthority('会长') " +
-        "or hasAuthority('高级总裁') " +
-        "or hasAuthority('高级副总裁')")
+        "hasAuthority('ADMIN')"+
+                "or hasAuthority('董事长')"+
+                "or hasAuthority('主席')"+
+                "or hasAuthority('高级主席')"+
+                "or hasAuthority('副主席')"+
+                "or hasAuthority('总裁')"+
+                "or hasAuthority('会长')"+
+                "or hasAuthority('高级总裁')"+
+                "or hasAuthority('高级副总裁')"+
+                "or hasAuthority('副总裁')"+
+                "or hasAuthority('总经理')"+
+                "or hasAuthority('副总经理')"+
+                "or hasAuthority('总监')"+
+                "or hasAuthority('经理')"+
+                "or hasAuthority('高级经理')"+
+                "or hasAuthority('副经理')"+
+                "or hasAuthority('主任')"+
+                "or hasAuthority('高级主任')"+
+                "or hasAuthority('副主任')"+
+                "or hasAuthority('组长')"+
+                "or hasAuthority('副组长')"+
+                "or hasAuthority('普通员工')"+
+                "or hasAuthority('人事专员')"+
+                "or hasAuthority('市场专员')"+
+                "or hasAuthority('市场主管')"+
+                "or hasAuthority('销售主管')"
+)
 @Api(tags={"员工接口"})
 @RestController
 @RequestMapping("/employee")

@@ -46,7 +46,7 @@
         </a-form-item>
         <a-form-item label="角色编号">
           <a-input
-              v-decorator="['sn',{ rules: [{ required: true,validator:validators.length({min:1,max:50})  }] },]"
+              v-decorator="['sn',{ rules: [{ required: true,min:1,max:30,message:'输入内容应在1到30位之间'  }] },]"
               placeholder="请输入角色编号"
           />
         </a-form-item>

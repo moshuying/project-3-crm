@@ -6,7 +6,7 @@ module.exports = {
     ['link', { rel: 'icon', href: '/favicon.ico' }]
   ],
   themeConfig: {
-    logo: '/logo.png',
+    logo: '/logo.jpg',
     repo: 'iczer/vue-antd-admin',
     docsDir: 'docs',
     editLinks: true,

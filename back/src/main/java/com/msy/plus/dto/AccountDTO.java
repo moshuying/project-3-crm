@@ -30,7 +30,7 @@ public class AccountDTO extends AbstractConverter<AccountDTO, AccountDO> impleme
 
   @Schema(name = "账户名", accessMode = Schema.AccessMode.READ_ONLY, example = "admin")
   @NotEmpty(message = "账户名不能为空")
-  @Size(min = 3, message = "账户名长度不能小于3")
+  @Size(min = 1, message = "账户名长度不能小于1")
   private String name;
 
   @Schema(name = "密码", example = "admin")

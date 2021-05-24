@@ -86,7 +86,7 @@
                      :placeholder="`请输入`+item.title"
             />
             <a-input v-else-if="item.dataIndex==='tel'"
-                     v-decorator="[item.dataIndex, { rules: [{ required: true,pattern:validators.passwordReg,message:validators.passwordMsg  }]}]"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,pattern:validators.phoneReg,message:validators.phoneMsg  }]}]"
                      :placeholder="`请输入`+item.title"
             />
             <a-input v-else-if="item.dataIndex==='qq'"

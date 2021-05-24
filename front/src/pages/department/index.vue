@@ -45,7 +45,7 @@
         </a-form-item>
         <a-form-item label="部门编号">
           <a-input
-              v-decorator="['sn',{ rules: [{ required: true, validator:validators.length({min:1,max:50}) }] },]"
+              v-decorator="['sn',{ rules: [{ required: true, min:1,max:30,message:'输入内容应在1到50位之间' }] },]"
               placeholder="请输入部门编号"
           />
         </a-form-item>

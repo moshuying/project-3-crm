@@ -46,12 +46,12 @@ public class CustomerFollowUpHistoryController {
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "客户跟进记录删除")
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    customerFollowUpHistoryService.deleteById(id);
-        return ResultGenerator.genOkResult();
-    }
+//    @Operation(description = "客户跟进记录删除")
+//    @DeleteMapping("/{id}")
+//    public Result delete(@PathVariable Long id) {
+//    customerFollowUpHistoryService.deleteById(id);
+//        return ResultGenerator.genOkResult();
+//    }
 
     @Operation(description = "客户跟进记录更新")
     @PutMapping

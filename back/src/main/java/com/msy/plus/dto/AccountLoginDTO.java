@@ -23,7 +23,7 @@ public class AccountLoginDTO extends AbstractConverter<AccountLoginDTO, AccountD
 
   @Schema(name = "账户名", example = "admin")
   @NotEmpty(message = "账户名不能为空")
-  @Size(min = 3, message = "账户名长度不能小于3")
+  @Size(min = 1, message = "账户名长度不能小于1")
   private String name;
 
   @Schema(name = "密码", example = "admin")

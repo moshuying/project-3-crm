@@ -28,13 +28,13 @@ import java.util.List;
 public class PermissionController {
     @Resource
     private PermissionService permissionService;
-
-    @Operation(description = "权限添加")
-    @PostMapping
-    public Result add(@RequestBody Permission permission) {
-        permissionService.save(permission);
-        return ResultGenerator.genOkResult();
-    }
+//
+//    @Operation(description = "权限添加")
+//    @PostMapping
+//    public Result add(@RequestBody Permission permission) {
+//        permissionService.save(permission);
+//        return ResultGenerator.genOkResult();
+//    }
 
     @Operation(description = "权限删除")
     @DeleteMapping("/{id}")
@@ -43,19 +43,19 @@ public class PermissionController {
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "权限更新")
-    @PutMapping
-    public Result update(@RequestBody Permission permission) {
-    permissionService.update(permission);
-        return ResultGenerator.genOkResult();
-    }
+//    @Operation(description = "权限更新")
+//    @PutMapping
+//    public Result update(@RequestBody Permission permission) {
+//    permissionService.update(permission);
+//        return ResultGenerator.genOkResult();
+//    }
 
-    @Operation(description = "权限获取详细信息")
-    @GetMapping("/{id}")
-    public Result detail(@PathVariable Long id) {
-    Permission permission = permissionService.getById(id);
-        return ResultGenerator.genOkResult(permission);
-    }
+//    @Operation(description = "权限获取详细信息")
+//    @GetMapping("/{id}")
+//    public Result detail(@PathVariable Long id) {
+//    Permission permission = permissionService.getById(id);
+//        return ResultGenerator.genOkResult(permission);
+//    }
 
     @Operation(description = "权限分页查询")
     @GetMapping

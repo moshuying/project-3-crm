@@ -13,4 +13,22 @@
     <result column="newSeller" jdbcType="INTEGER" property="newseller" />
     <result column="transReason" jdbcType="VARCHAR" property="transreason" />
   </resultMap>
+  <select id="listAndSearch" resultType="com.msy.plus.dto.CustomerHandoverList">
+    select ch.id          as id,
+           cm.name        as customerName,
+           ch.transTime   as transTime,
+           e.name         as transUser,
+           e2.name        as oldSeller,
+           e3.name        as newSeller,
+           ch.transReason as transReason
+    from customer_handover as ch
+           left join customer_manager as cm on ch.customerID = cm.id
+           left join employee as e on ch.transUser = e.id
+           left join employee as e2 on ch.oldSeller = e2.id
+           left join employee as e3 on ch.newSeller = e3.id
+    where (e2.name like concat('%',#{keyword},'%') or e.name like concat('%',#{keyword},'%') or e3.name like concat('%',#{keyword},'%') or cm.tel like concat('%',#{keyword},'%'))
+      <if test="startTime !=null or endTime !=null">
+        and ch.transTime between #{startTime} and #{endTime}
+      </if>
+  </select>
 </mapper>

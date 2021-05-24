@@ -125,7 +125,11 @@ public class AccountController {
     return ResultGenerator.genOkResult();
   }
 
-  @PreAuthorize("hasAuthority('ADMIN')")
+  @PreAuthorize("hasAuthority('ADMIN')" +
+          "or hasAuthority('主席')"+
+          "or hasAuthority('高级主席')"+
+          "or hasAuthority('副主席')"+
+          "or hasAuthority('总裁')")
   @Operation(summary = "删除账户", description = "删除账户信息")
   @ApiResponses({@ApiResponse(responseCode = "200", description = "OK")})
   @Parameter(
@@ -139,39 +143,39 @@ public class AccountController {
     this.accountService.deleteById(id);
     return ResultGenerator.genOkResult();
   }
-
-  @Operation(summary = "获取单个账户", description = "获取单个账户信息")
-  @ApiResponses({@ApiResponse(responseCode = "200", description = "OK")})
-  @Parameter(
-      name = "id",
-      description = "账户Id",
-      required = true,
-      in = ParameterIn.PATH,
-      example = "1")
-  @GetMapping("/{id}")
-  public Result detail(@PathVariable final Long id) {
-    final AccountWithRoleDO account = this.accountService.getByIdWithRole(id);
-    return ResultGenerator.genOkResult(account);
-  }
-
-  @Operation(summary = "获取账户列表", description = "获取多个账户信息")
-  @ApiResponses({@ApiResponse(responseCode = "200", description = "OK")})
-  @Parameters({
-    @Parameter(name = "page", description = "页号", in = ParameterIn.QUERY, example = "1"),
-    @Parameter(name = "size", description = "页大小", in = ParameterIn.QUERY, example = "10")
-  })
-  @Cacheable(value = "account.list", unless = "#result == null or #result.code != 200")
-  @CacheExpire(expire = 60)
-  @GetMapping
-  public Result list(
-      @RequestParam(defaultValue = "0") final Integer page,
-      @RequestParam(defaultValue = "0") final Integer size) {
-    AccountController.log.debug("==> No cache, find database");
-    PageHelper.startPage(page, size);
-    final List<AccountDO> list = this.accountService.listAll();
-    final PageInfo<AccountDO> pageInfo = PageInfo.of(list);
-    // 不显示 password 字段
-    final PageInfo<JSONObject> objectPageInfo = JsonUtils.deleteFields(pageInfo, PageInfo.class, "password");
-    return ResultGenerator.genOkResult(objectPageInfo);
-  }
+//
+//  @Operation(summary = "获取单个账户", description = "获取单个账户信息")
+//  @ApiResponses({@ApiResponse(responseCode = "200", description = "OK")})
+//  @Parameter(
+//      name = "id",
+//      description = "账户Id",
+//      required = true,
+//      in = ParameterIn.PATH,
+//      example = "1")
+//  @GetMapping("/{id}")
+//  public Result detail(@PathVariable final Long id) {
+//    final AccountWithRoleDO account = this.accountService.getByIdWithRole(id);
+//    return ResultGenerator.genOkResult(account);
+//  }
+//
+//  @Operation(summary = "获取账户列表", description = "获取多个账户信息")
+//  @ApiResponses({@ApiResponse(responseCode = "200", description = "OK")})
+//  @Parameters({
+//    @Parameter(name = "page", description = "页号", in = ParameterIn.QUERY, example = "1"),
+//    @Parameter(name = "size", description = "页大小", in = ParameterIn.QUERY, example = "10")
+//  })
+//  @Cacheable(value = "account.list", unless = "#result == null or #result.code != 200")
+//  @CacheExpire(expire = 60)
+//  @GetMapping
+//  public Result list(
+//      @RequestParam(defaultValue = "0") final Integer page,
+//      @RequestParam(defaultValue = "0") final Integer size) {
+//    AccountController.log.debug("==> No cache, find database");
+//    PageHelper.startPage(page, size);
+//    final List<AccountDO> list = this.accountService.listAll();
+//    final PageInfo<AccountDO> pageInfo = PageInfo.of(list);
+//    // 不显示 password 字段
+//    final PageInfo<JSONObject> objectPageInfo = JsonUtils.deleteFields(pageInfo, PageInfo.class, "password");
+//    return ResultGenerator.genOkResult(objectPageInfo);
+//  }
 }

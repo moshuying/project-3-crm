@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.msy.plus.core.constant.ProjectConstant.SPRING_PROFILE_DEVELOPMENT;
 import static com.msy.plus.core.constant.ProjectConstant.SPRING_PROFILE_PRODUCTION;
 
 /**
@@ -42,8 +43,11 @@ public class CorsFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        // 仅在非生产环境下生效
-        if (!SPRING_PROFILE_PRODUCTION.equals(this.activeProfile)) {
+        // 仅在生产环境下生效
+        if (SPRING_PROFILE_PRODUCTION.equals(this.activeProfile)) {
+            response.setHeader("Access-Control-Allow-Origin", "http://project.crm3.msy.plus");
+        }
+        if(SPRING_PROFILE_DEVELOPMENT.equals(this.activeProfile)){
             // 允许所有来源
             response.setHeader("Access-Control-Allow-Origin", "*");
         }

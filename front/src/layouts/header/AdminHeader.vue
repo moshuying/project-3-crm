@@ -2,7 +2,7 @@
   <a-layout-header :class="[headerTheme, 'admin-header']">
     <div :class="['admin-header-wide', layout, pageWidth]">
       <router-link v-if="isMobile || layout === 'head'" to="/" :class="['logo', isMobile ? null : 'pc', headerTheme]">
-        <img width="32" src="@/assets/img/logo.png" />
+        <img width="32" src="@/assets/img/logo.jpg" />
         <h1 v-if="!isMobile">{{systemName}}</h1>
       </router-link>
       <a-divider v-if="isMobile" type="vertical" />
@@ -11,13 +11,13 @@
         <i-menu class="head-menu" :theme="headerTheme" mode="horizontal" :options="menuData" @select="onSelect"/>
       </div>
       <div :class="['admin-header-right', headerTheme]">
-          <header-search class="header-item" @active="val => searchActive = val" />
+<!--          <header-search class="header-item" @active="val => searchActive = val" />-->
           <a-tooltip class="header-item" title="帮助文档" placement="bottom" >
             <a href="https://iczer.gitee.io/vue-antd-admin-docs/" target="_blank">
               <a-icon type="question-circle-o" />
             </a>
           </a-tooltip>
-          <header-notice class="header-item"/>
+<!--          <header-notice class="header-item"/>-->
           <header-avatar class="header-item"/>
           <a-dropdown class="lang header-item">
             <div>
@@ -33,22 +33,20 @@
 </template>
 
 <script>
-import HeaderSearch from './HeaderSearch'
-import HeaderNotice from './HeaderNotice'
 import HeaderAvatar from './HeaderAvatar'
 import IMenu from '@/components/menu/menu'
 import {mapState, mapMutations} from 'vuex'
 
 export default {
   name: 'AdminHeader',
-  components: {IMenu, HeaderAvatar, HeaderNotice, HeaderSearch},
+  components: {IMenu, HeaderAvatar},
   props: ['collapsed', 'menuData'],
   data() {
     return {
       langList: [
         {key: 'CN', name: '简体中文', alias: '简体'},
-        {key: 'HK', name: '繁體中文', alias: '繁體'},
-        {key: 'US', name: 'English', alias: 'English'}
+        // {key: 'HK', name: '繁體中文', alias: '繁體'},
+        // {key: 'US', name: 'English', alias: 'English'}
       ],
       searchActive: false
     }

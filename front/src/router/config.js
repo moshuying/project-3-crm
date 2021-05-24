@@ -1,5 +1,5 @@
 import TabsView from '@/layouts/tabs/TabsView'
-import BlankView from '@/layouts/BlankView'
+// import BlankView from '@/layouts/BlankView'
 import PageView from '@/layouts/PageView'
 
 // 路由配置
@@ -27,29 +27,29 @@ const options = {
       redirect: '/login',
       children: [
         {
-          path: 'dashboard',
+          path: 'dashboard/workplace',
           name: 'Dashboard',
           meta: {
             icon: 'dashboard'
           },
-          component: BlankView,
-          children: [
-            {
-              path: 'workplace',
-              name: '工作台',
-              meta: {
-                page: {
-                  closable: false
-                }
-              },
-              component: () => import('@/pages/dashboard/workplace'),
-            },
-            {
-              path: 'analysis',
-              name: '分析页',
-              component: () => import('@/pages/dashboard/analysis'),
-            }
-          ]
+          component: () => import('@/pages/dashboard/workplace'),
+          // children: [
+            // {
+            //   path: 'workplace',
+            //   name: '工作台',
+            //   meta: {
+            //     page: {
+            //       closable: false
+            //     }
+            //   },
+            //   component: () => import('@/pages/dashboard/workplace'),
+            // }
+            // {
+            //   path: 'analysis',
+            //   name: '分析页',
+            //   component: () => import('@/pages/dashboard/analysis'),
+            // }
+          // ]
         },
         {
 
@@ -125,6 +125,11 @@ const options = {
               path:'followHistory',
               name:'跟进历史',
               component:()=>import('@/pages/customer/followHistory')
+            },
+            {
+              path:'handoverHistory',
+              name:'移交历史查询',
+              component:()=>import('@/pages/customer/handoverHistory')
             },
           ]
         },

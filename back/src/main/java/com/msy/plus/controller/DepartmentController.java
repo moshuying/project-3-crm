@@ -21,7 +21,16 @@ import java.util.List;
  * @author MoShuYing
  * @date 2021/05/12
  */
-@PreAuthorize("hasAuthority('ADMIN')")
+@PreAuthorize(
+        "hasAuthority('ADMIN') " +
+                "or hasAuthority('董事长') " +
+                "or hasAuthority('主席') " +
+                "or hasAuthority('高级主席') " +
+                "or hasAuthority('副主席') " +
+                "or hasAuthority('总裁') " +
+                "or hasAuthority('会长') " +
+                "or hasAuthority('高级总裁') " +
+                "or hasAuthority('高级副总裁')")
 @Api(tags={"部门接口"})
 @RestController
 @RequestMapping("/department")

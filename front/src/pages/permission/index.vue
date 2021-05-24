@@ -3,7 +3,7 @@
     <a-card>
       <div>
         <a-space class="operator">
-          <a-button type="primary" @click="showModal('新增')">新增</a-button>
+          <a-button type="primary" @click="fetch()">重新加载</a-button>
         </a-space>
         <a-table
             :columns="columns"
@@ -13,7 +13,7 @@
             @change="handleTableChange"
         >
            <span slot="action" slot-scope="text">
-              <a disabled @click="updateItem(text.id)">编辑</a> |
+<!--              <a disabled @click="updateItem(text.id)">编辑</a> |-->
                <a-popconfirm
                    title="您真的要删除这行数据么？"
                    ok-text="是"
@@ -45,7 +45,7 @@
         </a-form-item>
         <a-form-item label="权限编号">
           <a-input
-              v-decorator="['expression',{ rules: [{ required: true,validator:validators.length({min:1,max:30}) }] },]"
+              v-decorator="['expression',{ rules: [{ required: true,min:1,max:30,message:'输入内容应在1到50位之间' }] },]"
               placeholder="请输入权限编号"
           />
         </a-form-item>
