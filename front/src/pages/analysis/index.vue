@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['name', { rules: [{ required: false}] }]"
+                  v-decorator="['name', { rules: [{ required: false,validator:validators.length({min:0,max:120})}] }]"
                   placeholder="请输入姓名"
               />
             </a-form-item>
@@ -64,6 +64,7 @@
 <script>
 import * as analysis from "@/services/analysis"
 import * as Echarts from "echarts"
+import validators from "@/utils/validators";
 const groupType = {
   "1": '员工',
   "2": '年',
@@ -83,6 +84,7 @@ const columns = [
 export default {
   data() {
     return {
+      validators,
       title:'',
       chartsVisible:false,
       queryForm: this.$form.createForm(this, {name: 'coordinated'}),
@@ -98,7 +100,7 @@ export default {
   },
   async mounted() {
     this.queryForm.setFieldsValue({"groupType": "1"})
-    this.query()
+    this.fetch()
   },
   methods: {
     showCharts(){

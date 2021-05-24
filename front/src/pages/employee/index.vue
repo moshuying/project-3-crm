@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false,validator:validators.length({min:0,max:120})}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,max:120,min:1}] }]"
                   placeholder="请输入姓名/邮箱"
               />
             </a-form-item>
@@ -81,16 +81,16 @@
         </a-form-item>
         <a-form-item label="员工名称">
           <a-input
-              v-decorator="['name', { rules: [{ required: true,validator:validators.length({min:3,max:20})}] }]"
+              v-decorator="['name', { rules: [{ required: true,min:1,max:15}] }]"
           />
         </a-form-item>
         <a-form-item label="员工密码">
-          <a-input
-              v-decorator="['password', { rules: [{ required: title==='新增', validator: title==='新增' && validators.password() }] }]"
+          <a-input-password
+              v-decorator="['password', { rules: [{ required: title==='新增',message:validators.passwordMsg,pattern:validators.passwordReg }] }]"
           />
         </a-form-item>
         <a-form-item label="验证密码">
-          <a-input
+          <a-input-password
               v-decorator="['rePassword', { rules: [{ required: title==='新增',validator: title==='新增' && checkRePassword }] }]"
           />
         </a-form-item>
@@ -104,7 +104,7 @@
         </a-form-item>
         <a-form-item label="员工email">
           <a-input
-              v-decorator="['email',{ rules: [{ required: true, validator:validators.email() }] }]"
+              v-decorator="['email',{ rules: [{ required: true, pattern:validators.emailReg,message:'Email格式不匹配' }] }]"
               placeholder="请输入员工email"
           />
         </a-form-item>
@@ -276,7 +276,7 @@ export default {
   },
   mounted() {
     this.queryForm.setFieldsValue({"dept":0})
-    this.fetch()// 这里不能query
+    this.query()
   },
   methods: {
     // 上传
@@ -408,6 +408,7 @@ export default {
           XLSX.utils.book_append_sheet(wb, ws, "SheetJS");
           /* generate file and send to client */
           XLSX.writeFile(wb, "员工信息.xlsx");
+          this.query()
         })
       })
     },
@@ -433,36 +434,40 @@ export default {
       this.outSelectedRowKeys = selectedRowKeys;
       this.outSelectedRows = selectedRows;
     },
-    mDelete(){
+    async mDelete(){
       if(this.outSelectedRows.length<=0){
         this.$message.warning("尚未批量选择")
       }else {
-        let arr = []
         for(let i=0;i<this.outSelectedRows.length;i++){
-          arr.push(employee.deleteItem(this.outSelectedRows[i].id))
+          const {data} = await employee.deleteItem(this.outSelectedRows[i].id)
+          if(data.code==200){
+            this.$notification.success({
+              message: '删除成功！',
+            });
+          }else {
+            this.$notification['error']({
+              message: '删除失败！',
+              description: data.message || '建议检查网络连接或重新登陆'
+            });
+          }
         }
-        Promise.all(arr).then(()=>{
-          this.$notification.success({
-            message: '删除成功！',
-          });
-          this.fetch()
-        }).catch(()=>{
-          this.$notification['error']({
-            message: '删除失败！',
-            description: '建议检查网络连接或重新登陆',
-          });
+        this.query().then(()=>{
+          document.querySelector("#popContainer > section > section > main > div > div.tabs-view-content.side.fluid > div > div.page-content.side.fluid > div > div > div > div > div.ant-table-wrapper > div > div > div > div > div > table > thead > tr > th.ant-table-selection-column > span > div > span.ant-table-column-title > div > label > span > input").click()
         })
       }
     },
     query(){
-      this.queryLoading = true
-      this.queryForm.validateFields((err, values) => {
-        if (err) {
-          this.queryLoading = false
-          console.log("form error");
-          return;
-        }
-        this.fetch({"page": this.pagination.current, "size": 10,...values})
+      return new Promise(resolve => {
+        this.queryLoading = true
+        this.queryForm.validateFields(async (err, values) => {
+          if (err) {
+            this.queryLoading = false
+            console.log("form error");
+            return;
+          }
+          const data =await this.fetch({"page": this.pagination.current, "size": 10,...values})
+          resolve(data)
+        })
       })
     },
     // table
@@ -502,7 +507,7 @@ export default {
           message: title + '成功',
           description: title + '角色信息成功',
         });
-        this.fetch({"page": this.pagination.current, "size": 10})
+        this.query()
       })
     },
     async updateItem(id) {
@@ -574,6 +579,7 @@ export default {
             this.visible = false
           }
           this.query()
+          this.form.resetField()
         })
       });
     },

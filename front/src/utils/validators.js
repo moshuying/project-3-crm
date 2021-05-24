@@ -1,3 +1,6 @@
+const passwordReg = /(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^a-zA-Z0-9]).{8,30}/
+const passwordMsg="密码中必须包含大小写字母、数字、特称字符，至少8个字符，最多30个字符"
+const emailReg =  /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/
 const validators = {
     /**
      * 可区分全角字符/半角字符的长度校验。
@@ -12,19 +15,22 @@ const validators = {
             realLength <= max && realLength >= min ? callback() : max<100000000 ? callback('输入长度应在'+min+'到'+max+'个字符之间！') : callback('至少应输入'+min+'个字符！');
         }
     },
+    passwordReg,
+    passwordMsg,
     password(){
         return function(rule, value,callback){
-            let reg = new RegExp('(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[^a-zA-Z0-9]).{8,30}')
-            const msg = "密码中必须包含大小写字母、数字、特称字符，至少8个字符，最多30个字符"
+            let reg = passwordReg
+            const msg = passwordMsg
             if(!reg.test(value)){
                 if(!callback)return msg;
                 callback(msg)
             }
         }
     },
+    emailReg,
     email(){
         return function(rule, value,callback){
-            let reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+            let reg =emailReg;
             const msg = "您输入的email地址不正确"
             if(!reg.test(value)){
                 if(!callback) return msg;
