@@ -2,7 +2,7 @@
   <common-layout>
     <div class="top">
       <div class="header">
-        <img alt="logo" class="logo" src="@/assets/img/logo.jpg" />
+        <img alt="logo" class="logo" src="@/assets/img/logo.png" />
         <span class="title">{{systemName}}</span>
       </div>
 <!--      <div class="desc">Ant Design 是西湖区最具影响力的 Web 设计规范</div>-->

@@ -37,8 +37,8 @@
         </a-space>
       </div>
         <a-space>
-          <a-button @click="showCharts()">柱状图</a-button>
-          <a-button @click="showChartsPie()">饼状图</a-button>
+          <a-button type="primary" @click="showCharts()">柱状图</a-button>
+          <a-button type="primary" @click="showChartsPie()">饼状图</a-button>
         </a-space>
       <p></p>
         <a-table
