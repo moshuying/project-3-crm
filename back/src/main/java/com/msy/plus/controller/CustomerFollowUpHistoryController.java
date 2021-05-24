@@ -31,10 +31,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/customer/follow/up/history")
 public class CustomerFollowUpHistoryController {
-    @Resource
-    private CustomerFollowUpHistoryService customerFollowUpHistoryService;
-    @Resource
-    private JwtUtil jwtUtil;
+    @Resource private CustomerFollowUpHistoryService customerFollowUpHistoryService;
+    @Resource private JwtUtil jwtUtil;
     @Operation(description = "客户跟进记录添加")
     @PostMapping
     public Result add(@RequestBody CustomerFollowUpHistory customerFollowUpHistory,@RequestHeader Map<String, String> headers) {
