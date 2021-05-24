@@ -71,3 +71,11 @@ export async function update(object) {
 export async function add(object) {
     return request(CUSTOMER_MANAGER, METHOD.POST, object)
 }
+
+export const statusMap = {
+    "-2": "流失",
+    "-1": "开发失败",
+    "0": "潜在客户",
+    "1": "正式客户",
+    "2": "资源池客户",
+}

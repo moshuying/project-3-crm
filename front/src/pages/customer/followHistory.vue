@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,min:1,max:120,message:'内容长度在1到120之间'}] }]"
                   placeholder="请输入姓名/邮箱"
               />
             </a-form-item>
@@ -75,7 +75,7 @@
           />
         </a-form-item><a-form-item disabled label="跟进内容">
         <a-input
-            v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容'  }]}]"
+            v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容',min:1,max:120,message:'内容长度在1到120之间'  }]}]"
         />
       </a-form-item>
         <a-form-item disabled label="跟进方式">
@@ -102,7 +102,7 @@
         </a-form-item>
         <a-form-item disabled label="备注">
           <a-textarea
-              v-decorator="['comment', { rules: [{ required: true, message: '备注'  }]}]"
+              v-decorator="['comment', { rules: [{ required: true, message: '备注',min:1,max:120,message:'内容长度在1到120之间'  }]}]"
               :auto-size="{ minRows: 3, maxRows: 5 }"
           />
         </a-form-item>

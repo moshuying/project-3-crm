@@ -35,9 +35,13 @@ public class CustomerManagerController {
     @Operation(description = "客户管理添加")
     @PostMapping
     public Result add(@RequestBody CustomerManager customerManager,@RequestHeader Map<String, String> headers) {
+        if(customerManager.getId()!=null){
+            customerManager.setId(null);
+        }
         String header = jwtUtil.getJwtProperties().getHeader();
         String id= jwtUtil.getId(headers.get(header)).get();
         customerManager.setInputuser(Integer.valueOf(id));
+        customerManager.setSeller(Integer.valueOf(id));
         customerManagerService.save(customerManager);
         return ResultGenerator.genOkResult();
     }

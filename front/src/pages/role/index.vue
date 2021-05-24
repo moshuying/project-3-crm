@@ -41,12 +41,12 @@
         </a-form-item>
         <a-form-item label="角色名称">
           <a-input
-              v-decorator="['name', { rules: [{ required: true, message: '请输入角色名称' }] }]"
+              v-decorator="['name', { rules: [{ required: true, min:1,max:50,message:'内容长度在1到50之间' }] }]"
           />
         </a-form-item>
         <a-form-item label="角色编号">
           <a-input
-              v-decorator="['sn',{ rules: [{ required: true, message: '请输入角色编号' }] },]"
+              v-decorator="['sn',{ rules: [{ required: true,validator:validators.length({min:1,max:50})  }] },]"
               placeholder="请输入角色编号"
           />
         </a-form-item>
@@ -107,6 +107,7 @@
 import * as role from "@/services/role"
 import * as permission from "@/services/permission"
 import difference from 'lodash/difference';
+import validators from "@/utils/validators";
 
 const columns = [
   {
@@ -130,16 +131,19 @@ const permissionTableColumns = [
   {
     dataIndex: 'name',
     title: '权限名称',
+    ellipsis: true,
   },
   {
     dataIndex: 'expression',
     title: '权限表达式',
+    ellipsis: true,
   },
 ];
 export default {
   name: 'Department',
   data() {
     return {
+      validators,
       // table
       columns: columns,
       dataSource: [],
@@ -260,7 +264,6 @@ export default {
           values.permissions = arr
         }
         const {data} = await role[method](values)
-        console.log(data)
         this.confirmLoading = false;
         if (data["code"] !== 200) {
           this.$notification['error']({

@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,min:1,max:120,message:'输入长度应在1到120之间'}] }]"
                   placeholder="请输入姓名/电话"
               />
             </a-form-item>
@@ -34,9 +34,10 @@
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
+            :scroll="{ x: 1500, y: 300 }"
         >
            <span slot="action" slot-scope="text">
-             <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id)" >编辑</a-button>
+             <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id,text)" >编辑</a-button>
              <a-button type="link" shape="round" icon="edit" size="small" @click="showFollowModal(text.id,text)" >跟进</a-button>
              <a-button type="link" shape="round" icon="edit" size="small" @click="showHandoverModal(text.id)">移交</a-button>
              <a-button type="link" shape="round" icon="edit" size="small" @click="showStatusModal(text.id)" >修改状态</a-button>
@@ -79,6 +80,19 @@
                 {{list.title}}
               </a-select-option>
             </a-select>
+            <a-input-number v-else-if="item.dataIndex==='age'" :min="0" :max="200" v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]" />
+            <a-input v-else-if="item.dataIndex==='name'"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,min:1,max:120,message:'输入长度应在1到120之间' }]}]"
+                     :placeholder="`请输入`+item.title"
+            />
+            <a-input v-else-if="item.dataIndex==='tel'"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,pattern:validators.passwordReg,message:validators.passwordMsg  }]}]"
+                     :placeholder="`请输入`+item.title"
+            />
+            <a-input v-else-if="item.dataIndex==='qq'"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,pattern:validators.qqReg,message:validators.qqMsg  }]}]"
+                     :placeholder="`请输入`+item.title"
+            />
             <a-input v-else
                 v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]"
                 :placeholder="`请输入`+item.title"
@@ -102,7 +116,8 @@
         </a-form-item>
         <a-form-item lable="姓名">
           <a-input
-               v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
+              disabled
+               v-decorator="['name', { rules: [{ required: true, message: '名字长度在1到15之间',min:1,max:15  }]}]"
                :placeholder="`请输入姓名`"
           />
         </a-form-item>
@@ -140,7 +155,7 @@
         <a-form-item lable="客户姓名">
           <a-input
               disabled
-              v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
+              v-decorator="['name', { rules: [{ required: true, message: '姓名' }]}]"
           />
         </a-form-item>
         <a-form-item label="旧营销人员">
@@ -162,7 +177,7 @@
         </a-form-item>
         <a-form-item label="移交原因">
           <a-textarea
-              v-decorator="['transreason',{ rules: [{ required: true, message: '移交原因' }] }]"
+              v-decorator="['transreason',{ rules: [{ required: true, message: '移交原因的内容长度在10和120之间' ,min:10,max:120 }] }]"
               :auto-size="{ minRows: 3, maxRows: 5 }"
           />
         </a-form-item>
@@ -192,7 +207,7 @@
               />
         </a-form-item><a-form-item disabled label="跟进内容">
           <a-input
-              v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容'  }]}]"
+              v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容',min:1,max:120,message:'跟进内容长度在1到120之间'  }]}]"
               />
         </a-form-item>
         <a-form-item disabled label="跟进方式">
@@ -219,7 +234,7 @@
         </a-form-item>
         <a-form-item disabled label="备注">
           <a-textarea
-              v-decorator="['comment', { rules: [{ required: true, message: '备注'  }]}]"
+              v-decorator="['comment', { rules: [{ required: true, message: '备注' ,min:1,max:120,message:'备注内容在1到120之间'}]}]"
               :auto-size="{ minRows: 3, maxRows: 5 }"
               />
         </a-form-item>
@@ -247,19 +262,15 @@ import * as employee from "@/services/employee"
 import * as customerHandover from "@/services/customerHandover"
 import * as customerFollowUpHistory from "@/services/customerFollowUpHistory"
 import moment from "moment";
+import validators from "@/utils/validators";
 
-
-const statusMap = {
-  "-2": "流失",
-  "-1": "开发失败",
-  "0": "潜在客户",
-  "1": "正式客户",
-  "2": "资源池客户",
-}
 const baseColumns =[
   {
+    width:120,
     title: '姓名',
     dataIndex: 'name',
+    ellipsis: true,
+    fixed: 'left'
   },
   {
     title: '年龄',
@@ -281,16 +292,21 @@ const baseColumns =[
   {
     title: '职业',
     dataIndex: 'job',
+    ellipsis: true,
   },
   {
+    width:60,
     title: '来源',
     dataIndex: 'source',
+    ellipsis: true,
   }
 ]
 const columns = [
   {
+    width:60,
     title: '编号',
-    dataIndex: 'id'
+    dataIndex: 'id',
+    fixed: 'left'
   },
     ...baseColumns,
   {
@@ -300,20 +316,23 @@ const columns = [
   {
     title: '状态',
     dataIndex: 'status',
-    customRender:(text)=>statusMap[parseInt(text)]
+    customRender:(text)=>customerManager.statusMap[parseInt(text)]
   },
   {
+    width:380,
     title: '操作',
-    scopedSlots: {customRender: 'action'}
+    scopedSlots: {customRender: 'action'},
+    fixed: 'right'
   }
 ]
 export default {
   name: 'Department',
   data() {
     return {
+      validators,
       queryForm:this.$form.createForm(this, {name: 'coordinated'}),
       queryLoading:false,
-      statusMap,
+      statusMap:customerManager.statusMap,
       // table
       columns: columns,
       dataSource: [],
@@ -561,7 +580,7 @@ export default {
       this.title = title || '新增'
       await this.form.resetFields()
     },
-    async updateItem(id) {
+    async updateItem(id,line) {
       this.confirmLoading=false
       await this.showModal('更改')
       customerManager.getDetail(id).then(({data}) => {
@@ -569,7 +588,7 @@ export default {
         // 这里不能循环
         this.form.setFieldsValue({id:data.data["id"]})
         this.form.setFieldsValue({name:data.data["name"]})
-        this.form.setFieldsValue({age:data.data["age"]})
+        this.form.setFieldsValue({age:line["age"]})
         this.form.setFieldsValue({gender:data.data["gender"]})
         this.form.setFieldsValue({tel:data.data["tel"]})
         this.form.setFieldsValue({qq:data.data["qq"]})
@@ -582,6 +601,7 @@ export default {
       this.form.validateFields((err, values) => {
         if (err) {
           console.log("form error");
+          this.confirmLoading=false
           return;
         }
         let method = 'add';

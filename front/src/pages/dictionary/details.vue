@@ -12,12 +12,12 @@
       </div>
     </a-card>
     <a-card style="width: 100%">
-      <div>
+      <div style="width: 100%;">
         <a-space class="operator">
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,min:1,max:120,message:'输入长度应在1到120之间'}] }]"
                   placeholder="请输入姓名/邮箱"
               />
             </a-form-item>
@@ -27,6 +27,14 @@
           </a-form>
           <a-button type="primary" @click="showModal('添加')">添加字典明细</a-button>
         </a-space>
+      </div>
+      <div>
+        <a-button
+            target="_blank"
+            href="https://www.sxejgfyxgs.com/uploadfile/file/20200421/6dfb8b3f8.pdf"
+            v-if="leftFirstId===1"
+            type="link">《中华人民共和国职业分类大典》目录</a-button>
+      </div>
         <a-table
             :columns="columns"
             :data-source="dataSource"
@@ -38,7 +46,6 @@
               <a @click="updateItem(text.id)">编辑</a>
            </span>
         </a-table>
-      </div>
     </a-card>
     <a-modal
         :title="title"
@@ -57,11 +64,13 @@
         </a-form-item>
         <a-form-item label="字典明细名称">
           <a-input
-              v-decorator="['title', { rules: [{ required: true, message: '请输入字典明细名称' }] }]"
+              v-decorator="['title', { rules: [{ required: true, min:1,max:125,message:'内容长度在1到125之间' }] }]"
           />
         </a-form-item>
         <a-form-item label="字典明细序列">
-          <a-input
+          <a-input-number
+              :min="0"
+              :max="999"
               v-decorator="['sequence',{ rules: [{ required: true, message: '请输入字典明细序列' }] },]"
               placeholder="请输入字典明细序列"
           />
@@ -74,7 +83,7 @@
 <script>
 import * as dictionaryDetails from "@/services/dictionaryDetails"
 import * as dictionaryContents from "@/services/dictionaryContents"
-
+import validators from "@/utils/validators";
 const columns = [
   {
     title: '编号',
@@ -83,10 +92,12 @@ const columns = [
   {
     title: '名称',
     dataIndex: 'title',
+    ellipsis: true,
   },
   {
     title: '序列',
     dataIndex: 'sequence',
+    ellipsis: true,
   },
   {
     title: '操作',
@@ -96,6 +107,7 @@ const columns = [
 export default {
   data() {
     return {
+      validators,
       queryForm:this.$form.createForm(this, {name: 'coordinated'}),
       queryLoading:false,
       // table
@@ -131,10 +143,11 @@ export default {
       this.queryLoading = true
       this.queryForm.validateFields((err, values) => {
         if (err) {
+          this.queryLoading = false
           console.log("form error");
           return;
         }
-        this.fetch({"page": 1, "size": 10,id:this.leftFirstId,...values})
+        this.fetch({"page": this.pagination.current, "size": 10,id:this.leftFirstId,...values})
       })
     },
     // table
@@ -142,10 +155,7 @@ export default {
       const pager = {...this.pagination};
       pager.current = pagination.current;
       this.pagination = pager;
-      this.fetch({
-        size: pagination.pageSize,
-        page: pagination.current,
-      });
+      this.query()
     },
     fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
@@ -198,9 +208,9 @@ export default {
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
-
         if (err) {
           console.log("form error");
+          this.confirmLoading = true;
           return;
         }
         let method = 'add';

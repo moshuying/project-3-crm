@@ -37,12 +37,12 @@ public class DictionaryContentsController {
         return ResultGenerator.genOkResult();
     }
 
-    @Operation(description = "数据字典删除")
-    @DeleteMapping("/{id}")
-    public Result delete(@PathVariable Long id) {
-    dictionaryContentsService.deleteById(id);
-        return ResultGenerator.genOkResult();
-    }
+//    @Operation(description = "数据字典删除")
+//    @DeleteMapping("/{id}")
+//    public Result delete(@PathVariable Long id) {
+//    dictionaryContentsService.deleteById(id);
+//        return ResultGenerator.genOkResult();
+//    }
 
     @Operation(description = "数据字典更新")
     @PutMapping

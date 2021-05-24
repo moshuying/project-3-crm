@@ -30,10 +30,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/customer/handover")
 public class CustomerHandoverController {
-    @Resource
-    private CustomerHandoverService customerHandoverService;
-    @Resource
-    private JwtUtil jwtUtil;
+    @Resource private CustomerHandoverService customerHandoverService;
+    @Resource private JwtUtil jwtUtil;
 
     @Operation(description = "移交历史添加")
     @PostMapping
