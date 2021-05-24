@@ -26,7 +26,13 @@
            left join employee as e on ch.transUser = e.id
            left join employee as e2 on ch.oldSeller = e2.id
            left join employee as e3 on ch.newSeller = e3.id
-    where (e2.name like concat('%',#{keyword},'%') or e.name like concat('%',#{keyword},'%') or e3.name like concat('%',#{keyword},'%') or cm.tel like concat('%',#{keyword},'%'))
+    where (
+        e2.name like concat('%',#{keyword},'%')
+            or e.name like concat('%',#{keyword},'%')
+            or e3.name like concat('%',#{keyword},'%')
+            or cm.tel like concat('%',#{keyword},'%')
+            or cm.name like concat('%',#{keyword},'%')
+        )
       <if test="startTime !=null or endTime !=null">
         and ch.transTime between #{startTime} and #{endTime}
       </if>

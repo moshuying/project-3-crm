@@ -18,7 +18,7 @@
             <a-form-item label="关键字">
               <a-input
                   v-decorator="['keyword', { rules: [{ required: false,min:1,max:120,message:'输入长度应在1到120之间'}] }]"
-                  placeholder="请输入姓名/邮箱"
+                  placeholder="请输入关键字"
               />
             </a-form-item>
             <a-form-item>

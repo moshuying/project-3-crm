@@ -303,7 +303,7 @@ export default {
           const data = XLSX.utils.sheet_to_json(ws, {header:1});
           const sLen =6
           if(data[0].length!==sLen){
-            resolve("数据内容不合法，请先导出数据当作模板！")
+            resolve("数据内容不合法，请先下载导入模板！")
           }
           for(let i=1;i<data.length;i++){
             for(let j=0;j<data[i].length;j++){

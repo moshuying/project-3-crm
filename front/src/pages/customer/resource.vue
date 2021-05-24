@@ -144,7 +144,7 @@
               :disabled="handoverForMe"
               v-decorator="['newseller',{ rules: [{ required: true, message: '状态' }] }]">
             <a-select-option
-                :value="key"
+                :value="value.id"
                 :key="index"
                 v-for="(value,key,index) in employeeList">
               {{value.name}}

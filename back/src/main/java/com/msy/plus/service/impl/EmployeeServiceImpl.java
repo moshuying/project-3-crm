@@ -24,14 +24,14 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class EmployeeServiceImpl extends AbstractService<Employee> implements EmployeeService {
 
-    @Override
-    public void update(Employee entity) {
-        final String name = entity.getName();
-        // 按 name 字段更新
-        final Condition condition = new Condition(Employee.class);
-        condition.createCriteria().andCondition("name = ", name);
-        this.updateByCondition(entity,condition);
-    }
+//    @Override
+//    public void update(Employee entity) {
+//        final String name = entity.getName();
+//        // 按 name 字段更新
+//        final Condition condition = new Condition(Employee.class);
+//        condition.createCriteria().andCondition("name = ", name);
+//        this.updateByCondition(entity,condition);
+//    }
 
     @Resource
     private EmployeeMapper employeeMapper;
