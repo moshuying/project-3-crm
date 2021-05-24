@@ -40,7 +40,7 @@
         </a-form-item>
         <a-form-item label="部门名称">
           <a-input
-              v-decorator="['name', { rules: [{ required: true, validator:validators.length({min:1,max:15}) }] }]"
+              v-decorator="['name', { rules: [{ required: true, min:1,max:15,message:'部门名称长度在1到15之间' }] }]"
           />
         </a-form-item>
         <a-form-item label="部门编号">

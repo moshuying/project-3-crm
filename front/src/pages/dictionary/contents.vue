@@ -43,7 +43,7 @@
         </a-form-item>
         <a-form-item label="数据字典名称">
           <a-input
-              v-decorator="['title', { rules: [{ required: true, validator:validators.length({min:1,max:15}) }] }]"
+              v-decorator="['title', { rules: [{ required: true,min:1,max:15,message:'内容长度在1到15之间' }] }]"
           />
         </a-form-item>
         <a-form-item label="数据字典编号">
@@ -54,7 +54,7 @@
         </a-form-item>
         <a-form-item label="数据字典简介">
           <a-input
-              v-decorator="['intro',{ rules: [{ required: true, validator:validators.length({min:3,max:100}) }] },]"
+              v-decorator="['intro',{ rules: [{ required: true, min:3,max:100,message:'内容长度在3到100之间' }] },]"
               placeholder="请输入数据字典简介"
           />
         </a-form-item>

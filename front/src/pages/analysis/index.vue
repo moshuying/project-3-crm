@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['name', { rules: [{ required: false,validator:validators.length({min:0,max:120})}] }]"
+                  v-decorator="['name', { rules: [{ required: false,min:1,max:120,message:'输入长度应在1到120之间'}] }]"
                   placeholder="请输入姓名"
               />
             </a-form-item>
@@ -40,6 +40,7 @@
           <a-button @click="showCharts()">柱状图</a-button>
           <a-button @click="showChartsPie()">饼状图</a-button>
         </a-space>
+      <p></p>
         <a-table
             :columns="columns"
             :data-source="dataSource"

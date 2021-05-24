@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false,validator:validators.length({min:1,max:120})}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,min:1,max:120,message:'输入长度应在1到120之间'}] }]"
                   placeholder="请输入姓名/电话"
               />
             </a-form-item>
@@ -82,15 +82,15 @@
             </a-select>
             <a-input-number v-else-if="item.dataIndex==='age'" :min="0" :max="200" v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]" />
             <a-input v-else-if="item.dataIndex==='name'"
-                     v-decorator="[item.dataIndex, { rules: [{ required: true,validator:validators.length({min:1,max:20})  }]}]"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,min:1,max:120,message:'输入长度应在1到120之间' }]}]"
                      :placeholder="`请输入`+item.title"
             />
             <a-input v-else-if="item.dataIndex==='tel'"
-                     v-decorator="[item.dataIndex, { rules: [{ required: true,validator:validators.phone()  }]}]"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,pattern:validators.passwordReg,message:validators.passwordMsg  }]}]"
                      :placeholder="`请输入`+item.title"
             />
             <a-input v-else-if="item.dataIndex==='qq'"
-                     v-decorator="[item.dataIndex, { rules: [{ required: true,validator:validators.qq()  }]}]"
+                     v-decorator="[item.dataIndex, { rules: [{ required: true,pattern:validators.qqReg,message:validators.qqMsg  }]}]"
                      :placeholder="`请输入`+item.title"
             />
             <a-input v-else
@@ -116,7 +116,8 @@
         </a-form-item>
         <a-form-item lable="姓名">
           <a-input
-               v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
+              disabled
+               v-decorator="['name', { rules: [{ required: true, message: '名字长度在1到15之间',min:1,max:15  }]}]"
                :placeholder="`请输入姓名`"
           />
         </a-form-item>
@@ -154,7 +155,7 @@
         <a-form-item lable="客户姓名">
           <a-input
               disabled
-              v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
+              v-decorator="['name', { rules: [{ required: true, message: '姓名' }]}]"
           />
         </a-form-item>
         <a-form-item label="旧营销人员">
@@ -176,7 +177,7 @@
         </a-form-item>
         <a-form-item label="移交原因">
           <a-textarea
-              v-decorator="['transreason',{ rules: [{ required: true, message: '移交原因' ,validator:validators.length({min:1,max:120})}] }]"
+              v-decorator="['transreason',{ rules: [{ required: true, message: '移交原因的内容长度在10和120之间' ,min:10,max:120 }] }]"
               :auto-size="{ minRows: 3, maxRows: 5 }"
           />
         </a-form-item>
@@ -206,7 +207,7 @@
               />
         </a-form-item><a-form-item disabled label="跟进内容">
           <a-input
-              v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容',validator:validators.length({min:1,max:120})  }]}]"
+              v-decorator="['tracedetails', { rules: [{ required: true, message: '跟进内容',min:1,max:120,message:'跟进内容长度在1到120之间'  }]}]"
               />
         </a-form-item>
         <a-form-item disabled label="跟进方式">
@@ -233,7 +234,7 @@
         </a-form-item>
         <a-form-item disabled label="备注">
           <a-textarea
-              v-decorator="['comment', { rules: [{ required: true, message: '备注' ,validator:validators.length({min:1,max:120})}]}]"
+              v-decorator="['comment', { rules: [{ required: true, message: '备注' ,min:1,max:120,message:'备注内容在1到120之间'}]}]"
               :auto-size="{ minRows: 3, maxRows: 5 }"
               />
         </a-form-item>

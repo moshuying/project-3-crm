@@ -64,7 +64,7 @@
         </a-form-item>
         <a-form-item label="字典明细名称">
           <a-input
-              v-decorator="['title', { rules: [{ required: true, validator:validators.length({min:1,max:125}) }] }]"
+              v-decorator="['title', { rules: [{ required: true, min:1,max:125,message:'内容长度在1到125之间' }] }]"
           />
         </a-form-item>
         <a-form-item label="字典明细序列">

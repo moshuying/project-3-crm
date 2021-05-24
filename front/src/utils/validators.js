@@ -38,6 +38,8 @@ const validators = {
             }
         }
     },
+    phoneReg:/(13\d|14[579]|15[^4\D]|17[^49\D]|18\d)\d{8}/,
+    phoneMsg:"您输入的手机号不正确",
     phone(){
         return function(rule, value,callback){
             let reg = /(13\d|14[579]|15[^4\D]|17[^49\D]|18\d)\d{8}/
@@ -48,6 +50,8 @@ const validators = {
             }
         }
     },
+    qqReg:/^[1-9][0-9]{4,9}$/gim,
+    qqMsg:"您输入的QQ号不正确",
     qq(){
         return function(rule, value,callback){
             let reg = /^[1-9][0-9]{4,9}$/gim

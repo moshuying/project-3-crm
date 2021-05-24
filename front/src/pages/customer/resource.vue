@@ -6,7 +6,7 @@
           <a-form layout="inline" :form="queryForm">
             <a-form-item label="关键字">
               <a-input
-                  v-decorator="['keyword', { rules: [{ required: false,validator:validators.length({min:1,max:120})}] }]"
+                  v-decorator="['keyword', { rules: [{ required: false,min:1,max:120,message:'输入长度应在1到120之间'}] }]"
                   placeholder="请输入姓名/电话"
               />
             </a-form-item>
@@ -130,7 +130,7 @@
         <a-form-item lable="客户姓名">
           <a-input
               disabled
-              v-decorator="['name', { rules: [{ required: true, message: '姓名'  }]}]"
+              v-decorator="['name', { rules: [{ required: true, message: '姓名',min:1,max:15,message:'姓名在1到15之间'  }]}]"
           />
         </a-form-item>
         <a-form-item label="旧营销人员">
@@ -153,7 +153,7 @@
         </a-form-item>
         <a-form-item label="移交原因">
           <a-textarea
-              v-decorator="['transreason',{ rules: [{ required: true, message: '移交原因' }] }]"
+              v-decorator="['transreason',{ rules: [{ required: true, message: '移交原因',min:1,max:120,message:'移交原因在1到120之间' }] }]"
               :auto-size="{ minRows: 3, maxRows: 5 }"
           />
         </a-form-item>
