@@ -1,5 +1,4 @@
 import TabsView from '@/layouts/tabs/TabsView'
-// import BlankView from '@/layouts/BlankView'
 import PageView from '@/layouts/PageView'
 
 // 路由配置
@@ -32,24 +31,7 @@ const options = {
           meta: {
             icon: 'dashboard'
           },
-          component: () => import('@/pages/dashboard/workplace'),
-          // children: [
-            // {
-            //   path: 'workplace',
-            //   name: '工作台',
-            //   meta: {
-            //     page: {
-            //       closable: false
-            //     }
-            //   },
-            //   component: () => import('@/pages/dashboard/workplace'),
-            // }
-            // {
-            //   path: 'analysis',
-            //   name: '分析页',
-            //   component: () => import('@/pages/dashboard/analysis'),
-            // }
-          // ]
+          component: () => import('@/pages/dashboard/workplace')
         },
         {
 
