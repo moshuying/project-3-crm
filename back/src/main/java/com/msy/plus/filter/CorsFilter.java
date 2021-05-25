@@ -12,6 +12,9 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.msy.plus.core.constant.ProjectConstant.SPRING_PROFILE_DEVELOPMENT;
 import static com.msy.plus.core.constant.ProjectConstant.SPRING_PROFILE_PRODUCTION;
@@ -45,7 +48,15 @@ public class CorsFilter implements Filter {
 
         // 仅在生产环境下生效
         if (SPRING_PROFILE_PRODUCTION.equals(this.activeProfile)) {
-            response.setHeader("Access-Control-Allow-Origin", "http://project.crm3.msy.plus");
+            // 设置允许多个域名请求
+            String[] allowDomains = {"http://project.crm3.msy.plus","https://project.crm3.msy.plus"};
+            Set<String> allowOrigins = new HashSet(Arrays.asList(allowDomains));
+            String originHeads = request.getHeader("Origin");
+            if(allowOrigins.contains(originHeads)){
+                //设置允许跨域的配置
+                // 这里填写你允许进行跨域的主机ip（正式上线时可以动态配置具体允许的域名和IP）
+                response.setHeader("Access-Control-Allow-Origin", originHeads);
+            }
         }
         if(SPRING_PROFILE_DEVELOPMENT.equals(this.activeProfile)){
             // 允许所有来源
