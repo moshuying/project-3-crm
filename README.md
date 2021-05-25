@@ -1,7 +1,7 @@
 # project-3-crm
 
 [![Build Status](https://travis-ci.org/moshuying/project-3-crm.svg?branch=main)](https://travis-ci.org/moshuying/project-3-crm)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Join the chat at https://gitter.im/墨抒颖/project-3-crm](https://badges.gitter.im/墨抒颖/project-3-crm.svg)](https://gitter.im/墨抒颖/project-3-crm?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 # 简述
 
 [sql文件包含在/mysql文件夹内](https://github.com/moshuying/project-3-crm/blob/main/mysql)
