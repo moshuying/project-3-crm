@@ -3,7 +3,6 @@ package com.msy.plus.service.impl;
 import com.msy.plus.core.response.ResultCode;
 import com.msy.plus.core.service.AbstractService;
 import com.msy.plus.dto.RoleDTO;
-import com.msy.plus.entity.Permission;
 import com.msy.plus.entity.RoleDO;
 import com.msy.plus.entity.RolePermissionDO;
 import com.msy.plus.entity.RoleWithPermissionDO;

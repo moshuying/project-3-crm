@@ -19,7 +19,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Generated;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;

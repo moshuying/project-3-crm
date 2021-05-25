@@ -6,7 +6,6 @@ import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.dto.CustomerHandoverList;
 import com.msy.plus.entity.CustomerHandover;
 import com.msy.plus.service.CustomerHandoverService;
-import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -22,7 +21,6 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
 * @author MoShuYing

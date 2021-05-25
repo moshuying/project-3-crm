@@ -2,7 +2,6 @@ package com.msy.plus.service;
 
 import com.msy.plus.core.service.Service;
 import com.msy.plus.dto.RoleDTO;
-import com.msy.plus.entity.Permission;
 import com.msy.plus.entity.RoleDO;
 import com.msy.plus.entity.RolePermissionDO;
 import com.msy.plus.entity.RoleWithPermissionDO;

@@ -4,11 +4,7 @@ import com.msy.plus.entity.Employee;
 import com.msy.plus.core.service.Service;
 import com.msy.plus.entity.EmployeeDetail;
 import com.msy.plus.entity.EmployeeWithRoleDO;
-import com.msy.plus.entity.RolePermissionDO;
-import org.apache.ibatis.exceptions.TooManyResultsException;
-
 import java.util.List;
-import java.util.Map;
 
 /**
 * @author MoShuYing

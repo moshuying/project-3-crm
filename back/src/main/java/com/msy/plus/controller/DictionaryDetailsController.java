@@ -36,7 +36,7 @@ public class DictionaryDetailsController {
         dictionaryDetailsService.save(dictionaryDetails);
         return ResultGenerator.genOkResult();
     }
-//
+
 //    @Operation(description = "数据字典明细删除")
 //    @DeleteMapping("/{id}")
 //    public Result delete(@PathVariable Long id) {

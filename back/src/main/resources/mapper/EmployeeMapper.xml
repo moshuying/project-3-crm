@@ -20,8 +20,8 @@
         <result column="roleNames" jdbcType="VARCHAR" property="roleNames"/>
     </resultMap>
     <resultMap id="EmployeeDetail" type="com.msy.plus.entity.EmployeeDetail" extends="BaseResultMap">
-        <collection property="roleIds" javaType="java.util.List" ofType="java.lang.String">
-            <result column="roleIds" jdbcType="VARCHAR"/>
+        <collection property="roleIds" javaType="java.util.List" ofType="java.lang.Long">
+            <result column="roleIds" jdbcType="INTEGER"/>
         </collection>
     </resultMap>
     <select id="listEmployeeWithRole" resultMap="EmployeeWithRole">
