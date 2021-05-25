@@ -81,7 +81,7 @@ const options = {
           path: '/customer',
           name: '客户管理',
           meta: {
-            icon: 'setting',
+            icon: 'team',
             page: {
               cacheAble: false
             }
@@ -119,7 +119,7 @@ const options = {
           path: '/analysis',
           name: '统计分析',
           meta: {
-            icon: 'setting',
+            icon: 'monitor',
             page: {
               cacheAble: false
             }
