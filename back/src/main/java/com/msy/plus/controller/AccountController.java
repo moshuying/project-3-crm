@@ -102,8 +102,9 @@ public class AccountController {
   @Operation(summary = "账户注销", description = "账户注销，使token失效")
   @ApiResponses({@ApiResponse(responseCode = "200", description = "OK")})
   @DeleteMapping("/token")
-  public Result logout(@AuthenticationPrincipal final UsernamePasswordAuthenticationToken user) {
-    this.jwtUtil.invalidRedisToken(user.getName());
+  public Result logout(@RequestHeader Map<String, String> headers) {
+    String header = jwtUtil.getJwtProperties().getHeader();
+    jwtUtil.invalidRedisToken(jwtUtil.getName(headers.get(header)).get());
     return ResultGenerator.genOkResult();
   }
 
