@@ -19,16 +19,18 @@
 </a>
 </center>
 
-- 前端使用 [vue-antd-admin](https://github.com/iczer/vue-antd-admin) 项目[文档地址](https://iczer.gitee.io/vue-antd-admin-docs/advance/authority.html#%E9%A1%B5%E9%9D%A2%E6%9D%83%E9%99%90) 
+
+- 前端使用 [vue-antd-admin](https://github.com/iczer/vue-antd-admin) 
+- [项目文档地址](https://iczer.gitee.io/vue-antd-admin-docs/advance/authority.html#%E9%A1%B5%E9%9D%A2%E6%9D%83%E9%99%90) 
 - 后台使用 [spring-boot-api-seedling](https://github.com/Zoctan/spring-boot-api-seedling) 
 
 系统包括：系统设置、客户管理、营销管理、服务管理、合同管理和统计分析六个功能模块。可满足管理人员日常对客户的资源维护、销售数据分析、潜在和有价值客户分析等需求。
 
 
 甲方需求文档和演讲ppt位于/docs目录下。较为详细的描述了甲方的功能需求。
-> [腾讯文档在线查看甲方需求](https://docs.qq.com/doc/DR0JVbFpmdXNEU1NM)
-> [ppt商业计划书在线查看](https://docs.qq.com/slide/DR2dIaXB1b3hVZkdw)
-> [商业计划书参考](https://max.book118.com/html/2017/0508/105355794.shtm)
+- [腾讯文档在线查看甲方需求](https://docs.qq.com/doc/DR0JVbFpmdXNEU1NM)
+- [ppt商业计划书在线查看](https://docs.qq.com/slide/DR2dIaXB1b3hVZkdw)
+- [商业计划书参考](https://max.book118.com/html/2017/0508/105355794.shtm)
 
 
 
