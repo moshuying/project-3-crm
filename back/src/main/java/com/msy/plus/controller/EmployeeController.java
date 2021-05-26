@@ -1,6 +1,7 @@
 package com.msy.plus.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.msy.plus.core.jwt.JwtUtil;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.entity.Employee;
@@ -8,6 +9,7 @@ import com.msy.plus.entity.EmployeeDetail;
 import com.msy.plus.entity.EmployeeWithRoleDO;
 import com.msy.plus.service.EmployeeService;
 import com.msy.plus.util.JsonUtils;
+import com.msy.plus.util.RedisUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author MoShuYing
@@ -49,7 +52,6 @@ import java.util.List;
                 "or hasAuthority('副主任')"+
                 "or hasAuthority('组长')"+
                 "or hasAuthority('副组长')"+
-                "or hasAuthority('普通员工')"+
                 "or hasAuthority('人事专员')"+
                 "or hasAuthority('市场专员')"+
                 "or hasAuthority('市场主管')"+
@@ -62,6 +64,7 @@ public class EmployeeController {
     @Resource
     private EmployeeService employeeService;
     @Resource private PasswordEncoder passwordEncoder;
+    @Resource private JwtUtil jwtUtil;
 
     @Operation(description = "员工添加")
     @PostMapping
@@ -104,8 +107,8 @@ public class EmployeeController {
 
     @Operation(description = "员工更新")
     @PutMapping
-    public Result update(@RequestBody EmployeeDetail employee) {
-        if(employee.getName().equals("ADMIN")){
+    public Result update(@RequestBody EmployeeDetail employee,@RequestHeader Map<String, String> headers) {
+        if(employee.getName().equals("admin")){
             return ResultGenerator.genFailedResult("禁止修改管理员角色！");
         }
         // 更新员工基本信息
@@ -147,6 +150,10 @@ public class EmployeeController {
             if(!now.contains(i)){
                 removes.add(i);
             }
+        }
+        // 更新权限即注销对应用户登录
+        if(!adds.isEmpty() || !removes.isEmpty()){
+            jwtUtil.invalidRedisToken(employee.getName());
         }
         if(!adds.isEmpty()){
             this.employeeService.saveRoles(employee.getId(),adds);

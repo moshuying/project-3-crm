@@ -65,6 +65,23 @@ const resp500 = {
     return Promise.reject(error)
   }
 }
+const respA = {
+  onFulfilled(response, options) {
+    const {message} = options
+    if (response.code === 500) {
+      message.error('服务器错误')
+    }
+    return response
+  },
+  onRejected(error, options) {
+    const {message} = options
+    const {response} = error
+    if (response.status === 500) {
+      message.error('服务器错误')
+    }
+    return Promise.reject(error)
+  }
+}
 
 const reqCommon = {
   /**
@@ -75,9 +92,10 @@ const reqCommon = {
    */
   onFulfilled(config, options) {
     const {message} = options
-    const {url, xsrfCookieName} = config
-    if (url.indexOf('login') === -1 && xsrfCookieName && !Cookie.get(xsrfCookieName)) {
+    const { xsrfCookieName} = config
+    if (options.router.currentRoute.fullPath !== '/login' && xsrfCookieName && !Cookie.get(xsrfCookieName)) {
       message.warning('认证 token 已过期，请重新登录')
+      options.router.push('/login')
     }
     return config
   },
@@ -96,5 +114,5 @@ const reqCommon = {
 
 export default {
   request: [reqCommon], // 请求拦截
-  response: [resp500,resp403] // 响应拦截
+  response: [resp500,resp403,respA] // 响应拦截
 }
