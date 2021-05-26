@@ -579,7 +579,6 @@ export default {
             this.visible = false
           }
           this.query()
-          this.form.resetField()
         })
       });
     },

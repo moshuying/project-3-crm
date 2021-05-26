@@ -1,5 +1,6 @@
 import axios from 'axios'
 import Cookie from 'js-cookie'
+import {message} from "ant-design-vue";
 
 // 跨域认证信息 header 名
 const xsrfHeaderName = 'Authorization'
@@ -34,20 +35,31 @@ const METHOD = {
  * @returns {Promise<AxiosResponse<T>>}
  */
 async function request(url, method, params, config) {
+  let promise =null;
   switch (method) {
     case METHOD.GET:
-      return axios.get(url, {params, ...config})
+      promise = axios.get(url, {params, ...config});
+      break;
     case METHOD.POST:
-      return axios.post(url, params, config)
+      promise = axios.post(url, params, config);
+      break;
     case METHOD.PUT:
-      return axios.put(url, params, config)
+      promise = axios.put(url, params, config);
+      break;
     case METHOD.PATCH:
-      return axios.patch(url,params,config)
+      promise = axios.patch(url,params,config);
+      break;
     case METHOD.DELETE:
-      return axios.delete(url,config)
+      promise = axios.delete(url,config);
+      break;
     default:
-      return axios.get(url, {params, ...config})
+      promise = axios.get(url, {params, ...config});
+      break;
   }
+  promise.catch(()=>{
+    message.warning('请求出错,您可能已经退出登录')
+  })
+  return promise;
 }
 
 /**
