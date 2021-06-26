@@ -79,8 +79,9 @@ public class JwtUtil {
    */
   public void invalidRedisToken(final String name) {
     // 将 token 设置为无效
-    final String token = (String) this.redisUtils.getValue(name);
-    Optional.ofNullable(token).ifPresent(_token -> this.redisUtils.setValue(_token, false));
+    Object value = this.redisUtils.getValue(name);
+    if(value==null){ return; }
+    Optional.ofNullable((String) value).ifPresent(_token -> this.redisUtils.setValue(_token, false));
   }
 
   /** 从请求头或请求参数中获取 token */
