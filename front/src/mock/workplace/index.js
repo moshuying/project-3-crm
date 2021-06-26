@@ -1,5 +1,5 @@
 import Mock from 'mockjs'
-import {activities, templates} from '../common/activityData'
+import {activities, templates} from '@/mock/common/activityData'
 import {teams} from '@/mock/common'
 
 activities.forEach(item => {
