@@ -17,8 +17,8 @@
 
 [sql文件包含在/mysql文件夹内](https://github.com/moshuying/project-3-crm/blob/main/mysql)
 
-<a href="http://project.crm3.msy.plus" target="_blank">
-在线演示(账户admin 密码12346578)
+<a href="https://www.msy.plus/discover/" target="_blank">
+在线演示(向下翻页就有)
 </a>
 </center>
 
