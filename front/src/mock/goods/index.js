@@ -5,7 +5,7 @@ import {parseUrlParams} from '@/utils/request'
 const current = new Date().getTime()
 
 const goodsList = Mock.mock({
-    'list|100': [{
+    'list|200': [{
         'id|+1': 0,
         'name': '@GOODS',
         'orderId': `${current}-@integer(1,100)`,
