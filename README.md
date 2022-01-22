@@ -2,13 +2,15 @@
 
 # project-3 CRM 客户资源管理系统
 
-![](/front/src/assets/img/logo.png)
+  
+<img align="right" src='/front/src/assets/img/logo.png' />
   
 [![Build Status](https://travis-ci.org/moshuying/project-3-crm.svg?branch=main)](https://travis-ci.org/moshuying/project-3-crm)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/) [![Join the chat at https://gitter.im/墨抒颖/project-3-crm](https://badges.gitter.im/墨抒颖/project-3-crm.svg)](https://gitter.im/墨抒颖/project-3-crm?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
  
+ ![GitHub language count](https://img.shields.io/github/languages/count/moshuying/project-3-crm) ![GitHub search hit counter](https://img.shields.io/github/search/moshuying/project-3-crm/1) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/moshuying/project-3-crm) ![GitHub repo size](https://img.shields.io/github/repo-size/moshuying/project-3-crm) 
   
- ![GitHub language count](https://img.shields.io/github/languages/count/moshuying/project-3-crm) ![GitHub search hit counter](https://img.shields.io/github/search/moshuying/project-3-crm/1) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/moshuying/project-3-crm) ![GitHub repo size](https://img.shields.io/github/repo-size/moshuying/project-3-crm) ![GitHub closed issues](https://img.shields.io/github/issues-closed/moshuying/project-3-crm) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/moshuying/project-3-crm) ![GitHub](https://img.shields.io/github/license/moshuying/project-3-crm)
+  ![GitHub closed issues](https://img.shields.io/github/issues-closed/moshuying/project-3-crm) ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/moshuying/project-3-crm) ![GitHub](https://img.shields.io/github/license/moshuying/project-3-crm)
 
 ### 国内用户请访问[同步仓库](https://gitee.com/moshuying/project-3-crm)
 
