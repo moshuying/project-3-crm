@@ -18,8 +18,8 @@ public class PasswordEncryptor {
 
   @Test
   public void encode() throws Exception {
-    final String admin = this.passwordEncoder.encode("root");
-    final String user = this.passwordEncoder.encode("123456");
+    final String admin = this.passwordEncoder.encode("admin");
+    final String user = this.passwordEncoder.encode("1234657");
     System.err.println("admin password = " + admin);
     System.err.println("user password = " + user);
   }
