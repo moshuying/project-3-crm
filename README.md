@@ -29,6 +29,13 @@
 - [项目文档地址](https://iczer.gitee.io/vue-antd-admin-docs/advance/authority.html#%E9%A1%B5%E9%9D%A2%E6%9D%83%E9%99%90) 
 - 后台使用 [spring-boot-api-seedling](https://github.com/Zoctan/spring-boot-api-seedling) 
 
+<h1>把项目拷贝下来后请自行修改数据库账户密码</h1>
+
+<h1>对应的代码位置在`back/src/main/resources/application-dev.yml`下，默认账户密码都是`root`。</h1>
+
+![image](https://user-images.githubusercontent.com/37231523/157181254-38b38973-522e-4fdb-803f-3e374caca5f4.png)
+
+
 系统包括：系统设置、客户管理、营销管理、服务管理、合同管理和统计分析六个功能模块。可满足管理人员日常对客户的资源维护、销售数据分析、潜在和有价值客户分析等需求。
 
 
