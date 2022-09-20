@@ -1,7 +1,7 @@
 package com.msy.plus.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.msy.plus.entity.Employee;
-import com.msy.plus.core.service.Service;
 import com.msy.plus.entity.EmployeeDetail;
 import com.msy.plus.entity.EmployeeWithRoleDO;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
 * @author MoShuYing
 * @date 2021/05/15
 */
-public interface EmployeeService extends Service<Employee> {
+public interface EmployeeService extends IService<Employee> {
     EmployeeDetail getDetailById(Long id);
 
     /**

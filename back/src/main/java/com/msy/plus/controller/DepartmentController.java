@@ -4,8 +4,6 @@ import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.entity.Department;
 import com.msy.plus.service.DepartmentService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -48,14 +46,14 @@ public class DepartmentController {
     @Operation(description = "部门删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
-        departmentService.deleteById(id);
+        departmentService.removeById(id);
         return ResultGenerator.genOkResult();
     }
 
     @Operation(description = "部门更新")
     @PatchMapping
     public Result update(@RequestBody Department department) {
-        departmentService.update(department);
+        departmentService.saveOrUpdate(department);
         return ResultGenerator.genOkResult();
     }
 
@@ -75,9 +73,9 @@ public class DepartmentController {
     })
     public Result list(@RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer size) {
-        PageHelper.startPage(page, size);
-        List<Department> list = departmentService.listAll();
-        PageInfo<Department> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(pageInfo);
+//        PageHelper.startPage(page, size);
+        List<Department> list = departmentService.list();
+//        PageInfo<Department> pageInfo = PageInfo.of(list);
+        return ResultGenerator.genOkResult(list);
     }
 }

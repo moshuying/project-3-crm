@@ -1,7 +1,7 @@
 package com.msy.plus.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msy.plus.core.response.ResultCode;
-import com.msy.plus.core.service.AbstractService;
 import com.msy.plus.dto.RoleDTO;
 import com.msy.plus.entity.RoleDO;
 import com.msy.plus.entity.RolePermissionDO;
@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class RoleServiceImpl extends AbstractService<RoleDO> implements RoleService {
+public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleDO> implements RoleService {
   @Resource private RoleMapper roleMapper;
 
   @Override
@@ -39,7 +39,7 @@ public class RoleServiceImpl extends AbstractService<RoleDO> implements RoleServ
   @Override
   public void update(final RoleDTO roleDTO) {
     final RoleDO role = roleDTO.convertToDO();
-    this.update(role);
+    this.saveOrUpdate(role);
   }
 
   @Override

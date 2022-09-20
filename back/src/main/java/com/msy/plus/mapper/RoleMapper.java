@@ -1,11 +1,11 @@
 package com.msy.plus.mapper;
 
-import com.msy.plus.core.mapper.MyMapper;
-import com.msy.plus.entity.Permission;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.msy.plus.entity.RoleDO;
 import com.msy.plus.entity.RolePermissionDO;
 import com.msy.plus.entity.RoleWithPermissionDO;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -13,7 +13,8 @@ import java.util.List;
  * @author MoShuying
  * @date 2018/07/15
  */
-public interface RoleMapper extends MyMapper<RoleDO> {
+@Component
+public interface RoleMapper extends BaseMapper<RoleDO> {
   /**
    * 赋予默认角色给账户
    *

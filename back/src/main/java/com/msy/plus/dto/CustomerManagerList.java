@@ -2,18 +2,11 @@ package com.msy.plus.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.Date;
 
 @Getter
 @Setter
 public class CustomerManagerList {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -53,12 +46,10 @@ public class CustomerManagerList {
     /**
      *  创建人 填写为当前登录用户
      */
-    @Column(name = "inputUser")
     private String inputuser;
 
     private String inputUserId;
 
-    @Column(name = "inputTime")
     private Date inputtime;
 
     /**
@@ -69,6 +60,5 @@ public class CustomerManagerList {
     /**
      * 转正时间
      */
-    @Column(name = "positiveTime")
     private Date positivetime;
 }

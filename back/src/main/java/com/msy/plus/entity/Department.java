@@ -1,55 +1,38 @@
 package com.msy.plus.entity;
 
-import javax.persistence.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
 
-public class Department {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+import java.io.Serializable;
 
+/**
+ *
+ * @TableName department
+ */
+@TableName(value ="department")
+@Data
+public class Department implements Serializable {
+    /**
+     *
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
+
+    /**
+     *
+     */
+    @TableField(value = "sn")
     private String sn;
 
+    /**
+     *
+     */
+    @TableField(value = "name")
     private String name;
 
-    /**
-     * @return id
-     */
-    public Integer getId() {
-        return id;
-    }
-
-    /**
-     * @param id
-     */
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    /**
-     * @return sn
-     */
-    public String getSn() {
-        return sn;
-    }
-
-    /**
-     * @param sn
-     */
-    public void setSn(String sn) {
-        this.sn = sn;
-    }
-
-    /**
-     * @return name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

@@ -11,8 +11,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -47,7 +45,7 @@ public class DictionaryDetailsController {
     @Operation(description = "数据字典明细更新")
     @PutMapping
     public Result update(@RequestBody DictionaryDetails dictionaryDetails) {
-    dictionaryDetailsService.update(dictionaryDetails);
+    dictionaryDetailsService.saveOrUpdate(dictionaryDetails);
         return ResultGenerator.genOkResult();
     }
 
@@ -73,13 +71,13 @@ public class DictionaryDetailsController {
         if (!(keyword == null || keyword.equals("null"))) {
             inKeyword = keyword;
         }
-        Integer inId = Integer.valueOf(id);
+        Long inId = Long.valueOf(id);
         if(inId==null){
-            inId = dictionaryDetailsService.listAll().get(0).getId();
+            inId = dictionaryDetailsService.list().get(0).getId();
         }
-        PageHelper.startPage(page, size);
+//        PageHelper.startPage(page, size);
         List<DictionaryContents> list = dictionaryDetailsService.listWithKeyword(inId.intValue(),inKeyword);
-        PageInfo<DictionaryContents> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(pageInfo);
+//        PageInfo<DictionaryContents> pageInfo = PageInfo.of(list);
+        return ResultGenerator.genOkResult(list);
     }
 }

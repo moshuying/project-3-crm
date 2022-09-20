@@ -1,31 +1,37 @@
 package com.msy.plus.entity;
 
-import lombok.*;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import lombok.Data;
 
 /**
- * 角色和权限中间表数据模型
+ * 角色权限中间表
+ * @TableName role_permission
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
-public class RolePermissionDO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@TableName(value ="role_permission")
+@Data
+public class RolePermissionDO implements Serializable {
+    /**
+     * 
+     */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 角色ID
+     * 角色id
      */
-    private Long role_id;
+    @TableField(value = "role_id")
+    private Integer roleId;
 
     /**
-     * 权限ID
+     * 权限id
      */
-    private Long permission_id;
+    @TableField(value = "permission_id")
+    private Integer permissionId;
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

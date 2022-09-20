@@ -1,10 +1,10 @@
 package com.msy.plus.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msy.plus.entity.CFUHSearch;
 import com.msy.plus.mapper.CustomerFollowUpHistoryMapper;
 import com.msy.plus.entity.CustomerFollowUpHistory;
 import com.msy.plus.service.CustomerFollowUpHistoryService;
-import com.msy.plus.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +19,7 @@ import java.util.List;
 */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class CustomerFollowUpHistoryServiceImpl extends AbstractService<CustomerFollowUpHistory> implements CustomerFollowUpHistoryService {
+public class CustomerFollowUpHistoryServiceImpl extends ServiceImpl<CustomerFollowUpHistoryMapper,CustomerFollowUpHistory> implements CustomerFollowUpHistoryService {
     @Resource
     private CustomerFollowUpHistoryMapper customerFollowUpHistoryMapper;
 

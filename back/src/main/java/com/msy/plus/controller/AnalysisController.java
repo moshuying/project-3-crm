@@ -1,7 +1,8 @@
 package com.msy.plus.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.core.jwt.JwtUtil;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
@@ -75,16 +76,17 @@ public class AnalysisController {
                 continue;
             }
             if(roleName.equals("董事长")){
-                PageHelper.startPage(analysisQuery.getPage(),analysisQuery.getSize());
-                PageInfo<Analysis> pageInfo = PageInfo.of(customerManagerService.queryAnalysis(analysisQuery));
-                return ResultGenerator.genOkResult(pageInfo);
+                IPage qpage = new Page(analysisQuery.getPage(),analysisQuery.getSize());
+               // PageInfo<Analysis> pageInfo = PageInfo.of(customerManagerService.queryAnalysis(analysisQuery));
+                List<Analysis>  analysesList = customerManagerService.queryAnalysis(analysisQuery);
+                return ResultGenerator.genOkResult(analysesList);
             }
         }
         // 除了董事长 其他人都只能查看自己的
         analysisQuery.setName(jwtUtil.getName(headers.get(header)).get());
-        PageHelper.startPage(analysisQuery.getPage(),analysisQuery.getSize());
-        PageInfo<Analysis> pageInfo = PageInfo.of(customerManagerService.queryAnalysis(analysisQuery));
-        return ResultGenerator.genOkResult(pageInfo);
+        IPage qpage = new Page(analysisQuery.getPage(),analysisQuery.getSize());
+        List<Analysis>  analysesList = customerManagerService.queryAnalysis(analysisQuery);
+        return ResultGenerator.genOkResult(analysesList);
     }
 
 }

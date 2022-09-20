@@ -1,13 +1,15 @@
 package com.msy.plus.mapper;
 
-import com.msy.plus.core.mapper.MyMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.msy.plus.entity.Employee;
 import com.msy.plus.entity.EmployeeDetail;
 import com.msy.plus.entity.EmployeeWithRoleDO;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public interface EmployeeMapper extends MyMapper<Employee> {
+@Component
+public interface EmployeeMapper extends BaseMapper<Employee> {
     EmployeeDetail getDetailById(Long id);
 
     /**

@@ -1,12 +1,13 @@
 package com.msy.plus.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.msy.plus.entity.Department;
-import com.msy.plus.core.service.Service;
 
 /**
 * @author MoShuYing
 * @date 2021/05/12
+ * update mp
 */
-public interface DepartmentService extends Service<Department> {
+public interface DepartmentService extends IService<Department> {
 
 }

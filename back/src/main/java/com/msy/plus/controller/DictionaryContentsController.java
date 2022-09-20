@@ -10,8 +10,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -47,7 +45,7 @@ public class DictionaryContentsController {
     @Operation(description = "数据字典更新")
     @PutMapping
     public Result update(@RequestBody DictionaryContents dictionaryContents) {
-    dictionaryContentsService.update(dictionaryContents);
+    dictionaryContentsService.saveOrUpdate(dictionaryContents);
         return ResultGenerator.genOkResult();
     }
 
@@ -72,9 +70,9 @@ public class DictionaryContentsController {
         if (!(keyword == null || keyword.equals("null"))) {
             inKeyword = keyword;
         }
-        PageHelper.startPage(page, size);
+//        PageHelper.startPage(page, size);
         List<DictionaryContents> list = dictionaryContentsService.listWithKeyword(inKeyword);
-        PageInfo<DictionaryContents> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(pageInfo);
+//        PageInfo<DictionaryContents> pageInfo = PageInfo.of(list);
+        return ResultGenerator.genOkResult(list);
     }
 }

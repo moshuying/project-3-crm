@@ -1,33 +1,37 @@
 package com.msy.plus.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.persistence.*;
 
 /**
- * 角色实体
- *
- * @author MoShuying
- * @date 2018/05/27
+ * 角色表
+ * @TableName role
  */
+@TableName(value ="role")
 @Data
-@Getter
-@Setter
-@Table(name = "role")
-public class RoleDO {
-  /** 角色Id */
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  private Long id;
+public class RoleDO implements Serializable {
+    /**
+     * 角色Id
+     */
+    @TableId(value = "id", type = IdType.AUTO)
+    private Long id;
 
-  /** 角色名称 */
-  @Column(name = "name")
-  private String name;
+    /**
+     * 角色名称
+     */
+    @TableField(value = "name")
+    private String name;
 
-  /** 角色编号 */
-  @Column(name = "sn")
-  private String sn;
+    /**
+     * 角色编号
+     */
+    @TableField(value = "sn")
+    private String sn;
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
 }

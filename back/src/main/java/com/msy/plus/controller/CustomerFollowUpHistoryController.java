@@ -1,5 +1,8 @@
 package com.msy.plus.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.core.jwt.JwtUtil;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
@@ -13,8 +16,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -56,7 +57,7 @@ public class CustomerFollowUpHistoryController {
     @Operation(description = "客户跟进记录更新")
     @PutMapping
     public Result update(@RequestBody CustomerFollowUpHistory customerFollowUpHistory) {
-    customerFollowUpHistoryService.update(customerFollowUpHistory);
+    customerFollowUpHistoryService.saveOrUpdate(customerFollowUpHistory);
         return ResultGenerator.genOkResult();
     }
 
@@ -81,9 +82,12 @@ public class CustomerFollowUpHistoryController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startTime,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endTime,
             @RequestParam(required = false) Integer type) {
-        PageHelper.startPage(page, size);
+      //  PageHelper.startPage(page, size);
+        IPage qpage = new Page(page, size);
         List<CFUHSearch> list = customerFollowUpHistoryService.listAndSearch(keyword,startTime,endTime,type);
-        PageInfo<CFUHSearch> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(pageInfo);
+
+        QueryWrapper<CustomerFollowUpHistory> cfhWrapper = new QueryWrapper<CustomerFollowUpHistory>();
+
+        return ResultGenerator.genOkResult(list);
     }
 }

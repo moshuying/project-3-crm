@@ -132,7 +132,7 @@ public class AccountController {
       example = "1")
   @DeleteMapping("/{id}")
   public Result delete(@PathVariable final Long id) {
-    this.accountService.deleteById(id);
+    this.accountService.removeById(id);
     return ResultGenerator.genOkResult();
   }
 //

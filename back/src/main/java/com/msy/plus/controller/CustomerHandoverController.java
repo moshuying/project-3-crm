@@ -13,8 +13,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -107,9 +105,9 @@ public class CustomerHandoverController {
                        @RequestParam(defaultValue = "") String keyword,
                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startTime,
                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endTime) {
-        PageHelper.startPage(page, size);
+//        PageHelper.startPage(page, size);
         List<CustomerHandoverList> list = customerHandoverService.listAndSearch(keyword,startTime,endTime);
-        PageInfo<CustomerHandoverList> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(pageInfo);
+//        PageInfo<CustomerHandoverList> pageInfo = PageInfo.of(list);
+        return ResultGenerator.genOkResult(list);
     }
 }

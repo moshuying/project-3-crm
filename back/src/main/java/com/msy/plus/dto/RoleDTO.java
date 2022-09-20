@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 
 /**
@@ -26,7 +25,6 @@ public class RoleDTO extends AbstractConverter<RoleDTO, RoleDO> implements Seria
   private String name;
 
   /** 角色编号 */
-  @Column(name = "sn")
   private String sn;
 
   @Override

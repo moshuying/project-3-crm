@@ -1,6 +1,6 @@
 package com.msy.plus.service;
 
-import com.msy.plus.core.service.Service;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.msy.plus.dto.AccountDTO;
 import com.msy.plus.entity.AccountDO;
 import com.msy.plus.entity.AccountWithRoleDO;
@@ -9,7 +9,7 @@ import com.msy.plus.entity.AccountWithRoleDO;
  * @author MoShuying
  * @date 2018/05/27
  */
-public interface AccountService extends Service<AccountDO> {
+public interface AccountService extends IService<AccountDO> {
   /**
    * 保存账户
    *

@@ -1,16 +1,19 @@
 package com.msy.plus.mapper;
 
-import com.msy.plus.core.mapper.MyMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.msy.plus.entity.AccountDO;
 import com.msy.plus.entity.AccountWithRoleDO;
 import com.msy.plus.query.AccountQuery;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
 
 /**
  * @author MoShuying
  * @date 2018/05/27
  */
-public interface AccountMapper extends MyMapper<AccountDO> {
+
+@Component
+public interface AccountMapper extends BaseMapper<AccountDO> {
   /**
    * 按条件查询账户
    *

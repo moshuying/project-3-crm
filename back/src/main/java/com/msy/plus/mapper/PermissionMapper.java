@@ -1,7 +1,9 @@
 package com.msy.plus.mapper;
 
-import com.msy.plus.core.mapper.MyMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.msy.plus.entity.Permission;
+import org.springframework.stereotype.Component;
 
-public interface PermissionMapper extends MyMapper<Permission> {
+@Component
+public interface PermissionMapper extends BaseMapper<Permission> {
 }

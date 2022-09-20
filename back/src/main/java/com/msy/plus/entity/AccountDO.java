@@ -1,40 +1,49 @@
 package com.msy.plus.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
- * @author MoShuying
- * @date 2018/05/27
+ *
+ * @TableName employee
+ * 主要用于账户登录，公用了员工表
  */
+@TableName(value ="employee")
 @Data
-@Table(name = "employee")
 public class AccountDO {
-  /** 账户Id */
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
+  /**
+   *
+   */
+  @TableId(value = "id", type = IdType.AUTO)
   private Long id;
 
-  /** 邮箱 */
-  @Column(name = "email")
-  private String email;
-
-  /** 账户名 */
-  @Column(name = "name")
+  /**
+   *
+   */
+  @TableField(value = "name")
   private String name;
 
-  /** 密码 */
-  @Column(name = "password")
+  /**
+   *
+   */
+  @TableField(value = "password")
   private String password;
 
+  /**
+   *
+   */
+  @TableField(value = "email")
+  private String email;
   /** 注册时间 */
-  @Column(name = "register_time")
+  @TableField(value = "register_time")
   private Timestamp registerTime;
 
   /** 上一次登录时间 */
-  @Column(name = "login_time")
+  @TableField(value = "login_time")
   private Timestamp loginTime;
 }

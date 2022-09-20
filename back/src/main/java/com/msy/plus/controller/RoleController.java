@@ -1,7 +1,5 @@
 package com.msy.plus.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.dto.RoleWithPermissionDTO;
@@ -55,9 +53,9 @@ public class RoleController {
   public Result delete(@PathVariable final Long id) {
     List<RolePermissionDO> raw = this.roleService.getAllRolePermissionTableRow(id);
     for(RolePermissionDO e :raw){
-      this.roleService.deleteRolePermissionItem(id,e.getPermission_id());
+      this.roleService.deleteRolePermissionItem(id,e.getId());
     }
-    this.roleService.deleteById(id);
+    this.roleService.removeById(id);
     return ResultGenerator.genOkResult();
   }
 
@@ -65,7 +63,7 @@ public class RoleController {
   @PutMapping
   public Result update(@RequestBody final RoleWithPermissionDTO roleWithPermissionDTO) {
     // 更新用户基本信息
-    this.roleService.update(roleWithPermissionDTO);
+    this.roleService.save(roleWithPermissionDTO);
     List<Long> nowPermissions = new ArrayList<>();
     if(roleWithPermissionDTO.getPermissions()==null){
       return ResultGenerator.genOkResult();
@@ -75,7 +73,7 @@ public class RoleController {
     // 表中权限信息去重
     Set<Long> raw = new HashSet<>();
     for(RolePermissionDO e: rawPer){
-      raw.add(e.getPermission_id());
+      raw.add(e.getId());
     }
 
     roleWithPermissionDTO.getPermissions().forEach(e->{ nowPermissions.add(e.getId()); });
@@ -125,9 +123,9 @@ public class RoleController {
   public Result list(
       @RequestParam(defaultValue = "1") final Integer page,
       @RequestParam(defaultValue = "10") final Integer size) {
-    PageHelper.startPage(page, size);
-    final List<RoleDO> list = this.roleService.listAll();
-    final PageInfo<RoleDO> pageInfo = new PageInfo<>(list);
-    return ResultGenerator.genOkResult(pageInfo);
+//    PageHelper.startPage(page, size);
+    final List<RoleDO> list = this.roleService.list();
+//    final PageInfo<RoleDO> pageInfo = new PageInfo<>(list);
+    return ResultGenerator.genOkResult(list);
   }
 }

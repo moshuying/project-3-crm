@@ -10,8 +10,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -39,7 +37,7 @@ public class PermissionController {
     @Operation(description = "权限删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
-    permissionService.deleteById(id);
+    permissionService.removeById(id);
         return ResultGenerator.genOkResult();
     }
 
@@ -66,9 +64,9 @@ public class PermissionController {
     })
     public Result list(@RequestParam(defaultValue = "1") Integer page,
     @RequestParam(defaultValue = "10") Integer size) {
-        PageHelper.startPage(page, size);
-        List<Permission> list = permissionService.listAll();
-        PageInfo<Permission> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(pageInfo);
+//        PageHelper.startPage(page, size);
+        List<Permission> list = permissionService.list();
+//        PageInfo<Permission> pageInfo = PageInfo.of(list);
+        return ResultGenerator.genOkResult(list);
     }
 }

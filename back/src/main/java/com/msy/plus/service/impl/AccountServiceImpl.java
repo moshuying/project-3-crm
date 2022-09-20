@@ -1,7 +1,9 @@
 package com.msy.plus.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msy.plus.core.response.ResultCode;
-import com.msy.plus.core.service.AbstractService;
 import com.msy.plus.dto.AccountDTO;
 import com.msy.plus.entity.AccountDO;
 import com.msy.plus.entity.AccountWithRoleDO;
@@ -12,10 +14,10 @@ import com.msy.plus.service.RoleService;
 import com.msy.plus.util.AssertUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.util.Optional;
@@ -27,17 +29,18 @@ import java.util.Optional;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class AccountServiceImpl extends AbstractService<AccountDO> implements AccountService {
-  @Resource private AccountMapper accountMapper;
+public class AccountServiceImpl extends ServiceImpl<AccountMapper, AccountDO> implements AccountService {
+  @Autowired
+  private AccountMapper accountMapper;
   @Resource private RoleService roleService;
   @Resource private PasswordEncoder passwordEncoder;
 
   /** 重写 save 方法，密码加密后再存，并且赋予默认角色 */
   @Override
   public void save(final AccountDTO accountDTO) {
-    AssertUtils.asserts(
-        !Optional.ofNullable(this.getBy("name", accountDTO.getName())).isPresent(),
-        ResultCode.DUPLICATE_NAME);
+//    AssertUtils.asserts(
+//        !Optional.ofNullable(this.getById("name", accountDTO.getName())).isPresent(),
+//        ResultCode.DUPLICATE_NAME);
 
     final AccountDO accountDO = accountDTO.convertToDO();
 
@@ -60,9 +63,8 @@ public class AccountServiceImpl extends AbstractService<AccountDO> implements Ac
     final String name = accountDO.getName();
     accountDO.setName(null);
     // 按 name 字段更新
-    final Condition condition = new Condition(AccountDO.class);
-    condition.createCriteria().andCondition("name = ", name);
-    this.updateByCondition(accountDO, condition);
+    Wrapper<AccountDO> wado = new QueryWrapper<AccountDO>();
+    this.update(accountDO, wado);
   }
 
   @Override

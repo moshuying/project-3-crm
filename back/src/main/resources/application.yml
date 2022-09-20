@@ -39,13 +39,7 @@ mybatis:
   # 存放 mapper 映射文件的位置
   mapper-locations: classpath:mapper/*.xml
 
-mapper:
-  # 多个接口时逗号隔开
-  mappers: com.msy.plus.core.mapper.MyMapper
-  # insert 和 update 中，判断字符串类型 != ''
-  not-empty: false
-  # 取回主键的方式
-  identity: MYSQL
+
 
 # 分页插件
 # https://github.com/pagehelper/Mybatis-PageHelper/blob/master/wikis/zh/HowToUse.md

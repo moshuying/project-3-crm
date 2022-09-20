@@ -12,8 +12,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -83,7 +81,7 @@ public class CustomerManagerController {
     @Operation(description = "客户管理更新")
     @PutMapping
     public Result update(@RequestBody CustomerManager customerManager) {
-    customerManagerService.update(customerManager);
+    customerManagerService.saveOrUpdate(customerManager);
         return ResultGenerator.genOkResult();
     }
 
@@ -105,9 +103,7 @@ public class CustomerManagerController {
        @RequestParam(defaultValue = "10") Integer size,
        @RequestParam(defaultValue = "",required = false) String keyword,
        @RequestParam(required = false) Integer status) {
-        PageHelper.startPage(page, size);
         List<CustomerManagerList> list = customerManagerService.listAllWithDictionary(keyword,status);
-        PageInfo<CustomerManagerList> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(pageInfo);
+        return ResultGenerator.genOkResult(list);
     }
 }

@@ -1,11 +1,13 @@
 package com.msy.plus.mapper;
 
-import com.msy.plus.core.mapper.MyMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.msy.plus.entity.CFUHSearch;
 import com.msy.plus.entity.CustomerFollowUpHistory;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public interface CustomerFollowUpHistoryMapper extends MyMapper<CustomerFollowUpHistory> {
+@Component
+public interface CustomerFollowUpHistoryMapper extends BaseMapper<CustomerFollowUpHistory> {
     List<CFUHSearch> listAndSearch(String keyword, String startTime, String endTime, Integer type);
 }

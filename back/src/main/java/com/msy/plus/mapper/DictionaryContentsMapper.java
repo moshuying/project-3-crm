@@ -1,10 +1,12 @@
 package com.msy.plus.mapper;
 
-import com.msy.plus.core.mapper.MyMapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.msy.plus.entity.DictionaryContents;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public interface DictionaryContentsMapper extends MyMapper<DictionaryContents> {
+@Component
+public interface DictionaryContentsMapper extends BaseMapper<DictionaryContents> {
     List<DictionaryContents> listWithKeyword(String keyword);
 }

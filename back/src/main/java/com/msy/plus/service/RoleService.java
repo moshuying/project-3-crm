@@ -1,6 +1,6 @@
 package com.msy.plus.service;
 
-import com.msy.plus.core.service.Service;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.msy.plus.dto.RoleDTO;
 import com.msy.plus.entity.RoleDO;
 import com.msy.plus.entity.RolePermissionDO;
@@ -11,8 +11,9 @@ import java.util.List;
 /**
  * @author MoShuying
  * @date 2018/05/27
+ * updated mp
  */
-public interface RoleService extends Service<RoleDO> {
+public interface RoleService extends IService<RoleDO> {
   /**
    * 赋予默认角色给账户
    *

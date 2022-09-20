@@ -1,11 +1,11 @@
 package com.msy.plus.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msy.plus.entity.EmployeeDetail;
 import com.msy.plus.entity.EmployeeWithRoleDO;
 import com.msy.plus.mapper.EmployeeMapper;
 import com.msy.plus.entity.Employee;
 import com.msy.plus.service.EmployeeService;
-import com.msy.plus.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,7 @@ import java.util.List;
 */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class EmployeeServiceImpl extends AbstractService<Employee> implements EmployeeService {
+public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> implements EmployeeService {
 
 
     @Resource

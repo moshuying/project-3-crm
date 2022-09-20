@@ -16,8 +16,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -100,7 +98,7 @@ public class EmployeeController {
     @Operation(description = "员工删除")
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Long id) {
-        employeeService.deleteById(id);
+        employeeService.removeById(id);
         employeeService.deleteEmployeeWithRole(id);
         return ResultGenerator.genOkResult();
     }
@@ -122,7 +120,7 @@ public class EmployeeController {
             employee.setPassword(this.passwordEncoder.encode(employee.getPassword().trim()));
         }
         try{
-            employeeService.update((Employee) employee);
+            employeeService.saveOrUpdate((Employee) employee);
         }catch (Exception e){
             e.printStackTrace();
             String msg = "信息有误";
@@ -187,11 +185,11 @@ public class EmployeeController {
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(required = false) Integer dept,
             @RequestParam(defaultValue = "") String keyword) {
-        PageHelper.startPage(page, size);
+//        PageHelper.startPage(page, size);
         List<EmployeeWithRoleDO> list = employeeService.listEmployeeWithRole(keyword, dept);
-        PageInfo<EmployeeWithRoleDO> pageInfo = PageInfo.of(list);
+//        PageInfo<EmployeeWithRoleDO> pageInfo = PageInfo.of(list);
         // 不显示 password 字段
-        final PageInfo<JSONObject> objectPageInfo = JsonUtils.deleteFields(pageInfo, PageInfo.class, "password");
-        return ResultGenerator.genOkResult(objectPageInfo);
+//        final PageInfo<JSONObject> objectPageInfo = JsonUtils.deleteFields(pageInfo, PageInfo.class, "password");
+        return ResultGenerator.genOkResult(list);
     }
 }

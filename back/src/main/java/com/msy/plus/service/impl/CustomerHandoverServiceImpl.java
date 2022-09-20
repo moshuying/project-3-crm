@@ -1,10 +1,10 @@
 package com.msy.plus.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msy.plus.dto.CustomerHandoverList;
 import com.msy.plus.mapper.CustomerHandoverMapper;
 import com.msy.plus.entity.CustomerHandover;
 import com.msy.plus.service.CustomerHandoverService;
-import com.msy.plus.core.service.AbstractService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,7 @@ import java.util.List;
 */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class CustomerHandoverServiceImpl extends AbstractService<CustomerHandover> implements CustomerHandoverService {
+public class CustomerHandoverServiceImpl extends ServiceImpl<CustomerHandoverMapper, CustomerHandover> implements CustomerHandoverService {
     @Resource
     private CustomerHandoverMapper customerHandoverMapper;
 
