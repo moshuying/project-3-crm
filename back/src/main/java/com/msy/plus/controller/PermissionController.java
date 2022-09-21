@@ -1,5 +1,7 @@
 package com.msy.plus.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.entity.Permission;
@@ -65,7 +67,8 @@ public class PermissionController {
     public Result list(@RequestParam(defaultValue = "1") Integer page,
     @RequestParam(defaultValue = "10") Integer size) {
 //        PageHelper.startPage(page, size);
-        List<Permission> list = permissionService.list();
+        IPage<Permission> ppage = new Page<Permission>(page, size);
+        IPage<Permission> list = permissionService.page(ppage);
 //        PageInfo<Permission> pageInfo = PageInfo.of(list);
         return ResultGenerator.genOkResult(list);
     }
