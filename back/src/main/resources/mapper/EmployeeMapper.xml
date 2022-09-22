@@ -24,6 +24,7 @@
             <result column="roleIds" jdbcType="INTEGER"/>
         </collection>
     </resultMap>
+
     <select id="listEmployeeWithRole" resultMap="EmployeeWithRole">
         select e.id as id,
         e.name as name,
@@ -41,6 +42,7 @@
         </if>
         group by e.id order by e.id desc
     </select>
+
     <select id="getDetailById" resultMap="EmployeeDetail">
         select e.id       as id,
                e.name     as name,
@@ -54,11 +56,13 @@
                  left join employee_role er on er.employeeId = e.id
         where e.id = #{id}
     </select>
+
     <delete id="deleteEmployeeWithRole">
         delete
         from employee_role
         where employeeId = #{id}
     </delete>
+
     <select id="saveRoles">
         <if test="roles !=null">
             insert into employee_role (employeeId,roleId) values
@@ -76,6 +80,7 @@
         from employee_role
         where employeeId = #{id}
     </select>
+
     <delete id="deleteEmployeeWithRoleItem">
         delete
         from employee_role

@@ -1,6 +1,9 @@
 package com.msy.plus.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.core.jwt.JwtUtil;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
@@ -186,10 +189,15 @@ public class EmployeeController {
             @RequestParam(required = false) Integer dept,
             @RequestParam(defaultValue = "") String keyword) {
 //        PageHelper.startPage(page, size);
-        List<EmployeeWithRoleDO> list = employeeService.listEmployeeWithRole(keyword, dept);
-//        PageInfo<EmployeeWithRoleDO> pageInfo = PageInfo.of(list);
+
+        IPage<EmployeeWithRoleDO> ewro = new Page<EmployeeWithRoleDO>(page, size);
+
+        IPage<EmployeeWithRoleDO> list = employeeService.listEmployeeWithRole(ewro, keyword, dept);
+
+        System.out.println(list);
+
         // 不显示 password 字段
-//        final PageInfo<JSONObject> objectPageInfo = JsonUtils.deleteFields(pageInfo, PageInfo.class, "password");
+      //  final IPage<JSONObject> objectPageInfo = JsonUtils.deleteFields(ewro, IPage.class, "password");
         return ResultGenerator.genOkResult(list);
     }
 }

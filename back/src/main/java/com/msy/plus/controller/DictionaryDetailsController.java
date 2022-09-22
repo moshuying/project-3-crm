@@ -1,5 +1,7 @@
 package com.msy.plus.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.entity.DictionaryContents;
@@ -76,8 +78,9 @@ public class DictionaryDetailsController {
             inId = dictionaryDetailsService.list().get(0).getId();
         }
 //        PageHelper.startPage(page, size);
-        List<DictionaryContents> list = dictionaryDetailsService.listWithKeyword(inId.intValue(),inKeyword);
+        IPage<DictionaryContents> dictionaryContentsIPage =  new Page<DictionaryContents>(page,size);
+        dictionaryContentsIPage = dictionaryDetailsService.listWithKeyword(dictionaryContentsIPage,inId.intValue(),inKeyword);
 //        PageInfo<DictionaryContents> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(list);
+        return ResultGenerator.genOkResult(dictionaryContentsIPage);
     }
 }

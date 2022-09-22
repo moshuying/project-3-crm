@@ -1,5 +1,7 @@
 package com.msy.plus.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.entity.Department;
@@ -29,7 +31,7 @@ import java.util.List;
                 "or hasAuthority('会长') " +
                 "or hasAuthority('高级总裁') " +
                 "or hasAuthority('高级副总裁')")
-@Api(tags={"部门接口"})
+@Api(tags = {"部门接口"})
 @RestController
 @RequestMapping("/department")
 public class DepartmentController {
@@ -66,16 +68,17 @@ public class DepartmentController {
 
     @Operation(description = "分页查询部门")
     @GetMapping
-    @ApiOperation(value="分页查询部门", notes="分页查询")
+    @ApiOperation(value = "分页查询部门", notes = "分页查询")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
-            @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
+            @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType = "query")
     })
     public Result list(@RequestParam(defaultValue = "1") Integer page,
                        @RequestParam(defaultValue = "10") Integer size) {
-//        PageHelper.startPage(page, size);
-        List<Department> list = departmentService.list();
+        Page<Department> departPage;
+        departPage = new Page(page, size);
+        departPage = departmentService.page(departPage);
 //        PageInfo<Department> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(list);
+        return ResultGenerator.genOkResult(departPage);
     }
 }

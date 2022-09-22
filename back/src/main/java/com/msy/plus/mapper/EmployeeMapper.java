@@ -1,6 +1,8 @@
 package com.msy.plus.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.entity.Employee;
 import com.msy.plus.entity.EmployeeDetail;
 import com.msy.plus.entity.EmployeeWithRoleDO;
@@ -16,7 +18,7 @@ public interface EmployeeMapper extends BaseMapper<Employee> {
      * 分页查询员工
      * @return
      */
-    List<EmployeeWithRoleDO> listEmployeeWithRole(String keyword,int dept);
+    IPage<EmployeeWithRoleDO> listEmployeeWithRole(IPage<EmployeeWithRoleDO> page, String keyword, int dept);
 
     /**
      * 保存员工角色信息

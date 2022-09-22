@@ -1,5 +1,6 @@
 package com.msy.plus.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.msy.plus.entity.Employee;
 import com.msy.plus.entity.EmployeeDetail;
@@ -17,7 +18,7 @@ public interface EmployeeService extends IService<Employee> {
      * 分页查询员工
      * @return
      */
-    List<EmployeeWithRoleDO> listEmployeeWithRole(String keyword,Integer dept);
+    IPage<EmployeeWithRoleDO> listEmployeeWithRole(IPage<EmployeeWithRoleDO> page, String keyword, Integer dept);
 
     /**
      * 保存员工角色信息

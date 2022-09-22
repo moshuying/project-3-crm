@@ -1,5 +1,6 @@
 package com.msy.plus.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msy.plus.entity.DictionaryContents;
 import com.msy.plus.mapper.DictionaryDetailsMapper;
@@ -22,7 +23,7 @@ public class DictionaryDetailsServiceImpl extends ServiceImpl<DictionaryDetailsM
     @Resource
     private DictionaryDetailsMapper dictionaryDetailsMapper;
 
-    public List<DictionaryContents> listWithKeyword(int id,String keyword) {
-        return dictionaryDetailsMapper.listWithKeyword(id,keyword);
+    public IPage<DictionaryContents> listWithKeyword(IPage<DictionaryContents> page, int id, String keyword) {
+        return dictionaryDetailsMapper.listWithKeyword(page, id,keyword);
     }
 }

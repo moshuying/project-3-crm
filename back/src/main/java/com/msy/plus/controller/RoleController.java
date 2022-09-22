@@ -1,5 +1,7 @@
 package com.msy.plus.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
 import com.msy.plus.dto.RoleWithPermissionDTO;
@@ -123,9 +125,9 @@ public class RoleController {
   public Result list(
       @RequestParam(defaultValue = "1") final Integer page,
       @RequestParam(defaultValue = "10") final Integer size) {
-//    PageHelper.startPage(page, size);
-    final List<RoleDO> list = this.roleService.list();
+    IPage<RoleDO> rolePage = new Page<RoleDO>(page,size);
+    rolePage = this.roleService.page(rolePage);
 //    final PageInfo<RoleDO> pageInfo = new PageInfo<>(list);
-    return ResultGenerator.genOkResult(list);
+    return ResultGenerator.genOkResult(rolePage);
   }
 }

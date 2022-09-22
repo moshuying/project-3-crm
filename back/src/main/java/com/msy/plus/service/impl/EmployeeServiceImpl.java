@@ -1,5 +1,6 @@
 package com.msy.plus.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msy.plus.entity.EmployeeDetail;
 import com.msy.plus.entity.EmployeeWithRoleDO;
@@ -30,9 +31,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     }
 
     @Override
-    public List<EmployeeWithRoleDO> listEmployeeWithRole(String keyword,Integer dept){
+    public IPage<EmployeeWithRoleDO> listEmployeeWithRole(IPage<EmployeeWithRoleDO> page, String keyword, Integer dept){
         if(dept==null){ dept=0; }
-        return this.employeeMapper.listEmployeeWithRole(keyword,dept);
+        return this.employeeMapper.listEmployeeWithRole(page,keyword,dept);
     }
 
     @Override
