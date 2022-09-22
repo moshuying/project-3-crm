@@ -191,7 +191,7 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
+        this.dataSource = res.records.map((e, i) => ({key: i + "", ...e}))
         this.pagination = pagination
         this.loading = false
       })
@@ -291,7 +291,7 @@ export default {
     // modal transfer
     getAllPermissionList() {
       return permission.list({page: 1, size: 999999999}).then(({data}) => {
-        this.permissionList = data.data.list.map((e, i) => ({key: i + "", title: e.name, ...e}))
+        this.permissionList = data.data.records.map((e, i) => ({key: i + "", title: e.name, ...e}))
       })
     },
     handleChange(targetKeys) {

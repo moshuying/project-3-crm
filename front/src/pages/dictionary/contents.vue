@@ -136,6 +136,7 @@ export default {
         page: pagination.current,
       });
     },
+
     fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
       dictionaryContents.list(params || {"page": 1, "size": 10}).then(({data}) => {
@@ -143,12 +144,13 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({key: i + "",...e}))
+        this.dataSource = res.records.map((e, i) => ({key: i + "",...e}))
         this.pagination = pagination
         this.loading = false
         this.queryLoading = false
       })
     },
+
     deleteItem(text) {
       const title = '删除'
       dictionaryContents.deleteItem(text.id).then(({data})=>{

@@ -123,7 +123,6 @@ export default {
         this.dataSource = res.records.map((e, i) => ({key: i + "",...e}))
         this.pagination = pagination
         this.loading = false
-        console.log("permission: data: ", data, "pagination", pagination)
       })
     },
     deleteItem(text) {

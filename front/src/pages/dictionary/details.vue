@@ -129,7 +129,7 @@ export default {
   },
   created() {
     dictionaryContents.list({page:1,size:999999}).then(({data})=>{
-      this.dContentsList = data.data.list
+      this.dContentsList = data.data.records
       this.leftFirstId = this.dContentsList[0].id
       this.fetch({page:1,size:10,id:this.leftFirstId})
     })
@@ -164,7 +164,7 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({key: i + "",...e}))
+        this.dataSource = res.records.map((e, i) => ({key: i + "",...e}))
         this.pagination = pagination
         this.loading = false
         this.queryLoading = false
