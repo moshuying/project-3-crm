@@ -1,5 +1,7 @@
 package com.msy.plus.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.core.jwt.JwtUtil;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
@@ -105,9 +107,9 @@ public class CustomerHandoverController {
                        @RequestParam(defaultValue = "") String keyword,
                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startTime,
                        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endTime) {
-//        PageHelper.startPage(page, size);
-        List<CustomerHandoverList> list = customerHandoverService.listAndSearch(keyword,startTime,endTime);
+        IPage<CustomerHandoverList> customerHandoverListIPage = new Page<CustomerHandoverList>(page, size);
+        customerHandoverListIPage = customerHandoverService.listAndSearch(customerHandoverListIPage,keyword,startTime,endTime);
 //        PageInfo<CustomerHandoverList> pageInfo = PageInfo.of(list);
-        return ResultGenerator.genOkResult(list);
+        return ResultGenerator.genOkResult(customerHandoverListIPage);
     }
 }
