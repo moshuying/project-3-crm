@@ -66,6 +66,9 @@ public class AnalysisController {
         String header = jwtUtil.getJwtProperties().getHeader();
         String id= jwtUtil.getId(headers.get(header)).get();
         List<Long> roleIds = employeeService.getDetailById(Integer.valueOf(id).longValue()).getRoleIds();
+
+        IPage<Analysis>  analysisIPage = new Page<Analysis> (analysisQuery.getPage(),analysisQuery.getSize());
+
         for(Long roleId:roleIds){
             RoleWithPermissionDO  roleWithPermissionDO =  roleService.getDetailById(roleId);
             if(roleWithPermissionDO==null) {
@@ -76,17 +79,15 @@ public class AnalysisController {
                 continue;
             }
             if(roleName.equals("董事长")){
-                IPage qpage = new Page(analysisQuery.getPage(),analysisQuery.getSize());
                // PageInfo<Analysis> pageInfo = PageInfo.of(customerManagerService.queryAnalysis(analysisQuery));
-                List<Analysis>  analysesList = customerManagerService.queryAnalysis(analysisQuery);
-                return ResultGenerator.genOkResult(analysesList);
+                analysisIPage = customerManagerService.queryAnalysis(analysisIPage, analysisQuery);
+                return ResultGenerator.genOkResult(analysisIPage);
             }
         }
         // 除了董事长 其他人都只能查看自己的
         analysisQuery.setName(jwtUtil.getName(headers.get(header)).get());
-        IPage qpage = new Page(analysisQuery.getPage(),analysisQuery.getSize());
-        List<Analysis>  analysesList = customerManagerService.queryAnalysis(analysisQuery);
-        return ResultGenerator.genOkResult(analysesList);
+        analysisIPage = customerManagerService.queryAnalysis(analysisIPage, analysisQuery);
+        return ResultGenerator.genOkResult(analysisIPage);
     }
 
 }

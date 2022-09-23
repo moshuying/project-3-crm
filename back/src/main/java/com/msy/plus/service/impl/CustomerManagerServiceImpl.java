@@ -1,5 +1,6 @@
 package com.msy.plus.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msy.plus.dto.AnalysisQuery;
 import com.msy.plus.dto.CustomerManagerList;
@@ -25,14 +26,14 @@ public class CustomerManagerServiceImpl extends ServiceImpl<CustomerManagerMappe
     private CustomerManagerMapper customerManagerMapper;
 
 
-    public List<CustomerManagerList> listAllWithDictionary(String keyword, Integer status) {
-        return customerManagerMapper.listAllWithDictionary(keyword,status);
+    public IPage<CustomerManagerList> listAllWithDictionary(IPage<CustomerManagerList> customerManagerListIPage,String keyword, Integer status) {
+        return customerManagerMapper.listAllWithDictionary(customerManagerListIPage, keyword,status);
     }
 
-    public List<Analysis> queryAnalysis(AnalysisQuery analysisQuery) {
+    public IPage<Analysis> queryAnalysis(IPage<Analysis> qpage,AnalysisQuery analysisQuery) {
         if(analysisQuery.getName()==null){
             analysisQuery.setName("");
         }
-        return customerManagerMapper.queryAnalysis(analysisQuery);
+        return customerManagerMapper.queryAnalysis(qpage, analysisQuery);
     }
 }

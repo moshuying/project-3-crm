@@ -82,12 +82,9 @@ public class CustomerFollowUpHistoryController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startTime,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endTime,
             @RequestParam(required = false) Integer type) {
-      //  PageHelper.startPage(page, size);
-        IPage qpage = new Page(page, size);
-        List<CFUHSearch> list = customerFollowUpHistoryService.listAndSearch(keyword,startTime,endTime,type);
 
-        QueryWrapper<CustomerFollowUpHistory> cfhWrapper = new QueryWrapper<CustomerFollowUpHistory>();
-
-        return ResultGenerator.genOkResult(list);
+        IPage<CFUHSearch> qpage = new Page<CFUHSearch>(page, size);
+        qpage= customerFollowUpHistoryService.listAndSearch(qpage,keyword,startTime,endTime,type);
+        return ResultGenerator.genOkResult(qpage);
     }
 }

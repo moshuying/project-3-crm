@@ -1,5 +1,6 @@
 package com.msy.plus.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.msy.plus.dto.CustomerHandoverList;
 import com.msy.plus.mapper.CustomerHandoverMapper;
@@ -23,7 +24,7 @@ public class CustomerHandoverServiceImpl extends ServiceImpl<CustomerHandoverMap
     private CustomerHandoverMapper customerHandoverMapper;
 
     @Override
-    public List<CustomerHandoverList> listAndSearch(String keyword, Date startTime, Date endTime) {
-        return this.customerHandoverMapper.listAndSearch(keyword, startTime, endTime);
+    public IPage<CustomerHandoverList>  listAndSearch(IPage<CustomerHandoverList> customerHandoverListIPage,String keyword, Date startTime, Date endTime) {
+        return this.customerHandoverMapper.listAndSearch(customerHandoverListIPage,keyword, startTime, endTime);
     }
 }

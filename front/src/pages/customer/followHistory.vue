@@ -196,10 +196,10 @@ export default {
   async mounted() {
     // id 10 跟进方式
     const {data} = await dictionaryDetails.list({page:1,size:999999,id:10})
-    this.dictionaryDetailsFollow = data.data.list
+    this.dictionaryDetailsFollow = data.data.records
 
     const employeeData = await employee.list({page:1,size:99999})
-    this.employeeList = employeeData.data.data.list
+    this.employeeList = employeeData.data.data.records
 
     await this.query()
     this.queryForm.setFieldsValue({"type":9999999})
@@ -240,7 +240,7 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({
+        this.dataSource = res.records.map((e, i) => ({
           ...e,
           key: i + "",
           tracetypeFind:this.dictionaryDetailsFollow.find(d=>d.id===e.tracetype).title,

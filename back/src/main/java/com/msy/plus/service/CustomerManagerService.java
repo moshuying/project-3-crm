@@ -1,5 +1,6 @@
 package com.msy.plus.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.msy.plus.dto.AnalysisQuery;
 import com.msy.plus.dto.CustomerManagerList;
@@ -14,7 +15,7 @@ import java.util.List;
 */
 public interface CustomerManagerService extends IService<CustomerManager> {
 
-    List<CustomerManagerList> listAllWithDictionary(String keyword, Integer status);
+    IPage<CustomerManagerList>  listAllWithDictionary(IPage<CustomerManagerList> customerManagerListIPageString, String keyword, Integer status);
 
-    List<Analysis> queryAnalysis(AnalysisQuery analysisQuery);
+    IPage<Analysis> queryAnalysis(IPage<Analysis> qpage, AnalysisQuery analysisQuery);
 }

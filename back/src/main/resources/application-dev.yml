@@ -92,6 +92,7 @@ spring:
 logging:
   # 日志级别
   level.com.msy.plus: debug
+  level: debug
 
 # Json web token
 jwt:

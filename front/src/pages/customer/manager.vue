@@ -372,19 +372,19 @@ export default {
     this.query()
     // id 1 职业
     dictionaryDetails.list({page:1,size:999999,id:1}).then(({data})=>{
-      this.dictionaryDetailsJob = data.data.list
+      this.dictionaryDetailsJob = data.data.records
     });
     // id 2 来源
     dictionaryDetails.list({page:1,size:999999,id:2}).then(({data})=>{
-      this.dictionaryDetailsSource = data.data.list
+      this.dictionaryDetailsSource = data.data.records
     })
     // id 10 跟进方式
     dictionaryDetails.list({page:1,size:999999,id:10}).then(({data})=>{
-      this.dictionaryDetailsFollow = data.data.list
+      this.dictionaryDetailsFollow = data.data.records
     })
 
     employee.list({page:1,size:99999}).then(({data})=>{
-      this.employeeList = data.data.list
+      this.employeeList = data.data.records
     })
   },
   methods: {
@@ -416,7 +416,7 @@ export default {
       const pagination = {...this.pagination};
       pagination.total = res.total
       pagination.current = params.page
-      this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
+      this.dataSource = res.records.map((e, i) => ({key: i + "", ...e}))
       this.pagination = pagination
       this.loading = false
       this.queryLoading=false

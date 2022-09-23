@@ -1,5 +1,7 @@
 package com.msy.plus.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.msy.plus.core.jwt.JwtUtil;
 import com.msy.plus.core.response.Result;
 import com.msy.plus.core.response.ResultGenerator;
@@ -103,7 +105,8 @@ public class CustomerManagerController {
        @RequestParam(defaultValue = "10") Integer size,
        @RequestParam(defaultValue = "",required = false) String keyword,
        @RequestParam(required = false) Integer status) {
-        List<CustomerManagerList> list = customerManagerService.listAllWithDictionary(keyword,status);
-        return ResultGenerator.genOkResult(list);
+        IPage<CustomerManagerList> customerManagerListIPage = new Page<CustomerManagerList>(page, size);
+        customerManagerListIPage = customerManagerService.listAllWithDictionary(customerManagerListIPage,keyword,status);
+        return ResultGenerator.genOkResult(customerManagerListIPage);
     }
 }

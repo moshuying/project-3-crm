@@ -117,6 +117,8 @@ export default {
         page: pagination.current,
       });
     },
+
+    //获取清单
     fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
       customerHandover.list(params || {"page": 1, "size": 10}).then(({data}) => {
@@ -124,7 +126,7 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({
+        this.dataSource = res.records.map((e, i) => ({
           ...e,
           key: i + "",
         }))
