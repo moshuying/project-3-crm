@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msy.plus.mapper.CustomerFollowUpHistoryMapper">
-  <resultMap id="BaseResultMap" type="com.msy.plus.entity.CustomerFollowUpHistory">
+<mapper namespace="com.yly.crm.mapper.CustomerFollowUpHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.yly.crm.entity.CustomerFollowUpHistory">
     <!--
       WARNING - @mbg.generated
     -->
@@ -15,7 +15,7 @@
     <result column="traceDetails" jdbcType="LONGVARCHAR" property="tracedetails" />
     <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
   </resultMap>
-  <select id="listAndSearch" resultType="com.msy.plus.entity.CFUHSearch">
+  <select id="listAndSearch" resultType="com.yly.crm.entity.CFUHSearch">
     select cfuh.id          as id,
            cm2.name         as name,
            cfuh.traceTime   as traceTime,

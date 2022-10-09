@@ -57,7 +57,7 @@ async function request(url, method, params, config) {
       break;
   }
   promise.catch(()=>{
-    message.warning('请求出错,您可能已经退出登录')
+    message.warning('http请求出错')
   })
   return promise;
 }

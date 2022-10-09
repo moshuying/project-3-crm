@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msy.plus.mapper.CustomerHandoverMapper">
-  <resultMap id="BaseResultMap" type="com.msy.plus.entity.CustomerHandover">
+<mapper namespace="com.yly.crm.mapper.CustomerHandoverMapper">
+  <resultMap id="BaseResultMap" type="com.yly.crm.entity.CustomerHandover">
     <!--
       WARNING - @mbg.generated
     -->
@@ -13,7 +13,7 @@
     <result column="newSeller" jdbcType="INTEGER" property="newseller" />
     <result column="transReason" jdbcType="VARCHAR" property="transreason" />
   </resultMap>
-  <select id="listAndSearch" resultType="com.msy.plus.dto.CustomerHandoverList">
+  <select id="listAndSearch" resultType="com.yly.crm.dto.CustomerHandoverList">
     select ch.id          as id,
            cm.name        as customerName,
            ch.transTime   as transTime,

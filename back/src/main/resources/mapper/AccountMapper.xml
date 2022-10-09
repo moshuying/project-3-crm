@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msy.plus.mapper.AccountMapper">
-    <resultMap id="AccountMap" type="com.msy.plus.entity.AccountDO">
+<mapper namespace="com.yly.crm.mapper.AccountMapper">
+    <resultMap id="AccountMap" type="com.yly.crm.entity.AccountDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -10,8 +10,8 @@
         <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
     </resultMap>
 
-    <resultMap id="AccountWithRoleMap" type="com.msy.plus.entity.AccountWithRoleDO" extends="AccountMap">
-        <collection property="roles" javaType="java.util.List" ofType="com.msy.plus.entity.RoleDO">
+    <resultMap id="AccountWithRoleMap" type="com.yly.crm.entity.AccountWithRoleDO" extends="AccountMap">
+        <collection property="roles" javaType="java.util.List" ofType="com.yly.crm.entity.RoleDO">
             <result column="role_name" jdbcType="VARCHAR" property="name"/>
             <result column="role_id" jdbcType="BIGINT" property="id"/>
         </collection>

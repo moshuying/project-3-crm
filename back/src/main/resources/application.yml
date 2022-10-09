@@ -35,7 +35,7 @@ jasypt:
 
 mybatis:
   # 存放实体的位置
-  type-aliases-package: com.msy.plus.entity
+  type-aliases-package: com.yly.crm.entity
   # 存放 mapper 映射文件的位置
   mapper-locations: classpath:mapper/*.xml
 
@@ -58,6 +58,6 @@ pagehelper:
 # 日志
 #logging:
 #  # 以文件方式记录日志
-#  file: plus.log
+#  file: yly.crm.log
 #  # 设置目录
 #  path: /var/log

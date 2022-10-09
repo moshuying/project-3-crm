@@ -76,8 +76,10 @@ const respA = {
   onRejected(error, options) {
     const {message} = options
     const {response} = error
-    if (response.status === 500) {
+    if (response && response.status === 500) {
       message.error('服务器错误')
+    }else{
+      message.error('严重，网络错误！')
     }
     return Promise.reject(error)
   }

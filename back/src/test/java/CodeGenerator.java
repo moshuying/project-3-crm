@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static com.msy.plus.core.constant.ProjectConstant.*;
+import static com.yly.crm.core.constant.ProjectConstant.*;
 
 /**
  * 代码生成器 根据数据表名称生成对应的 Entity、Mapper、Service、Controller 简化开发
@@ -20,6 +20,7 @@ import static com.msy.plus.core.constant.ProjectConstant.*;
  * @date 2018/05/27
  */
 class CodeGenerator {
+
   private static final String DATABASE = "mysql";
   // JDBC配置，请修改为你项目的实际配置
   private static final String JDBC_URL =
@@ -48,7 +49,7 @@ class CodeGenerator {
       CodeGenerator.packageConvertPath(CONTROLLER_PACKAGE);
 
   // @author
-  private static final String AUTHOR = "MoShuYing";
+  private static final String AUTHOR = "com.yliyun.jiuyuehe";
   // @date
   private static final String DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
   private static final boolean isRestful = true;

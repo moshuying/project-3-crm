@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msy.plus.mapper.CustomerManagerMapper">
-    <resultMap id="BaseResultMap" type="com.msy.plus.entity.CustomerManager">
+<mapper namespace="com.yly.crm.mapper.CustomerManagerMapper">
+    <resultMap id="BaseResultMap" type="com.yly.crm.entity.CustomerManager">
         <!--
           WARNING - @mbg.generated
         -->
@@ -19,7 +19,7 @@
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="positiveTime" jdbcType="TIMESTAMP" property="positivetime"/>
     </resultMap>
-    <select id="listAllWithDictionary" resultType="com.msy.plus.dto.CustomerManagerList">
+    <select id="listAllWithDictionary" resultType="com.yly.crm.dto.CustomerManagerList">
         select c.id as id,
         c.name as name,
         c.age as age,
@@ -63,7 +63,7 @@
             and c.status =#{status}
         </if>
     </select>
-    <select id="getDetailById" resultType="com.msy.plus.entity.CustomerManager">
+    <select id="getDetailById" resultType="com.yly.crm.entity.CustomerManager">
         select c.id                                                as id,
                c.name                                              as name,
                c.gender                                            as gender,
@@ -80,7 +80,7 @@
         where c.id = #{id}
     </select>
 
-    <select id="queryAnalysis" resultType="com.msy.plus.entity.Analysis">
+    <select id="queryAnalysis" resultType="com.yly.crm.entity.Analysis">
         select
         <if test="aq.groupType == null or aq.groupType == 1 or aq.groupType == 0">
             count(cm.inputUser) as count,

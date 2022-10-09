@@ -226,7 +226,7 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.msy.plus.Application</mainClass>
+                            <mainClass>com.yly.crm.Application</mainClass>
                         </configuration>
                     </execution>
                 </executions>

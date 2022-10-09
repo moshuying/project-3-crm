@@ -61,7 +61,7 @@ spring:
         # IP黑名单（存在共同时，deny优先于allow）
         deny:
       # Spring 监控，对内部各接口调用的监控
-      aop-patterns: com.msy.plus.controller.*,com.msy.plus.dto.*,com.msy.plus.mapper.*,com.msy.plus.service.*
+      aop-patterns: com.yly.crm.controller.*,com.yly.crm.dto.*,com.yly.crm.mapper.*,com.yly.crm.service.*
   cache:
     # 缓存类型
     type: redis
@@ -91,7 +91,7 @@ spring:
 
 logging:
   # 日志级别
-  level.com.msy.plus: debug
+  level.com.yly.crm: debug
   level: debug
 
 # Json web token
