@@ -95,6 +95,13 @@ public class CustomerManager implements Serializable {
     @TableField(value = "positiveTime")
     private LocalDateTime positivetime;
 
+
+    /**
+     * 客户企业id
+     */
+    @TableField(value = "customer_ent_id")
+    private String customerEntId;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

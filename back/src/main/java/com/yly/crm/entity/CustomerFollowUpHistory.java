@@ -70,6 +70,19 @@ public class CustomerFollowUpHistory implements Serializable {
     @TableField(value = "comment")
     private String comment;
 
+
+    /**
+     * 业务部分类型
+     */
+    @TableField(value = "trace_biz_mode")
+    private String traceBizMode;
+
+    /**
+     * 企业id
+     */
+    @TableField(value = "customer_ent_id")
+    private String customerEntId;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

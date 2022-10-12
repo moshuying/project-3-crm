@@ -66,7 +66,7 @@ public class ControllerLogAspect {
     final long difference = ChronoUnit.MILLIS.between(this.startTime, LocalDateTime.now());
     log.debug("==>   Spend: {}s", difference / 1000.0);
     log.debug("==>  Return: {}", result);
-    log.debug("================  Controller Log End  =====================");
+    log.debug("================  Controller good Log End  =====================");
   }
 
   /**
@@ -78,6 +78,6 @@ public class ControllerLogAspect {
   public static void doAfterThrowing(final Throwable e) {
     log.debug("==> Exception: {}", e.toString());
     e.printStackTrace();
-    log.debug("================  Controller Log End  =====================");
+    log.debug("================   Controller  error Log End  =====================");
   }
 }

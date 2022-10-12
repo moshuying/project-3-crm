@@ -39,7 +39,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     "/swagger-resources",
     "/swagger-resources/**",
     "/webjars/**",
-    "/baobei/**"
+    "/bizs/**"
   };
 
   @Resource private MyAuthenticationEntryPoint myAuthenticationEntryPoint;
