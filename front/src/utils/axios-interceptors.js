@@ -1,55 +1,10 @@
 import Cookie from 'js-cookie'
-// import {LOGIN} from "@/services/api";
-// 401拦截
-// const resp401 = {
-//   /**
-//    * 响应数据之前做点什么
-//    * @param response 响应对象
-//    * @param options 应用配置 包含: {router, i18n, store, message}
-//    * @returns {*}
-//    */
-//   onFulfilled(response, options) {
-//     const {message} = options
-//     if (response.code === 401) {
-//       message.error('无此权限')
-//     }
-//     return response
-//   },
-//   /**
-//    * 响应出错时执行
-//    * @param error 错误对象
-//    * @param options 应用配置 包含: {router, i18n, store, message}
-//    * @returns {Promise<never>}
-//    */
-//   onRejected(error, options) {
-//     const {message} = options
-//     const {response} = error
-//     if (response.status === 401) {
-//       message.error('无此权限')
-//     }
-//     return Promise.reject(error)
-//   }
-// }
-//
-const resp403 = {
+
+const respError = {
   onFulfilled(response, options) {
-    const {message} = options
-    if (response.code === 1000) {
-      message.error('没有权限访问！')
-    }
-    return response
-  },
-  onRejected(error, options) {
-    const {message} = options
-    const {response} = error
-    if (response.status === 403) {
-      message.error('请求被拒绝！没有权限访问！')
-    }
-    return Promise.reject(error)
-  }
-}
-const resp500 = {
-  onFulfilled(response, options) {
+
+    console.log("onFulfilled res:",response)
+
     const {message} = options
     if (response.code === 500) {
       message.error('服务器错误')
@@ -59,29 +14,51 @@ const resp500 = {
   onRejected(error, options) {
     const {message} = options
     const {response} = error
-    if (response.status === 500) {
-      message.error('服务器错误')
-    }
-    return Promise.reject(error)
-  }
-}
-const respA = {
-  onFulfilled(response, options) {
-    const {message} = options
-    if (response.code === 500) {
-      message.error('服务器错误')
-    }
-    return response
-  },
-  onRejected(error, options) {
-    const {message} = options
-    const {response} = error
-    if (response && response.status === 500) {
-      message.error('服务器错误')
+
+    console.log("onRejected res:",response)
+
+    if (response.status !== 200 && response.data) {
+       errMsg(response.data , message)
     }else{
-      message.error('严重，网络错误！')
+      message.error('resp500,服务器错误')
     }
     return Promise.reject(error)
+  }
+}
+
+
+function  errMsg(data , message){
+  switch(data.code)
+  {
+    case 1000:
+      message.error('权限不足,'+data.message)
+      break;
+    case 2000:
+      message.error('查询失败,'+data.message)
+      break;
+    case 2001:
+      message.error('保存失败,'+data.message)
+      break;
+    case 2002:
+      message.error('查询失败,'+data.message)
+      break;
+    case 2003:
+      message.error('更新失败,'+data.message)
+      break;
+    case 2004:
+      message.error('删除失败,'+data.message)
+      break;
+    case 4001:
+      message.error('数据库异常,'+data.message)
+      break;
+    case 4002:
+      message.error('认证异常,'+data.message)
+      break;
+    case 4003:
+      message.error('验证异常,'+data.message)
+      break;
+    default:
+      message.error('未知错误,'+data.message)
   }
 }
 
@@ -116,5 +93,5 @@ const reqCommon = {
 
 export default {
   request: [reqCommon], // 请求拦截
-  response: [resp500,resp403,respA] // 响应拦截
+  response: [respError] // 响应拦截
 }

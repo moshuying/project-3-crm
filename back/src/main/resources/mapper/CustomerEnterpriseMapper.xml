@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yly.crm.mapper.CustomerEnterpriseMapper">
+
+    <resultMap id="BaseResultMap" type="com.yly.crm.entity.CustomerEnterprise">
+            <id property="entId" column="ent_id" jdbcType="INTEGER"/>
+            <result property="entName" column="ent_name" jdbcType="VARCHAR"/>
+            <result property="entAddr" column="ent_addr" jdbcType="VARCHAR"/>
+            <result property="entVerify" column="ent_verify" jdbcType="INTEGER"/>
+            <result property="entWebsite" column="ent_website" jdbcType="VARCHAR"/>
+            <result property="entBelongBizer" column="ent_belong_bizer" jdbcType="VARCHAR"/>
+            <result property="entInfoImg" column="ent_info_img" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        ent_id,ent_name,ent_addr,
+        ent_verify,ent_website,ent_belong_bizer,
+        ent_info_img,create_time,update_time,
+        update_user
+    </sql>
+</mapper>

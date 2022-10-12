@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yly.crm.mapper.ProductsMapper">
+
+    <resultMap id="BaseResultMap" type="com.yly.crm.entity.Products">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+            <result property="productUnit" column="product_unit" jdbcType="VARCHAR"/>
+            <result property="productUnitPrice" column="product_unit_price" jdbcType="DECIMAL"/>
+            <result property="productDesc" column="product_desc" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,product_name,product_unit,
+        product_unit_price,product_desc,create_time,
+        update_time
+    </sql>
+</mapper>
