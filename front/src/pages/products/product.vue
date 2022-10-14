@@ -23,7 +23,6 @@
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
-
         >
            <span slot="action" slot-scope="text">
              <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id,text)" >编辑</a-button>
@@ -35,7 +34,7 @@
     </a-card>
 
     <!--添加产品-->
-    <add-product ref="addProduct"></add-product>
+    <add-product :refer="getProductsList" ref="addProduct"></add-product>
 
   </div>
 </template>
@@ -109,12 +108,17 @@ export default {
   mounted() {
 
     //产品列表
-    products.list({page:1,size:999999}).then(({data})=>{
-      this.dataSource = data.data.records
-    });
+    this.getProductsList()
   },
 
   methods:{
+
+    //列表加载
+    getProductsList(){
+      return products.list({page:1,size:999999}).then(({data})=>{
+        this.dataSource = data.data.records
+      });
+    },
 
     handleTableChange(){
 
@@ -122,6 +126,12 @@ export default {
     queryLoading(){
 
     },
+
+    updateItem(id, item){
+      console.log("updateItem",id, item)
+    },
+
+
     showModal() {
      // this.visible = true;
       this.$refs["addProduct"].showDrawer();

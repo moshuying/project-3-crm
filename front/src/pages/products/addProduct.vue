@@ -10,7 +10,7 @@
       :body-style="{ paddingBottom: '80px' }"
       @close="onClose"
   >
-    <FormulateForm
+    <FormulateForm  @submit="handAddprts"
         v-model="values"
         :schema="schema"
     />
@@ -23,6 +23,7 @@
 
 <script>
 import * as dictionaryDetails from "@/services/dictionaryDetails";
+import * as products from "@/services/products";
 // import * as products from "@/services/products";
 
 
@@ -35,6 +36,11 @@ export default {
    * @update: 2022/10/13 13:45
    */
   name: "addProduct",
+
+  props: {
+    refer:null
+  },
+
   data() {
     return {
       values:{},
@@ -59,12 +65,21 @@ export default {
         {
           type: 'number',
           name: 'productUnitPrice',
-          label: '单价',
+          label: '单价（元）',
           validation : "required|number|between:1,10000000"
         },
         {
+          type: 'textarea',
+          name: 'productDesc',
+          label: '产品描述',
+          validation : "required",
+          help:"报价描述详情，从这里取出"
+        },
+        {
           type: 'submit',
-          label: '确认添加'
+          label: '确认添加',
+          name: 'submit',
+          // "@submit" : this.submitHandler2
         }
       ]
 
@@ -73,22 +88,34 @@ export default {
     }
   },
   methods: {
-
     showDrawer() {
       this.visible = true;
     },
     onClose() {
       this.visible = false;
     },
+
+    handAddprts (data) {
+      console.log("submitHandler data",data)
+      products.add(data).then((data)=>{
+        //console.log("prts:", data)
+        if(data.status === 200){
+          this.visible = false;
+          // 刷新列表
+          this.refer();
+        }else{
+          console.log(data)
+        }
+      })
+    },
+
     handleOk() {
 
       //this.visible = false;
       // eslint-disable-next-line no-unused-vars
       let a = this.fApi.formData()
       a = null;
-      // products.add(prts).then((data)=>{
-      //   console.log("prts:", data)
-      // })
+
 
 
     },
@@ -128,8 +155,6 @@ export default {
               item.options = this.dictionaryDetailsUnit
             }
           })
-
-         console.log("this.schema：", this.schema)
         }
       })
     },
