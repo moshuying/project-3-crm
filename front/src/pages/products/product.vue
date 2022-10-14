@@ -23,7 +23,7 @@
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
-            :scroll="{ x: 1500, y: 300 }"
+
         >
            <span slot="action" slot-scope="text">
              <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id,text)" >编辑</a-button>
@@ -33,29 +33,34 @@
         </a-table>
       </div>
     </a-card>
+
+    <!--添加产品-->
+    <add-product ref="addProduct"></add-product>
+
   </div>
 </template>
 
+
 <script>
-import * as customerManager from "@/services/customerManager";
 import * as products from "@/services/products";
+import AddProduct from "@/pages/products/addProduct";
 
 const baseColumns =[
   {
-    width:120,
+    width:180,
     title: '产品名称',
     dataIndex: 'productName',
     ellipsis: true,
-    fixed: 'left'
   },
   {
+    width:120,
     title: '产品单位',
     dataIndex: 'productUnit',
   },
   {
-    width:60,
+    width:120,
     title: '产品单价',
-    dataIndex: 'productPrice',
+    dataIndex: 'productUnitPrice',
     ellipsis: true,
   }
 ]
@@ -64,23 +69,20 @@ const columns = [
     width:60,
     title: '编号',
     dataIndex: 'id',
-    fixed: 'left'
   },
   ...baseColumns,
   {
     title: '添加时间',
-    dataIndex: 'inputuser'
+    dataIndex: 'createTime'
   },
   {
+    width:60,
     title: '状态',
     dataIndex: 'status',
-    customRender:(text)=>customerManager.statusMap[parseInt(text)]
   },
   {
-    width:380,
     title: '操作',
     scopedSlots: {customRender: 'action'},
-    fixed: 'right'
   }
 ]
 
@@ -93,6 +95,7 @@ export default {
    * @update: 2022/10/10 11:19
    */
   name: "product",
+  components: {AddProduct},
   data() {
     return {
       columns: columns,
@@ -100,6 +103,7 @@ export default {
       dataSource: null,
       pagination: {current:1},
       loading: false,
+      visible: false
     }
   },
   mounted() {
@@ -117,6 +121,14 @@ export default {
     },
     queryLoading(){
 
+    },
+    showModal() {
+     // this.visible = true;
+      this.$refs["addProduct"].showDrawer();
+    },
+    handleOk(e) {
+      console.log(e);
+      this.visible = false;
     },
 
   }

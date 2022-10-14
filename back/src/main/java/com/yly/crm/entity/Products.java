@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -45,16 +46,22 @@ public class Products implements Serializable {
     private String productDesc;
 
     /**
+     * 产品描述（简述）
+     */
+    @TableField(value = "product_img")
+    private String productImg;
+
+    /**
      * 创建时间
      */
     @TableField(value = "create_time", fill = FieldFill.INSERT)
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
     @TableField(value = "update_time", fill = FieldFill.UPDATE)
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
