@@ -155,10 +155,10 @@ const options = {
                 },
                 {
                     name: '关于创作者',
-                    path: 'antdv',
+                    path: 'jiuyuehe@yly.com',
                     meta: {
                         icon: 'ant-design',
-                        link: 'https://msy.plus'
+                        link: 'http://www.yliyun.com'
                     }
                 }
             ]

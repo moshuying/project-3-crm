@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yly.crm.core.response.Result;
 import com.yly.crm.core.response.ResultGenerator;
-import com.yly.crm.entity.Bizs;
 import com.yly.crm.entity.Products;
 import com.yly.crm.service.ProductsService;
 import io.swagger.annotations.Api;
@@ -41,17 +40,17 @@ public class ProductsController {
     @Operation(description = "(共用)新增产品/编辑接口,传输product 对象主要名称,传id为更新,不传id为新增")
     @PostMapping
     public Result<Products> addProduct(@RequestBody Products product, @RequestHeader Map<String, String> headers){
-        System.out.println(headers);
+        System.out.println(product);
         productsService.saveOrUpdate(product);
         return  ResultGenerator.genOkResult();
     }
 
 
     @Operation(description = "删除产品接口, 其中id为必须传.")
-    @DeleteMapping
-    public Result<Products> delProduct(@RequestBody Products product, @RequestHeader Map<String, String> headers){
+    @DeleteMapping("/{id}")
+    public Result<Products> delProduct(@PathVariable Long id, @RequestHeader Map<String, String> headers){
         System.out.println(headers);
-        productsService.removeById(product);
+        productsService.removeById(id);
         return  ResultGenerator.genOkResult();
     }
 

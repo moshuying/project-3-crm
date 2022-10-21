@@ -45,11 +45,18 @@
         </a-table>
       </div>
     </a-card>
+
+
+
+    <!--企业表单-->
+    <enterprise-form :getEntList="getEntList" ref="enterpriseForm"></enterprise-form>
+
   </div>
 </template>
 
 <script>
 import * as customerManager from "@/services/customerManager";
+import EnterpriseForm from "@/pages/customer/enterpriseForm";
 
 const baseColumns =[
   {
@@ -104,10 +111,26 @@ export default {
    * @update: 2022/10/10 11:19
    */
   name: "enterprise",
+  components: {EnterpriseForm},
   data() {
     return {
-      columns: columns
+      columns: columns,
+      queryForm:this.$form.createForm(this, {name: 'enterpriseQuery'}),
     }
+  },
+
+  methods:{
+
+    getEntList(){
+
+    },
+    handleTableChange(){
+
+    },
+    showModal() {
+      // this.visible = true;
+      this.$refs["enterpriseForm"].showDrawer();
+    },
   }
 }
 </script>

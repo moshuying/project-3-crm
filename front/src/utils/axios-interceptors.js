@@ -6,7 +6,7 @@ const respError = {
     console.log("onFulfilled res:",response)
 
     const {message} = options
-    if (response.code === 500) {
+    if (response.status === 500) {
       message.error('服务器错误')
     }
     return response
@@ -30,6 +30,7 @@ const respError = {
 function  errMsg(data , message){
   switch(data.code)
   {
+
     case 1000:
       message.error('权限不足,'+data.message)
       break;

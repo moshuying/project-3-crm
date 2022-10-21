@@ -3,11 +3,21 @@ import {PRODUCTS} from './api'
 
 
 /**
- * 方法主要给外部人员使用，添加报备商机。
+ * 新增或者保存产品
  * @returns {Promise<AxiosResponse<T>>}
  */
-export async function add(object) {
+export async function addOrUpdata(object) {
     return request(PRODUCTS, METHOD.POST, object)
+}
+
+
+
+/**
+ * 删除产品
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export async function del(id) {
+    return request(PRODUCTS+"/"+id, METHOD.DELETE)
 }
 
 

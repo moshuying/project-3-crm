@@ -49,7 +49,7 @@ async function request(url, method, params, config) {
       promise = axios.patch(url,params,config);
       break;
     case METHOD.DELETE:
-      promise = axios.delete(url,config);
+      promise = axios.delete(url,{params, ...config});
       break;
     default:
       promise = axios.get(url, {params, ...config});

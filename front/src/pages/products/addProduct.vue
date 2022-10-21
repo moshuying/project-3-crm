@@ -24,7 +24,7 @@
 <script>
 import * as dictionaryDetails from "@/services/dictionaryDetails";
 import * as products from "@/services/products";
-// import * as products from "@/services/products";
+
 
 
 export default {
@@ -38,7 +38,7 @@ export default {
   name: "addProduct",
 
   props: {
-    refer:null
+    getProduct:null,
   },
 
   data() {
@@ -46,6 +46,8 @@ export default {
       values:{},
       visible: false,
       dictionaryDetailsUnit: [],
+
+      // 构造json表表单， 参考： https://vueformulate.com/guide/forms/generating-forms/
       schema: [
         {
           type: 'text',
@@ -81,59 +83,54 @@ export default {
           name: 'submit',
           // "@submit" : this.submitHandler2
         }
-      ]
+      ],
 
-
-
+      productFormMode: "add",
     }
   },
   methods: {
     showDrawer() {
       this.visible = true;
+      this.values =  {}
     },
     onClose() {
       this.visible = false;
     },
 
+
+    updateProduct(id, item){
+      this.productFormMode = "update";
+      console.log("updateProduct",id, item)
+      this.visible = true
+      this.values = item;
+      // let result = products.add(this.values)
+      // console.log(result)
+    },
+
+    delProduct(id, item){
+      this.productFormMode = "del";
+      console.log("del", id, item)
+    },
+
+    // form 表单提交操作。
     handAddprts (data) {
       console.log("submitHandler data",data)
-      products.add(data).then((data)=>{
+      console.log(" console.log(this.getProducts)",this.getProducts)
+      products.addOrUpdata(data).then((data)=>{
         //console.log("prts:", data)
         if(data.status === 200){
           this.visible = false;
+          this.getProduct();
           // 刷新列表
-          this.refer();
+         // console.log("this.getProducts", this.getProducts)
         }else{
           console.log(data)
         }
       })
     },
 
-    handleOk() {
-
-      //this.visible = false;
-      // eslint-disable-next-line no-unused-vars
-      let a = this.fApi.formData()
-      a = null;
-
-
-
-    },
-
     saveProduct(){
-
-      // product.add(prts).then((data)=>{
-      //   console.log("prts:", data)
-      // })
     },
-
-    updateUnit() {
-      if (!this.fApi.getRule('productUnit').options.length) {
-        console.log(this.dictionaryDetailsUnit, this.getOption())
-        this.fApi.getRule('productUnit').options.push(...this.getOption())
-      }
-    },
-
 
     //mount 时回调，将生成的form表单填充
     loadProductUnit() {
