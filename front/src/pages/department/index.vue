@@ -131,7 +131,7 @@ export default {
         if (data.code !== 200) {
           this.$notification['error']({
             message: title + '部门信息出现错误',
-            description: '建议检查网络连接或重新登陆',
+            description: '检查网络连接或重新登陆',
           });
         }
         this.$notification.success({
