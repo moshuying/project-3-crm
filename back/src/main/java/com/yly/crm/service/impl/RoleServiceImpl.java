@@ -9,6 +9,7 @@ import com.yly.crm.entity.RoleWithPermissionDO;
 import com.yly.crm.mapper.RoleMapper;
 import com.yly.crm.service.RoleService;
 import com.yly.crm.util.AssertUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,9 @@ import java.util.List;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleDO> implements RoleService {
-  @Resource private RoleMapper roleMapper;
+
+  @Autowired
+  private RoleMapper roleMapper;
 
   @Override
   public void saveAsDefaultRole(final Long accountId) {

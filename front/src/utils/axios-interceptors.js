@@ -15,8 +15,9 @@ const respError = {
     const {message} = options
     const {response} = error
 
-    console.log("onRejected res:",response)
-
+    if(error && !response){
+      message.error('请求无法到达')
+    }
     if (response.status !== 200 && response.data) {
        errMsg(response.data , message)
     }else{

@@ -11,16 +11,16 @@
               />
             </a-form-item>
             <a-form-item label="状态">
-              <a-select
-                  style="width: 6rem"
-                  v-decorator="['status',{ rules: [{ required: true, message: '状态' }] }]">
-                <a-select-option
-                    :value="key"
-                    :key="index"
-                    v-for="(value,key,index) in statusMap">
-                  {{value}}
-                </a-select-option>
-              </a-select>
+<!--              <a-select-->
+<!--                  style="width: 6rem"-->
+<!--                  v-decorator="['status',{ rules: [{ required: true, message: '状态' }] }]">-->
+<!--                <a-select-option-->
+<!--                    :value="key"-->
+<!--                    :key="index"-->
+<!--                    v-for="(value,key,index) in statusMap">-->
+<!--                  {{value}}-->
+<!--                </a-select-option>-->
+<!--              </a-select>-->
             </a-form-item>
             <a-form-item>
               <a-button :loading="queryLoading" @click="query()">查询</a-button>
@@ -28,109 +28,147 @@
           </a-form>
           <a-button type="primary" @click="showModal('新增')">添加</a-button>
         </a-space>
+
         <a-table
             :columns="columns"
             :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
-            :scroll="{ x: 1500, y: 300 }"
+
         >
+          <a slot="name" slot-scope="text">{{ text }}</a>
+
            <span slot="action" slot-scope="text">
-             <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id,text)" >编辑</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" @click="showFollowModal(text.id,text)" >跟进</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" @click="showHandoverModal(text.id)">移交</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" @click="showStatusModal(text.id)" >修改状态</a-button>
+             <a-button type="link" shape="round" icon="edit" size="small" @click="showEnterpriseDetails(text.id,text)" >详情</a-button>
+             <a-button type="link" shape="round" icon="edit" size="small" @click="showFollowModal(text.id,text)" >删除</a-button>
+<!--             <a-button type="link" shape="round" icon="edit" size="small" @click="showHandoverModal(text.id)">移交</a-button>-->
+<!--             <a-button type="link" shape="round" icon="edit" size="small" @click="showStatusModal(text.id)" >修改状态</a-button>-->
            </span>
         </a-table>
       </div>
     </a-card>
 
+<!--新增企业表单-->
+    <add-enterprise-form  ref="enterpriseForm"></add-enterprise-form>
 
-
-    <!--企业表单-->
-    <enterprise-form :getEntList="getEntList" ref="enterpriseForm"></enterprise-form>
+<!--    企业客户详情表-->
+    <enterprise-info-all  ref="enterpriseInfo"></enterprise-info-all>
 
   </div>
 </template>
 
 <script>
-import * as customerManager from "@/services/customerManager";
-import EnterpriseForm from "@/pages/customer/enterpriseForm";
+import * as customerEnterprise from "@/services/customerEnterprise";
+import AddEnterpriseForm from "@/pages/customer/addEnterpriseForm";
+import EnterpriseInfoAll from "@/pages/customer/enterpriseInfoAll"
 
-const baseColumns =[
+
+const columns = [
   {
-    width:120,
+    width:60,
+    title: '编号',
+    dataIndex: 'entId',
+  },
+  {
+
     title: '企业名称',
     dataIndex: 'entName',
     ellipsis: true,
-    fixed: 'left'
   },
   {
     title: '合作类型',
+    width: 100,
     dataIndex: 'entCooperationType',
+  },
+
+  {
+    width: 120,
+    title: '营销人员',
+    dataIndex: 'entBelongBizerName',
+    slots: { title: 'customTitle' },
+    scopedSlots: { customRender: 'name' },
   },
   {
     width:60,
     title: '来源',
     dataIndex: 'source',
     ellipsis: true,
-  }
-]
-const columns = [
-  {
-    width:60,
-    title: '编号',
-    dataIndex: 'id',
-    fixed: 'left'
-  },
-  ...baseColumns,
-  {
-    title: '营销人员',
-    dataIndex: 'inputuser'
   },
   {
-    title: '状态',
-    dataIndex: 'status',
-    customRender:(text)=>customerManager.statusMap[parseInt(text)]
-  },
-  {
-    width:380,
+
     title: '操作',
     scopedSlots: {customRender: 'action'},
-    fixed: 'right'
   }
 ]
 
 export default {
   /**
-   * @name: enterprise
+   * @name: enterprise-list
    * @author: Administrator
    * @date: 2022/10/10 11:19
    * @description：enterprise
    * @update: 2022/10/10 11:19
    */
   name: "enterprise",
-  components: {EnterpriseForm},
+  components: {AddEnterpriseForm,  EnterpriseInfoAll},
+
   data() {
     return {
       columns: columns,
       queryForm:this.$form.createForm(this, {name: 'enterpriseQuery'}),
+      dataSource: null,
+      pagination: {},
     }
   },
 
   methods:{
 
-    getEntList(){
+    //列表加载
+    getCusEntList(params = {"page": 1, "size": 10}) {
+      return customerEnterprise.list(params).then(({data}) => {
+        const res = data.data
+        const pagination = {...this.pagination};
+        pagination.total = res.total
+        pagination.current = params.page
 
+        this.dataSource = res.records.map((e, i) => ({
+          ...e,
+          key: i + "",
+        }))
+
+        console.log("this.dataSource :",this.dataSource )
+
+        this.pagination = pagination
+        this.loading = false
+        this.queryLoading = false
+      });
     },
-    handleTableChange(){
 
+
+    // table
+    handleTableChange(pagination) {
+      const pager = {...this.pagination};
+      pager.current = pagination.current;
+      this.pagination = pager;
+      this.getCusEntList({
+        size: pagination.pageSize,
+        page: pagination.current,
+      });
     },
     showModal() {
       // this.visible = true;
       this.$refs["enterpriseForm"].showDrawer();
     },
+
+    // 企业详情面板
+    showEnterpriseDetails(){
+      this.$refs["enterpriseInfo"].showDrawer();
+    }
+  },
+
+  mounted() {
+    this.getCusEntList()
   }
 }
 </script>

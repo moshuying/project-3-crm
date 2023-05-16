@@ -20,10 +20,6 @@ export default {
   name: "baobei",
   data() {
     return {
-      form: {
-        fieldA: '',
-        fieldB: '',
-      },
       values:{},
       schema:[
         {
@@ -42,7 +38,7 @@ export default {
           validationName: 'Password confirmation'
         },
         {
-          type: 'text',
+          type: 'textarea',
           name: 'productName',
           label: '项目描述，厂家根据描述配备对应资源',
           validation: 'required',

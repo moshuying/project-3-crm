@@ -39,7 +39,7 @@
         <druid.version>1.2.2</druid.version>
         <jasypt.version>3.0.3</jasypt.version>
         <freemarker.version>2.3.30</freemarker.version>
-        <lombok.version>1.18.16</lombok.version>
+        <lombok.version>1.18.24</lombok.version>
         <hibernate.version>6.1.6.Final</hibernate.version>
     </properties>
 
@@ -59,6 +59,11 @@
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>${jjwt.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
         </dependency>
         <!-- MySQL JDBC驱动 -->
         <dependency>
@@ -237,6 +242,13 @@
                     <source>${java.version}</source>
                     <!-- 指定JDK编译版本 -->
                     <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.26</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>

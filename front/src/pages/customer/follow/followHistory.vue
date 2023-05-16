@@ -35,6 +35,7 @@
             </a-form-item>
             <a-form-item>
               <a-button @click="query()" :loading="queryLoading">查询</a-button>
+              <a-button @click="addFollow()" :loading="queryLoading">新增</a-button>
             </a-form-item>
           </a-form>
         </a-space>
@@ -267,6 +268,13 @@ export default {
       this.followConfirmLoading = false
       this.followForm.resetFields()
     },
+
+    // 添加
+    addFollow(){
+
+    },
+
+
     handleFollowOk(){
       this.followConfirmLoading = true;
       this.followForm.validateFields((err, values) => {

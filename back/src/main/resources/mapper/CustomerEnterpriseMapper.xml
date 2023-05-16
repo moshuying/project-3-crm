@@ -9,8 +9,10 @@
             <result property="entName" column="ent_name" jdbcType="VARCHAR"/>
             <result property="entAddr" column="ent_addr" jdbcType="VARCHAR"/>
             <result property="entVerify" column="ent_verify" jdbcType="INTEGER"/>
+            <result property="entCooperationType" column="ent_cooperation_type" jdbcType="INTEGER"/>
             <result property="entWebsite" column="ent_website" jdbcType="VARCHAR"/>
-            <result property="entBelongBizer" column="ent_belong_bizer" jdbcType="VARCHAR"/>
+            <result property="entBelongBizerId" column="ent_belong_bizer_id" jdbcType="INTEGER"/>
+            <result property="entBelongBizerName" column="ent_belong_bizer_name" jdbcType="VARCHAR"/>
             <result property="entInfoImg" column="ent_info_img" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
@@ -19,8 +21,8 @@
 
     <sql id="Base_Column_List">
         ent_id,ent_name,ent_addr,
-        ent_verify,ent_website,ent_belong_bizer,
-        ent_info_img,create_time,update_time,
-        update_user
+        ent_verify,ent_cooperation_type,ent_website,
+        ent_belong_bizer_id,ent_belong_bizer_name,ent_info_img,create_time,
+        update_time,update_user
     </sql>
 </mapper>

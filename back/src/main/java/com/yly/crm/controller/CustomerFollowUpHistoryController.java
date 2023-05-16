@@ -22,8 +22,9 @@ import java.util.Date;
 import java.util.Map;
 
 /**
-* @author MoShuYing
-* @date 2021/05/21
+* @author jiuyuehe
+* @date 2022/05/06
+ * @descript 客户跟进；主要跟进对象为企业客户，子对象为某个项目跟某个人，内容为跟进的内容；跟进后的判断是什么？
 */
 @PreAuthorize("hasAuthority('ADMIN')")
 @Api(tags={"客户跟进记录接口"})

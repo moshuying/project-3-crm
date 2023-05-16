@@ -133,7 +133,7 @@ const options = {
                         {
                             path: 'followHistory',
                             name: '跟进历史',
-                            component: () => import('@/pages/customer/followHistory')
+                            component: () => import('@/pages/customer/follow/followHistory')
                         },
                         {
                             path: 'handoverHistory',

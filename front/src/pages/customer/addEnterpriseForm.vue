@@ -2,14 +2,13 @@
   <a-drawer
       title="新增 企业"
       placement="right"
-      :closable="false"
       :visible="visible"
       :width="500"
       class="good-bg"
       :body-style="{ paddingBottom: '80px' }"
       @close="onClose"
   >
-    <FormulateForm @submit="handAddprts"
+    <FormulateForm @submit="handAddCusEnt"
                    v-model="values"
                    :schema="schema"
                    @open-query="openQuery"
@@ -23,16 +22,17 @@
 
 <script>
 import * as dictionaryDetails from "@/services/dictionaryDetails";
+import * as customerEnterprise  from  "@/services/customerEnterprise"
 
 export default {
   /**
-   * @name: enterpriseForm
+   * @name: addEnterpriseForm
    * @author: Administrator
    * @date: 2022/10/18 9:49
    * @description：enterpriseForm
    * @update: 2022/10/18 9:49
    */
-  name: "enterpriseForm",
+  name: "addEnterpriseForm",
 
   data() {
     return {
@@ -41,34 +41,19 @@ export default {
       // 构造json表表单， 参考： https://vueformulate.com/guide/forms/generating-forms/
       schema: [
         {
-          component: 'div',
-          class: 'double-row',
-          children: [
-            {
-              name: 'entName',
-              type: 'text',
-              label: '企业名称',
-              validation: 'required',
-              placeholder: "请填写企业名称",
-              class: 'ch-col'
-            },
-            {
-              type: 'button',
-              name: 'open',
-              label: '网络验证',
-              class: 'ch-col',
-              '@click': 'open-query'
-            },
-          ]
+          name: 'entName',
+          type: 'text',
+          label: '企业名称',
+          validation: 'required',
+          placeholder: "请填写企业名称",
         },
-        {
-          type: 'select',
-          name: 'entCooperationType',
-          label: '类型',
-          // options: this.dictionaryDetailsUnit,
-          validation: '^required',
-          validationName: '企业必须分类'
-        },
+        // {
+        //   type: 'select',
+        //   name: 'entCooperationType',
+        //   label: '类型',
+        //   validation: '^required',
+        //   validationName: '企业必须分类'
+        // },
         {
           type: 'text',
           name: 'entAddr',
@@ -81,36 +66,18 @@ export default {
           validation: "required",
           help: "url地址"
         },
-        {
-          type: 'textarea',
-          name: 'productDesc',
-          label: '产品描述',
-          validation: "required",
-          help: "报价描述详情，从这里取出"
-        },
-        {
-          type: 'select',
-          name: 'entBelongBizer',
-          label: '业务负责人',
-          // options: this.dictionaryDetailsUnit,
-          validation: '^required',
-          validationName: '企业必须分类'
-        },
 
         {
           type: 'submit',
           label: '确认添加',
           name: 'submit',
-          // "@submit" : this.submitHandler2
         }
       ],
-      entCooType: [],
+     // entCooType: [],
     }
   },
 
   methods: {
-
-    // ...mapState('account', {currUser: 'user'}),
 
     showDrawer() {
       this.visible = true;
@@ -124,15 +91,18 @@ export default {
       console.log("openQuery:")
     },
 
-
     openQuery() {
       if(this.values.entName){
         window.open("https://aiqicha.baidu.com/s?q="+encodeURIComponent(this.values.entName)+"&t=0")
       }
     },
 
-    handAddprts() {
-
+    // add
+    handAddCusEnt(data) {
+      console.log(data)
+      customerEnterprise.add(data).then((res) =>{
+        console.log(res)
+      })
     },
 
     //mount 时回调，将生成的form表单填充

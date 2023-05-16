@@ -20,8 +20,10 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
-* @author MoShuYing
-* @date 2021/05/20
+* @author jiuyuehe
+* @date 2023/05/06
+ * 联系人接口， 联系人都要挂到企业下面，联系人可以移动到其他企业，联系人要有职务跟联系方式；
+ * 后面要给联系人简历一些档案；
 */
 @PreAuthorize(
         "hasAuthority('ADMIN')"+

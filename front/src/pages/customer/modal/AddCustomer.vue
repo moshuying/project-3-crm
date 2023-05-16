@@ -66,7 +66,7 @@ import * as dictionaryDetails from "@/services/dictionaryDetails";
 
 export default {
   /**
-   * @name: AddCustomer
+   * @name: AddCustomer  添加客户
    * @author: Administrator
    * @date: 2022/10/9 18:54
    * @description：AddCustomer

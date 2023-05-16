@@ -81,7 +81,6 @@ export default {
           type: 'submit',
           label: '确认添加',
           name: 'submit',
-          // "@submit" : this.submitHandler2
         }
       ],
 
