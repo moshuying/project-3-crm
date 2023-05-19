@@ -68,6 +68,8 @@ public class CustomerEnterpriseController {
 
         QueryWrapper<CustomerEnterprise> queryWrapper = new QueryWrapper<>();
         queryWrapper.like("ent_name",keyword);
+        queryWrapper.orderByAsc("entId");
+
 
         cepage =  customerEnterpriseService.page(cepage,queryWrapper);
 

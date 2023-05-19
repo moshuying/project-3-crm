@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yly.crm.mapper.DictionaryTableBizRefMapper">
+
+    <resultMap id="BaseResultMap" type="com.yly.crm.entity.DictionaryTableBizRef">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="dicId" column="dic_id" jdbcType="INTEGER"/>
+            <result property="bizName" column="biz_name" jdbcType="INTEGER"/>
+            <result property="tableName" column="table_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,dic_id,biz_name,
+        table_name
+    </sql>
+</mapper>

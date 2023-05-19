@@ -1,6 +1,7 @@
 <template>
   <div style="display: flex;">
-    <a-card style="width: 30%" title="数据字典分组">
+    <a-card style="width: 30%" title="系统字典组">
+      <a slot="extra" href="#">添加</a>
       <div :key="item.id" v-for="(item) in dContentsList">
         <div
             :style="{backgroundColor:leftFirstId===item.id?'#337ab7':''}"
@@ -43,8 +44,17 @@
             @change="handleTableChange"
         >
            <span slot="action" slot-scope="text">
-              <a @click="updateItem(text.id)">编辑</a>
+              <a @click="updateItem(text.id)">编辑 </a> |
+
+             <a-popover v-model="text.visible" title="你确定要删除？" trigger="click">
+                <a slot="content" @click="deleteItem(text)">确定</a>
+                <a-button type="link">
+                  删除
+                </a-button>
+             </a-popover>
+
            </span>
+
         </a-table>
     </a-card>
     <a-modal
@@ -183,6 +193,9 @@ export default {
           message: title + '成功',
           description: title + '字典明细信息成功',
         });
+
+        text.visible = false;
+
         this.fetch({"page": this.pagination.current, "size": 10,id:this.leftFirstId})
       })
     },
@@ -196,6 +209,9 @@ export default {
         this.form.setFieldsValue({"parentid": data.data["parentid"]})
       })
     },
+
+
+
     // modal
     showModal(title = '添加') {
       this.visible = true;

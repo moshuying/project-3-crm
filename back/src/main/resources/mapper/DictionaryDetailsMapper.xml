@@ -18,5 +18,6 @@
       and (d.sequence like concat('%', #{keyword}, '%')
       or d.title like concat('%', #{keyword}, '%'))
     </if>
+    order by d.id DESC
   </select>
 </mapper>

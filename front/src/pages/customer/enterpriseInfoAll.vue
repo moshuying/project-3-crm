@@ -45,11 +45,11 @@
         </a-tab-pane>
 
         <a-tab-pane key="5" tab="客户环境">
-          Content of Tab Pane 3
+          <ent-note></ent-note>
         </a-tab-pane>
 
         <a-tab-pane key="2" tab="跟进日志" force-render>
-          Content of Tab Pane 2
+          <ent-follows></ent-follows>
         </a-tab-pane>
 
         <a-tab-pane key="6" tab="技术记录">
@@ -69,6 +69,9 @@ import * as dictionaryDetails from "@/services/dictionaryDetails";
 import EntAdvancedProps from "@/pages/customer/enterpriseSub/entAdvancedProps";
 import EntProjects from "@/pages/customer/enterpriseSub/entProjects";
 import EntContacts from "@/pages/customer/enterpriseSub/entContacts";
+import EntNote from "@/pages/customer/enterpriseSub/entNote";
+import EntFollows from "@/pages/customer/enterpriseSub/entFollows";
+
 
 export default {
   /**
@@ -79,7 +82,7 @@ export default {
    * @update: 2022/10/18 9:49
    */
   name: "enterpriseInfoAll",
-  components:{EntAdvancedProps,EntProjects,EntContacts},
+  components:{EntAdvancedProps,EntProjects,EntContacts,EntNote,EntFollows},
   data() {
     return {
       visible: false,

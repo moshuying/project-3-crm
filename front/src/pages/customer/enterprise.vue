@@ -126,6 +126,7 @@ export default {
 
     //列表加载
     getCusEntList(params = {"page": 1, "size": 10}) {
+      console.log("params: ",params)
       return customerEnterprise.list(params).then(({data}) => {
         const res = data.data
         const pagination = {...this.pagination};

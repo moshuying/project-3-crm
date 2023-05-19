@@ -12,7 +12,7 @@ export async function add(object) {
     return request(CUS_ENTERPRISE, METHOD.POST, object)
 }
 
-export async function list() {
-    return request(CUS_ENTERPRISE+"/list", METHOD.GET)
+export async function list(params) {
+    return request(CUS_ENTERPRISE+"/list", METHOD.GET,params)
 }
 

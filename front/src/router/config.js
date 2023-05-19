@@ -140,6 +140,11 @@ const options = {
                             name: '移交历史查询',
                             component: () => import('@/pages/customer/handoverHistory')
                         },
+                        {
+                            path: 'work-mkd',
+                            name: '工作笔记',
+                            component: () => import('@/pages/customer/workMkd')
+                        },
                     ]
                 },
                 {
