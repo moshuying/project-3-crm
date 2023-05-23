@@ -11,10 +11,10 @@ import java.time.LocalDateTime;
 
 
 /**
- *
- * @TableName customer_manager
+ * 企业联系人（客户企业负责人/联系人）
+ * @TableName customer_contacts
  */
-@TableName(value ="customer_manager")
+@TableName(value ="customer_contacts")
 @Data
 public class CustomerManager implements Serializable {
     /**

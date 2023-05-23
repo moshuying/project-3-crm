@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex;">
     <a-card style="width: 30%" title="系统字典组">
-      <a slot="extra" href="#">添加</a>
+      <a slot="extra" @click="showDicModal('添加')">添加</a>
       <div :key="item.id" v-for="(item) in dContentsList">
         <div
             :style="{backgroundColor:leftFirstId===item.id?'#337ab7':''}"
@@ -87,12 +87,14 @@
         </a-form-item>
       </a-form>
     </a-modal>
+    <dictionary-name-modal ref="dictsForm"></dictionary-name-modal>
   </div>
 </template>
 
 <script>
 import * as dictionaryDetails from "@/services/dictionaryDetails"
 import * as dictionaryContents from "@/services/dictionaryContents"
+import DictionaryNameModal from "@/pages/dictionary/dictionaryNameModal"
 import validators from "@/utils/validators";
 const columns = [
   {
@@ -115,6 +117,7 @@ const columns = [
   }
 ]
 export default {
+  components:{DictionaryNameModal},
   data() {
     return {
       validators,
@@ -221,6 +224,10 @@ export default {
         this.form.setFieldsValue({"parentid": this.leftFirstId})
       })
     },
+    showDicModal(){
+      this.$refs["dictsForm"].showModal();
+    },
+
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {

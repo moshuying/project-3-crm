@@ -70,9 +70,28 @@ const options = {
                             name: '员工管理',
                             component: () => import('@/pages/employee/index')
                         },
+
+                    ]
+                },
+                {
+                    path: '/dicts',
+                    name: '业务字典',
+                    meta: {
+                        icon: 'gold',
+                        page: {
+                            cacheAble: false
+                        }
+                    },
+                    component: PageView,
+                    children: [
+                        {
+                            path: 'bizform',
+                            name: '业务表单',
+                            component: () => import('@/pages/dictionary/bizDicts')
+                        },
                         {
                             path: 'dictionary/contents',
-                            name: '字典列表',
+                            name: '业务字典',
                             component: () => import('@/pages/dictionary/contents')
                         },
                         {
@@ -80,7 +99,7 @@ const options = {
                             name: '字典明细',
                             component: () => import('@/pages/dictionary/details')
                         }
-                    ]
+                        ]
                 },
                 {
                     path: '/products',
@@ -117,8 +136,8 @@ const options = {
                         },
                         {
                             path: 'manager',
-                            name: '潜在客户管理',
-                            component: () => import('@/pages/customer/manager')
+                            name: '企业联系人',
+                            component: () => import('@/pages/customer/contacts/manager')
                         },
                         {
                             path: 'official',

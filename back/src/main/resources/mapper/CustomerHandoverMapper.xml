@@ -22,7 +22,7 @@
            e3.name        as newSeller,
            ch.transReason as transReason
     from customer_handover as ch
-           left join customer_manager as cm on ch.customerID = cm.id
+           left join customer_contacts as cm on ch.customerID = cm.id
            left join employee as e on ch.transUser = e.id
            left join employee as e2 on ch.oldSeller = e2.id
            left join employee as e3 on ch.newSeller = e3.id

@@ -26,7 +26,7 @@
            cfuh.inputUser   as inputUser,
            cfuh.type        as type
     from customer_follow_up_history cfuh
-           left join customer_manager cm2 on cfuh.customerID = cm2.id
+           left join customer_contacts cm2 on cfuh.customerID = cm2.id
     where (cm2.tel like concat('%',#{keyword},'%') or cm2.name like concat('%',#{keyword},'%'))
       <if test="startTime != null and startTime != ''">
         and cfuh.traceTime between #{startTime} and #{endTime}

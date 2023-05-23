@@ -66,13 +66,13 @@ import * as dictionaryDetails from "@/services/dictionaryDetails";
 
 export default {
   /**
-   * @name: AddCustomer  添加客户
+   * @name: AddCustomer  添加联系人
    * @author: Administrator
    * @date: 2022/10/9 18:54
    * @description：AddCustomer
    * @update: 2022/10/9 18:54
    */
-  name: "AddCustomer",
+  name: "AddUpdateContacts",
 
   props:{
     baseColumns:null,

@@ -33,7 +33,7 @@
         as inputUser,
         if(e2.id is not null, e2.id, e.id)
         as inputUserId
-        from customer_manager c
+        from customer_contacts c
         left join
         dictionary_details dd1
         on c.job = dd1.id
@@ -73,7 +73,7 @@
                c.source                                            as source,
                c.seller                                            as seller,
                if(ch.newSeller is null, c.inputUser, ch.newSeller) as inputUser
-        from customer_manager as c
+        from customer_contacts as c
                  left join (select *
                             from (select * from customer_handover order by transTime desc Limit 10000) as chG
                             group by customerID) ch on ch.customerID = c.id
@@ -98,7 +98,7 @@
         <if test="aq.groupType != null and aq.groupType == 4">
             date_format(cm.inputTime,'%Y-%m-%d') as name
         </if>
-        from customer_manager as cm
+        from customer_contacts as cm
         left join employee e on cm.inputUser = e.id
         where e.name like concat('%',#{aq.name},'%')
         <if test="aq.startTime != null and aq.endTime != null">

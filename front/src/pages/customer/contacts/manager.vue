@@ -45,64 +45,8 @@
         </a-table>
       </div>
     </a-card>
-<!--    新增修改-->
-<!--    <a-modal-->
-<!--        :title="title"-->
-<!--        :visible="visible"-->
-<!--        :confirm-loading="confirmLoading"-->
-<!--        @ok="handleOk"-->
-<!--        @cancel="handleCancel"-->
-<!--        okText="提交"-->
-<!--    >-->
-<!--      <a-form :form="form" :layout="`horizontal`">-->
-<!--          <a-form-item hidden>-->
-<!--            <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>-->
-<!--          </a-form-item>-->
-<!--        <div v-for="(item) in baseColumns" :key="item.dataIndex">-->
-<!--          <a-form-item :label="item.title">-->
-<!--            <a-select v-if="item.dataIndex==='gender'"-->
-<!--                style="width: 6rem"-->
-<!--                v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">-->
-<!--              <a-select-option :value="1">-->
-<!--                男-->
-<!--              </a-select-option>-->
-<!--              <a-select-option :value="0">-->
-<!--                女-->
-<!--              </a-select-option>-->
-<!--            </a-select>-->
-<!--            <a-select v-else-if="item.dataIndex==='job'" v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">-->
-<!--              <a-select-option v-for="(list) in dictionaryDetailsJob" :key="list.id">-->
-<!--                {{list.title}}-->
-<!--              </a-select-option>-->
-<!--            </a-select>-->
-<!--            <a-select v-else-if="item.dataIndex==='source'" v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">-->
-<!--              <a-select-option v-for="(list) in dictionaryDetailsSource" :key="list.id">-->
-<!--                {{list.title}}-->
-<!--              </a-select-option>-->
-<!--            </a-select>-->
-<!--            <a-input-number v-else-if="item.dataIndex==='age'" :min="0" :max="200" v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]" />-->
-<!--            <a-input v-else-if="item.dataIndex==='name'"-->
-<!--                     v-decorator="[item.dataIndex, { rules: [{ required: true,min:1,max:120,message:'输入长度应在1到120之间' }]}]"-->
-<!--                     :placeholder="`请输入`+item.title"-->
-<!--            />-->
-<!--            <a-input v-else-if="item.dataIndex==='tel'"-->
-<!--                     v-decorator="[item.dataIndex, { rules: [{ required: true,pattern:validators.phoneReg,message:validators.phoneMsg  }]}]"-->
-<!--                     :placeholder="`请输入`+item.title"-->
-<!--            />-->
-<!--            <a-input v-else-if="item.dataIndex==='qq'"-->
-<!--                     v-decorator="[item.dataIndex, { rules: [{ required: true,pattern:validators.qqReg,message:validators.qqMsg  }]}]"-->
-<!--                     :placeholder="`请输入`+item.title"-->
-<!--            />-->
-<!--            <a-input v-else-->
-<!--                v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]"-->
-<!--                :placeholder="`请输入`+item.title"-->
-<!--            />-->
-<!--          </a-form-item>-->
-<!--        </div>-->
-<!--      </a-form>-->
-<!--    </a-modal>-->
 
-    <add-customer :visible="visible" :baseColumns="baseColumns" ref="addModal"></add-customer>
+    <add-customer :visible="visible" :baseColumns="baseColumns" ref="addContacts"></add-customer>
 
 <!--    修改客户状态-->
     <a-modal
@@ -267,7 +211,7 @@ import * as customerHandover from "@/services/customerHandover"
 import * as customerFollowUpHistory from "@/services/customerFollowUpHistory"
 import moment from "moment";
 import validators from "@/utils/validators";
-import AddCustomer from "@/pages/customer/modal/AddCustomer";
+import AddCustomer from "@/pages/customer/contacts/AddUpdateContacts";
 
 const baseColumns =[
   {
@@ -581,12 +525,13 @@ export default {
         this.followForm.setFieldsValue({traceresult:Object.keys(this.followTraceResult)[0]})
       })
     },
+
     // modal
     async showModal(title) {
-      this.visible = true;
-      this.title = title || '新增'
-      await this.form.resetFields()
+      this.$refs["addContacts"].showModal(title);
     },
+
+
     async updateItem(id,line) {
 
       this.$refs["addModal"].updateItem1(id,line);
@@ -605,6 +550,7 @@ export default {
       //   this.form.setFieldsValue({source:data.data["source"]})
       // })
     },
+
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
