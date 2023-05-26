@@ -105,9 +105,11 @@ public class CustomerManagerController {
     public Result list(@RequestParam(defaultValue = "1") Integer page,
        @RequestParam(defaultValue = "10") Integer size,
        @RequestParam(defaultValue = "",required = false) String keyword,
-       @RequestParam(required = false) Integer status) {
+       @RequestParam(required = false) Integer status,
+       @RequestParam(required = false) Integer ceId) {
         IPage<CustomerManagerList> customerManagerListIPage = new Page<CustomerManagerList>(page, size);
-        customerManagerListIPage = customerManagerService.listAllWithDictionary(customerManagerListIPage,keyword,status);
+
+        customerManagerListIPage = customerManagerService.listAllWithDictionary(customerManagerListIPage,keyword,status,ceId);
         return ResultGenerator.genOkResult(customerManagerListIPage);
     }
 }

@@ -18,6 +18,7 @@
         <result column="inputTime" jdbcType="TIMESTAMP" property="inputtime"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="positiveTime" jdbcType="TIMESTAMP" property="positivetime"/>
+        <result column="customer_ent_id" jdbcType="INTEGER" property="customerEntId"/>
     </resultMap>
     <select id="listAllWithDictionary" resultType="com.yly.crm.dto.CustomerManagerList">
         select c.id as id,
@@ -62,7 +63,11 @@
         <if test="status != null">
             and c.status =#{status}
         </if>
+        <if test="ceId != null">
+        and c.customer_ent_id = #{ceId}
+        </if>
     </select>
+
     <select id="getDetailById" resultType="com.yly.crm.entity.CustomerManager">
         select c.id                                                as id,
                c.name                                              as name,

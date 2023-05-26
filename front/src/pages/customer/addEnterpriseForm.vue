@@ -11,7 +11,7 @@
     <FormulateForm @submit="handAddCusEnt"
                    v-model="values"
                    :schema="schema"
-                   @open-query="openQuery"
+                   @click="openQuery"
     />
 
     <span class="black-img"> {{ values }}</span>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import * as dictionaryDetails from "@/services/dictionaryDetails";
+// import * as dictionaryDetails from "@/services/dictionaryDetails";
 import * as customerEnterprise  from  "@/services/customerEnterprise"
 
 export default {
@@ -33,6 +33,13 @@ export default {
    * @update: 2022/10/18 9:49
    */
   name: "addEnterpriseForm",
+
+  props:{
+    freshData: {
+      type: Function,
+      default: null
+    }
+  },
 
   data() {
     return {
@@ -47,13 +54,11 @@ export default {
           validation: 'required',
           placeholder: "请填写企业名称",
         },
-        // {
-        //   type: 'select',
-        //   name: 'entCooperationType',
-        //   label: '类型',
-        //   validation: '^required',
-        //   validationName: '企业必须分类'
-        // },
+        {
+          type: 'button',
+          label: '爱企查验证',
+          "@click": true,
+        },
         {
           type: 'text',
           name: 'entAddr',
@@ -92,6 +97,7 @@ export default {
     },
 
     openQuery() {
+      console.log("asdfasdf")
       if(this.values.entName){
         window.open("https://aiqicha.baidu.com/s?q="+encodeURIComponent(this.values.entName)+"&t=0")
       }
@@ -102,35 +108,44 @@ export default {
       console.log(data)
       customerEnterprise.add(data).then((res) =>{
         console.log(res)
+        this.onClose()
+      }).then(()=>{
+        console.log("getCusEntList")
+       // this.$emit("getCusEntList");
+        if(this.freshData){
+          this.freshData();
+        }
       })
+
+
     },
 
     //mount 时回调，将生成的form表单填充
-    loadEntCooType() {
-      //取字典（單位：id：15）
-      return dictionaryDetails.list({page: 1, size: 999999, id: 16}).then(({data}) => {
-        // this.dictionaryDetailsUnit = data.data.records
-        if (data.data.records) {
-          this.entCooType = data.data.records.map(item => {
-            return {
-              key: item.id,
-              value: item.title,
-              label: item.title
-            }
-          })
-
-          this.schema.forEach((item) => {
-            if (item.name === "entCooperationType") {
-              item.options = this.entCooType
-            }
-          })
-        }
-      })
-    },
+    // loadEntCooType() {
+    //   //取字典（單位：id：15）
+    //   return dictionaryDetails.list({page: 1, size: 999999, id: 16}).then(({data}) => {
+    //     // this.dictionaryDetailsUnit = data.data.records
+    //     if (data.data.records) {
+    //       this.entCooType = data.data.records.map(item => {
+    //         return {
+    //           key: item.id,
+    //           value: item.title,
+    //           label: item.title
+    //         }
+    //       })
+    //
+    //       this.schema.forEach((item) => {
+    //         if (item.name === "entCooperationType") {
+    //           item.options = this.entCooType
+    //         }
+    //       })
+    //     }
+    //   })
+    // },
 
   },
   mounted() {
-    this.loadEntCooType()
+    // this.loadEntCooType()
   },
 
 }

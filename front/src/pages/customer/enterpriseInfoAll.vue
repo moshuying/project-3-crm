@@ -9,9 +9,10 @@
       @close="onClose"
   >
 
-    <a-descriptions title="深圳一粒云科技有限公司">
+    {{currtEnterprise}}
+    <a-descriptions :title="currtEnterprise.entName">
       <a-descriptions-item label="UserName">
-        Zhou Maomao
+<!--        {{ currtEnterprise.entId }}-->
       </a-descriptions-item>
       <a-descriptions-item label="Telephone">
         1810000000
@@ -83,49 +84,28 @@ export default {
    */
   name: "enterpriseInfoAll",
   components:{EntAdvancedProps,EntProjects,EntContacts,EntNote,EntFollows},
+  // props: ["curEnterprise"],
   data() {
     return {
       visible: false,
-      values: {},
+      entId:null,
+      currtEnterprise: null,
       // 构造json表表单， 参考： https://vueformulate.com/guide/forms/generating-forms/
-      schema: [
-        {
-          name: 'entName',
-          type: 'text',
-          label: '企业名称',
-          validation: 'required',
-          placeholder: "请填写企业名称",
-        },
-
-        {
-          type: 'text',
-          name: 'entAddr',
-          label: '企业地址',
-        },
-        {
-          type: 'text',
-          name: 'entWebsite',
-          label: '企业网站',
-          validation: "required",
-          help: "url地址"
-        },
-
-        {
-          type: 'submit',
-          label: '确认添加',
-          name: 'submit',
-        }
-      ],
      // entCooType: [],
+
     }
   },
 
   methods: {
 
-    showDrawer() {
+    //打开传递参数；
+    showDrawer(entId,enterprise) {
       this.visible = true;
-      this.values = {}
+      this.entId= entId;
+      this.currtEnterprise = enterprise;
+      console.log("showDrawer",this.currtEnterprise);
     },
+
     onClose() {
       this.visible = false;
     },
@@ -159,7 +139,7 @@ export default {
 
   },
   mounted() {
-    this.loadEntCooType()
+    // this.loadEntCooType()
   },
 
 }

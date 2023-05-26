@@ -25,8 +25,8 @@ public class CustomerManagerServiceImpl extends ServiceImpl<CustomerManagerMappe
     private CustomerManagerMapper customerManagerMapper;
 
 
-    public IPage<CustomerManagerList> listAllWithDictionary(IPage<CustomerManagerList> customerManagerListIPage,String keyword, Integer status) {
-        return customerManagerMapper.listAllWithDictionary(customerManagerListIPage, keyword,status);
+    public IPage<CustomerManagerList> listAllWithDictionary(IPage<CustomerManagerList> customerManagerListIPage,String keyword, Integer status,Integer ceId) {
+        return customerManagerMapper.listAllWithDictionary(customerManagerListIPage, keyword,status,ceId);
     }
 
     public IPage<Analysis> queryAnalysis(IPage<Analysis> qpage,AnalysisQuery analysisQuery) {

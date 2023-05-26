@@ -53,7 +53,7 @@
     <add-enterprise-form  ref="enterpriseForm"></add-enterprise-form>
 
 <!--    企业客户详情表-->
-    <enterprise-info-all  ref="enterpriseInfo"></enterprise-info-all>
+    <enterprise-info-all :curEnterprise="curEnterprise"  ref="enterpriseInfo"></enterprise-info-all>
 
   </div>
 </template>
@@ -119,6 +119,7 @@ export default {
       queryForm:this.$form.createForm(this, {name: 'enterpriseQuery'}),
       dataSource: null,
       pagination: {},
+      curEnterprise:null
     }
   },
 
@@ -146,7 +147,6 @@ export default {
       });
     },
 
-
     // table
     handleTableChange(pagination) {
       const pager = {...this.pagination};
@@ -163,14 +163,17 @@ export default {
     },
 
     // 企业详情面板
-    showEnterpriseDetails(){
-      this.$refs["enterpriseInfo"].showDrawer();
+    showEnterpriseDetails(entId,enterprise){
+      this.curEnterprise = enterprise;
+      this.$refs["enterpriseInfo"].showDrawer(entId,enterprise);
+
+      console.log("showEnterpriseDetails",enterprise)
     }
   },
-
   mounted() {
     this.getCusEntList()
-  }
+  },
+
 }
 </script>
 
