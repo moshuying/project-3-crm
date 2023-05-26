@@ -13,7 +13,7 @@ import com.yly.crm.entity.CustomerManager;
 */
 public interface CustomerManagerService extends IService<CustomerManager> {
 
-    IPage<CustomerManagerList>  listAllWithDictionary(IPage<CustomerManagerList> customerManagerListIPageString, String keyword, Integer status);
+    IPage<CustomerManagerList>  listAllWithDictionary(IPage<CustomerManagerList> customerManagerListIPageString, String keyword, Integer status, Integer ceId);
 
     IPage<Analysis> queryAnalysis(IPage<Analysis> qpage, AnalysisQuery analysisQuery);
 }

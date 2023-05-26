@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface CustomerManagerMapper extends BaseMapper<CustomerManager> {
 
-    IPage<CustomerManagerList>  listAllWithDictionary(IPage<CustomerManagerList> customerManagerListIPage, String keyword, Integer status);
+    IPage<CustomerManagerList>  listAllWithDictionary(IPage<CustomerManagerList> customerManagerListIPage, String keyword, Integer status, Integer ceId);
 
     CustomerManager getDetailById(Object id);
 
