@@ -16,13 +16,16 @@
 
     <span class="black-img"> {{ values }}</span>
 
-    <p></p>
+    <!--    加载企业在线查询页面-->
+    <!--    <query-ent-modal ref="queryEnt"></query-ent-modal>-->
+
   </a-drawer>
 </template>
 
 <script>
 // import * as dictionaryDetails from "@/services/dictionaryDetails";
-import * as customerEnterprise  from  "@/services/customerEnterprise"
+import * as customerEnterprise from "@/services/customerEnterprise"
+// import QueryEntModal from "@/pages/customer/queryEntModal";
 
 export default {
   /**
@@ -33,12 +36,8 @@ export default {
    * @update: 2022/10/18 9:49
    */
   name: "addEnterpriseForm",
-
-  props:{
-    freshData: {
-      type: Function,
-      default: null
-    }
+  // components: {QueryEntModal},
+  props: {
   },
 
   data() {
@@ -61,6 +60,28 @@ export default {
         },
         {
           type: 'text',
+          name: 'entBoss',
+          label: '法人姓名',
+        },
+        {
+          type: 'text',
+          name: 'entTel',
+          label: '电话',
+          help: "输入可验证电话"
+        },
+        {
+          type: 'text',
+          name: 'entEmail',
+          label: '邮箱',
+          help: "输入邮箱"
+        },
+        {
+          type: 'text',
+          name: 'entsn',
+          label: '统一社会信用代码',
+        },
+        {
+          type: 'text',
           name: 'entAddr',
           label: '企业地址',
         },
@@ -71,19 +92,22 @@ export default {
           validation: "required",
           help: "url地址"
         },
-
+        {
+          type: 'textarea',
+          name: 'entDesc',
+          label: '简介',
+        },
         {
           type: 'submit',
           label: '确认添加',
           name: 'submit',
         }
       ],
-     // entCooType: [],
+      // entCooType: [],
     }
   },
 
   methods: {
-
     showDrawer() {
       this.visible = true;
       this.values = {}
@@ -91,57 +115,29 @@ export default {
     onClose() {
       this.visible = false;
     },
-
-    focusUsername(){
+    focusUsername() {
       console.log("openQuery:")
     },
-
     openQuery() {
       console.log("asdfasdf")
-      if(this.values.entName){
-        window.open("https://aiqicha.baidu.com/s?q="+encodeURIComponent(this.values.entName)+"&t=0")
+      if (this.values.entName) {
+        window.open("https://aiqicha.baidu.com/s?q=" + encodeURIComponent(this.values.entName) + "&t=0")
       }
     },
 
     // add
     handAddCusEnt(data) {
       console.log(data)
-      customerEnterprise.add(data).then((res) =>{
-        console.log(res)
+      return customerEnterprise.add(data).then((res) => {
+        console.log("---------------",res)
+        console.log("getCusEntList1")
+        this.$emit("getCusEntList");
         this.onClose()
-      }).then(()=>{
-        console.log("getCusEntList")
-       // this.$emit("getCusEntList");
-        if(this.freshData){
-          this.freshData();
-        }
+      }).then(() => {
+        console.log("getCusEntList2")
+        this.$emit("getCusEntList");
       })
-
-
     },
-
-    //mount 时回调，将生成的form表单填充
-    // loadEntCooType() {
-    //   //取字典（單位：id：15）
-    //   return dictionaryDetails.list({page: 1, size: 999999, id: 16}).then(({data}) => {
-    //     // this.dictionaryDetailsUnit = data.data.records
-    //     if (data.data.records) {
-    //       this.entCooType = data.data.records.map(item => {
-    //         return {
-    //           key: item.id,
-    //           value: item.title,
-    //           label: item.title
-    //         }
-    //       })
-    //
-    //       this.schema.forEach((item) => {
-    //         if (item.name === "entCooperationType") {
-    //           item.options = this.entCooType
-    //         }
-    //       })
-    //     }
-    //   })
-    // },
 
   },
   mounted() {

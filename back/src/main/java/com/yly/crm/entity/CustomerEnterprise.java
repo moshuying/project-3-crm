@@ -6,7 +6,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
-
 /**
  *
  * @TableName customer_enterprise
@@ -26,19 +25,29 @@ public class CustomerEnterprise implements Serializable {
     private String entName;
 
     /**
+     * 企业统一信用代码
+     */
+    private String entSn;
+
+    /**
+     * 企业法人
+     */
+    private String entBoss;
+
+    /**
      * 企业地址
      */
     private String entAddr;
 
     /**
-     * 企业验证状态：业务人员验证
+     * 企业电话
      */
-    private Integer entVerify;
+    private String entTel;
 
     /**
-     * 企业与厂家合同类型：1、直接客户、2、渠道代理、3、供应商、4、战略合作、5、其他合作形式
+     * 企业邮箱
      */
-    private Integer entCooperationType;
+    private String entEmail;
 
     /**
      * 企业官网
@@ -46,31 +55,36 @@ public class CustomerEnterprise implements Serializable {
     private String entWebsite;
 
     /**
-     * 该企业属于哪个销售人员负责id
+     * 企业简单描述，来自爱企查
+     */
+    private String entDesc;
+
+    /**
+     * 企业与厂家合同类型：1、直接客户、2、渠道代理、3、供应商、4、战略合作、5、其他合作形式
+     */
+    private Integer entCooperationType;
+
+    /**
+     * 该企业属于哪个销售人员负责
      */
     private Integer entBelongBizerId;
 
     /**
-     * 该企业属于哪个销售人员负责姓名
+     * 营销人员姓名
      */
     private String entBelongBizerName;
 
     /**
-     * 企业工商信息截图
-     */
-    private String entInfoImg;
-
-    /**
      * 创建时间
      */
-    @TableField(value = "create_time", fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    private Date createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "update_time", fill = FieldFill.UPDATE)
-    private LocalDateTime updateTime;
+    @TableField(value = "update_time",fill = FieldFill.UPDATE)
+    private Date updateTime;
 
     /**
      * 更新人名字
@@ -79,6 +93,4 @@ public class CustomerEnterprise implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
-
-
 }

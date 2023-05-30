@@ -50,10 +50,10 @@
     </a-card>
 
 <!--新增企业表单-->
-    <add-enterprise-form  ref="enterpriseForm"></add-enterprise-form>
+    <add-enterprise-form @getCusEntList="getCusEntList"  ref="enterpriseForm"></add-enterprise-form>
 
 <!--    企业客户详情表-->
-    <enterprise-info-all :curEnterprise="curEnterprise"  ref="enterpriseInfo"></enterprise-info-all>
+    <enterprise-info-all  :curEnterprise="curEnterprise"  ref="enterpriseInfo"></enterprise-info-all>
 
   </div>
 </template>
@@ -166,8 +166,7 @@ export default {
     showEnterpriseDetails(entId,enterprise){
       this.curEnterprise = enterprise;
       this.$refs["enterpriseInfo"].showDrawer(entId,enterprise);
-
-      console.log("showEnterpriseDetails",enterprise)
+     // console.log("showEnterpriseDetails",enterprise)
     }
   },
   mounted() {

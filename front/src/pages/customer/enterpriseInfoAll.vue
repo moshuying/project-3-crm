@@ -8,23 +8,27 @@
       :body-style="{ paddingBottom: '80px' }"
       @close="onClose"
   >
-
-    {{currtEnterprise}}
     <a-descriptions :title="currtEnterprise.entName">
-      <a-descriptions-item label="UserName">
-<!--        {{ currtEnterprise.entId }}-->
+      <a-descriptions-item label="法人">
+        {{ currtEnterprise.entBoss }}
       </a-descriptions-item>
-      <a-descriptions-item label="Telephone">
-        1810000000
+      <a-descriptions-item label="电话">
+        {{ currtEnterprise.entTel }}
       </a-descriptions-item>
-      <a-descriptions-item label="Live">
-        Hangzhou, Zhejiang
+      <a-descriptions-item label="邮箱">
+        {{ currtEnterprise.entEmail }}
       </a-descriptions-item>
-      <a-descriptions-item label="Remark">
-        remark
+      <a-descriptions-item label="公司网站">
+        {{ currtEnterprise.entWebsite }}
       </a-descriptions-item>
-      <a-descriptions-item label="Address">
-        No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+      <a-descriptions-item label="地址">
+        {{ currtEnterprise.entAddr}}
+      </a-descriptions-item>
+      <a-descriptions-item label="信用代码">
+        {{ currtEnterprise.entSn}}
+      </a-descriptions-item>
+      <a-descriptions-item label="简介">
+        {{ currtEnterprise.entDesc}}
       </a-descriptions-item>
 
     </a-descriptions>

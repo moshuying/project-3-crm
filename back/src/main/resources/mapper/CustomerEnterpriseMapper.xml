@@ -7,22 +7,26 @@
     <resultMap id="BaseResultMap" type="com.yly.crm.entity.CustomerEnterprise">
             <id property="entId" column="ent_id" jdbcType="INTEGER"/>
             <result property="entName" column="ent_name" jdbcType="VARCHAR"/>
+            <result property="entSn" column="ent_sn" jdbcType="VARCHAR"/>
+            <result property="entBoss" column="ent_boss" jdbcType="VARCHAR"/>
             <result property="entAddr" column="ent_addr" jdbcType="VARCHAR"/>
-            <result property="entVerify" column="ent_verify" jdbcType="INTEGER"/>
-            <result property="entCooperationType" column="ent_cooperation_type" jdbcType="INTEGER"/>
+            <result property="entTel" column="ent_tel" jdbcType="VARCHAR"/>
+            <result property="entEmail" column="ent_email" jdbcType="VARCHAR"/>
             <result property="entWebsite" column="ent_website" jdbcType="VARCHAR"/>
+            <result property="entDesc" column="ent_desc" jdbcType="VARCHAR"/>
+            <result property="entCooperationType" column="ent_cooperation_type" jdbcType="INTEGER"/>
             <result property="entBelongBizerId" column="ent_belong_bizer_id" jdbcType="INTEGER"/>
             <result property="entBelongBizerName" column="ent_belong_bizer_name" jdbcType="VARCHAR"/>
-            <result property="entInfoImg" column="ent_info_img" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="updateUser" column="update_user" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        ent_id,ent_name,ent_addr,
-        ent_verify,ent_cooperation_type,ent_website,
-        ent_belong_bizer_id,ent_belong_bizer_name,ent_info_img,create_time,
-        update_time,update_user
+        ent_id,ent_name,ent_sn,
+        ent_boss,ent_addr,ent_tel,
+        ent_email,ent_website,ent_desc,
+        ent_cooperation_type,ent_belong_bizer_id,ent_belong_bizer_name,
+        create_time,update_time,update_user
     </sql>
 </mapper>
