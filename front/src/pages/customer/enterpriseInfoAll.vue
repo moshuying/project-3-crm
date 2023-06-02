@@ -1,6 +1,5 @@
 <template>
   <a-drawer
-      title="企业详情"
       placement="right"
       :visible="visible"
       :width="1000"
@@ -8,30 +7,39 @@
       :body-style="{ paddingBottom: '80px' }"
       @close="onClose"
   >
-    <a-descriptions :title="currtEnterprise.entName">
+   <template v-slot:title>
+      企业名称：{{curEnterprise.entName}}
+     <a-button type="primary" @click="updateEnterprise(curEnterprise)" icon="edit">
+       编辑/更新
+     </a-button>
+   </template>
+
+    <a-descriptions title="详细信息">
       <a-descriptions-item label="法人">
-        {{ currtEnterprise.entBoss }}
+        {{ curEnterprise.entBoss }}
       </a-descriptions-item>
       <a-descriptions-item label="电话">
-        {{ currtEnterprise.entTel }}
+        {{ curEnterprise.entTel }}
       </a-descriptions-item>
       <a-descriptions-item label="邮箱">
-        {{ currtEnterprise.entEmail }}
+        {{ curEnterprise.entEmail }}
       </a-descriptions-item>
       <a-descriptions-item label="公司网站">
-        {{ currtEnterprise.entWebsite }}
+        {{ curEnterprise.entWebsite }}
       </a-descriptions-item>
       <a-descriptions-item label="地址">
-        {{ currtEnterprise.entAddr}}
+        {{ curEnterprise.entAddr}}
       </a-descriptions-item>
       <a-descriptions-item label="信用代码">
-        {{ currtEnterprise.entSn}}
+        {{ curEnterprise.entSn}}
       </a-descriptions-item>
       <a-descriptions-item label="简介">
-        {{ currtEnterprise.entDesc}}
-      </a-descriptions-item>
+        {{ curEnterprise.entDesc}}
 
+      </a-descriptions-item>
     </a-descriptions>
+
+    <add-enterprise-form ref="addOrUpdate"></add-enterprise-form>
 
     <a-divider></a-divider>
 
@@ -76,6 +84,8 @@ import EntProjects from "@/pages/customer/enterpriseSub/entProjects";
 import EntContacts from "@/pages/customer/enterpriseSub/entContacts";
 import EntNote from "@/pages/customer/enterpriseSub/entNote";
 import EntFollows from "@/pages/customer/enterpriseSub/entFollows";
+import AddEnterpriseForm from "@/pages/customer/addEnterpriseForm";
+import {mapState} from "vuex";
 
 
 export default {
@@ -87,16 +97,15 @@ export default {
    * @update: 2022/10/18 9:49
    */
   name: "enterpriseInfoAll",
-  components:{EntAdvancedProps,EntProjects,EntContacts,EntNote,EntFollows},
+  components:{AddEnterpriseForm, EntAdvancedProps,EntProjects,EntContacts,EntNote,EntFollows},
   // props: ["curEnterprise"],
   data() {
     return {
       visible: false,
-      entId:null,
-      currtEnterprise: null,
+      entId: null,
+    //  currtEnterprise: this.$store.state.enterprise.curEnterprise,
       // 构造json表表单， 参考： https://vueformulate.com/guide/forms/generating-forms/
      // entCooType: [],
-
     }
   },
 
@@ -106,8 +115,12 @@ export default {
     showDrawer(entId,enterprise) {
       this.visible = true;
       this.entId= entId;
-      this.currtEnterprise = enterprise;
-      console.log("showDrawer",this.currtEnterprise);
+      this.$store.commit("enterprise/setCurEnterprise",JSON.parse(JSON.stringify(enterprise)))
+      console.log("showDrawer",this.showEnterprise);
+    },
+
+    updateEnterprise(currtEnterprise){
+      this.$refs["addOrUpdate"].showDrawer("up",currtEnterprise);
     },
 
     onClose() {
@@ -140,11 +153,11 @@ export default {
         }
       })
     },
-
   },
   mounted() {
     // this.loadEntCooType()
   },
+  computed: mapState('enterprise', ['curEnterprise', 'advanceProps']) //
 
 }
 </script>

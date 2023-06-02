@@ -44,6 +44,7 @@ export default {
     return {
       visible: false,
       values: {},
+      type: null,
       // 构造json表表单， 参考： https://vueformulate.com/guide/forms/generating-forms/
       schema: [
         {
@@ -108,9 +109,18 @@ export default {
   },
 
   methods: {
-    showDrawer() {
+    showDrawer(type) {
+     console.log(this.$store.state)
       this.visible = true;
-      this.values = {}
+      if(type == "up"){
+        //this.values = enterprise
+        this.type = "up"
+       // this.$store.commit("enterprise/setCurEnterprise",enterprise)
+       this.values = this.$store.state.enterprise.curEnterprise
+      }else {
+        this.type = null;
+        this.values = {}
+      }
     },
     onClose() {
       this.visible = false;
@@ -129,9 +139,13 @@ export default {
     handAddCusEnt(data) {
       console.log(data)
       return customerEnterprise.add(data).then((res) => {
-        console.log("---------------",res)
-        console.log("getCusEntList1")
+        console.log("-------customerEnterprise.add--------",res)
+        //console.log("getCusEntList1")
         this.$emit("getCusEntList");
+        if(this.type){
+          console.log("up commit",data)
+          this.$store.commit("enterprise/setCurEnterprise",JSON.parse(JSON.stringify(data)))
+        }
         this.onClose()
       }).then(() => {
         console.log("getCusEntList2")
