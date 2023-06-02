@@ -6,13 +6,13 @@
 
     <resultMap id="BaseResultMap" type="com.yly.crm.entity.DictionaryTableBizRef">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="dicId" column="dic_id" jdbcType="INTEGER"/>
-            <result property="bizName" column="biz_name" jdbcType="INTEGER"/>
+            <result property="bizName" column="biz_name" jdbcType="VARCHAR"/>
             <result property="tableName" column="table_name" jdbcType="VARCHAR"/>
+            <result property="schemaJson" column="schema_json" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,dic_id,biz_name,
-        table_name
+        id,biz_name,table_name,
+        schema_json
     </sql>
 </mapper>
