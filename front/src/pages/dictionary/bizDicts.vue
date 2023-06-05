@@ -13,9 +13,16 @@
           <a-form-item>
             <a-button @click="query()" :loading="queryLoading">查询</a-button>
           </a-form-item>
+          <a-form-item>
+            <a-button type="primary" @click="showModal('添加')">添加业务表单</a-button>
+          </a-form-item>
+          <a-form-item>
+            <a-button  icon="redo"  @click="fetch()"></a-button>
+          </a-form-item>
         </a-form>
-        <a-button type="primary" @click="showModal('添加')">添加业务表单</a-button>
+
       </a-space>
+
       <a-table
           :columns="columns"
           :data-source="dataSource"
@@ -33,6 +40,33 @@
 </template>
 
 <script>
+import * as dictionaryBizRef from "@/services/dictionaryBizRef";
+
+const columns = [
+  {
+    title: '编号',
+    dataIndex: 'id'
+  },
+  {
+    title: '名称',
+    dataIndex: 'bizName',
+    ellipsis: true,
+  },
+  {
+    title: '对应关系',
+    dataIndex: 'tableName',
+    ellipsis: true,
+  },
+  {
+    title: '字段明细',
+    dataIndex: 'schemaJson',
+    ellipsis: true,
+  },
+  {
+    title: '操作',
+    scopedSlots: {customRender: 'action'}
+  }
+]
 export default {
   /**
    * @name: bizDicts (业务字典集合)
@@ -41,10 +75,55 @@ export default {
    * @description：bizDicts
    * @update: 2023/5/23 11:16
    */
-  name: "bizDicts"
+  name: "bizDicts",
+
+  data(){
+    return {
+      pagination: {},
+      loading: false,
+      columns: columns,
+      dataSource: [],
+      selectedRows: [],
+    }
+  },
+
+  methods:{
+    fetch(params = {"page": 1, "size": 10}) {
+      this.loading = true
+      dictionaryBizRef.list(params || {"page": 1, "size": 10}).then(({data}) => {
+        const res = data.data
+        const pagination = {...this.pagination};
+        pagination.total = res.total
+        pagination.current = params.page
+        this.dataSource = res.records.map((e, i) => ({key: i + "",...e}))
+        this.pagination = pagination
+        this.loading = false
+        this.queryLoading = false
+      })
+    },
+
+
+    // table
+    handleTableChange(pagination) {
+      const pager = {...this.pagination};
+      pager.current = pagination.current;
+      this.pagination = pager;
+      this.fetch({
+        size: pagination.pageSize,
+        page: pagination.current,
+      });
+    },
+
+  },
+
+  created() {
+    this.fetch()
+  }
 }
 </script>
 
 <style scoped>
-
+.operator {
+  margin-bottom: 18px;
+}
 </style>

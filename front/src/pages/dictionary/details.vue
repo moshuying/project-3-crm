@@ -87,7 +87,7 @@
         </a-form-item>
       </a-form>
     </a-modal>
-    <dictionary-name-modal ref="dictsForm"></dictionary-name-modal>
+    <dictionary-name-modal :query="fetchDictionaries" ref="dictsForm"></dictionary-name-modal>
   </div>
 </template>
 
@@ -140,18 +140,38 @@ export default {
       leftFirstId:null,
     }
   },
+
   created() {
-    dictionaryContents.list({page:1,size:999999}).then(({data})=>{
-      this.dContentsList = data.data.records
-      this.leftFirstId = this.dContentsList[0].id
+
+    // 加载系统字典；
+    // dictionaryContents.list({page:1,size:999999}).then(({data})=>{
+    //   this.dContentsList = data.data.records
+    //   this.leftFirstId = this.dContentsList[0].id
+    //
+    //   // 取第一条明细
+    //   this.fetch({page:1,size:10,id:this.leftFirstId})
+    // })
+
+    this.fetchDictionaries().then(()=>{
       this.fetch({page:1,size:10,id:this.leftFirstId})
     })
+
   },
   methods: {
+
+    fetchDictionaries(){
+      return dictionaryContents.list({page:1,size:999999}).then(({data})=>{
+        this.dContentsList = data.data.records
+        this.leftFirstId = this.dContentsList[0].id
+      })
+    },
+
     changeRight(id){
       this.leftFirstId = id
       this.query()
     },
+
+    // 搜索
     query(){
       this.queryLoading = true
       this.queryForm.validateFields((err, values) => {
@@ -170,6 +190,8 @@ export default {
       this.pagination = pager;
       this.query()
     },
+
+    //加载明细
     fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
       dictionaryDetails.list(params || {"page": 1, "size": 10,id:this.leftFirstId}).then(({data}) => {
@@ -183,6 +205,7 @@ export default {
         this.queryLoading = false
       })
     },
+
     deleteItem(text) {
       const title = '删除'
       dictionaryDetails.deleteItem(text.id).then(({data})=>{
@@ -202,6 +225,7 @@ export default {
         this.fetch({"page": this.pagination.current, "size": 10,id:this.leftFirstId})
       })
     },
+
     updateItem(id) {
       this.showModal('更改')
       dictionaryDetails.getDetail(id).then(({data}) => {
@@ -212,9 +236,6 @@ export default {
         this.form.setFieldsValue({"parentid": data.data["parentid"]})
       })
     },
-
-
-
     // modal
     showModal(title = '添加') {
       this.visible = true;
@@ -224,6 +245,8 @@ export default {
         this.form.setFieldsValue({"parentid": this.leftFirstId})
       })
     },
+
+    //添加字典
     showDicModal(){
       this.$refs["dictsForm"].showModal();
     },

@@ -30,7 +30,7 @@
       </div>
     </a-card>
 
-    <dictionary-name-modal ref="dictsForm"></dictionary-name-modal>
+    <dictionary-name-modal :query="query" ref="dictsForm"></dictionary-name-modal>
 
   </div>
 </template>
@@ -87,6 +87,7 @@ export default {
   },
   methods: {
     query(){
+      console.log("Is  query....");
       this.queryLoading = true
       this.queryForm.validateFields((err, values) => {
         if (err) {
@@ -139,19 +140,11 @@ export default {
       })
     },
     updateItem(id) {
-      this.showModal('更改')
-      dictionaryContents.getDetail(id).then(({data}) => {
-        // 这里不能循环
-        this.form.setFieldsValue({"id": data.data["id"]})
-        this.form.setFieldsValue({"sn": data.data["sn"]})
-        this.form.setFieldsValue({"title": data.data["title"]})
-        this.form.setFieldsValue({"intro": data.data["intro"]})
-      })
+      this.showModal('更改',id)
     },
     // modal
-    showModal() {
-      this.$refs["dictsForm"].showModal();
-
+    showModal(title,id) {
+      this.$refs["dictsForm"].showModal(title,id);
     },
 
   }

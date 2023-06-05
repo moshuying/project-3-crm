@@ -25,4 +25,5 @@ module.exports = {
   BIZS:`${BASE_URL}/bizs`, // 商机 method CRUD
   PRODUCTS:`${BASE_URL}/products`, // 产品 method CRUD
   CUS_ENTERPRISE:`${BASE_URL}/customer/enterprise`, // 企业客户 method CRUD
+  DIC_REF:`${BASE_URL}/dictionary/bizref`, // 业务表自定义字典字段关系
 }

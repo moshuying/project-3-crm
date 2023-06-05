@@ -44,9 +44,16 @@ export default {
    * @update: 2023/5/22 15:24
    */
   name: "dictionaryNameModal",
-  data(){
+  props: {
+    // 接受父传过来的query组件；
+    query: {
+      type: Function,
+      default: null
+    }
+  },
+  data() {
 
-    return{
+    return {
       // modal
       title: '添加',
       visible: false,
@@ -55,12 +62,25 @@ export default {
       form: this.$form.createForm(this, {name: 'coordinated'}),
     }
   },
-  methods:{
-    showModal(title = '添加') {
+  methods: {
+
+    showModal(title = '添加', id) {
       this.visible = true;
       this.title = title || '添加'
-     // this.form.resetFields()
+      if (id) {
+        dictionaryContents.getDetail(id).then(({data}) => {
+          // 这里不能循环
+          this.form.setFieldsValue({"id": data.data["id"]})
+          this.form.setFieldsValue({"sn": data.data["sn"]})
+          this.form.setFieldsValue({"title": data.data["title"]})
+          this.form.setFieldsValue({"intro": data.data["intro"]})
+        })
+      }else{
+        this.form.resetFields()
+      }
+
     },
+
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
@@ -79,7 +99,7 @@ export default {
               message: this.title + '数据字典信息出现错误',
               description: '建议检查网络连接或重新登陆',
             });
-          }else{
+          } else {
             this.$notification.success({
               message: this.title + '成功',
               description: this.title + '数据字典信息成功',
@@ -92,7 +112,7 @@ export default {
     },
     handleCancel() {
       this.visible = false;
-      this.title=''
+      this.title = ''
       this.confirmLoading = false
       this.form.resetFields()
     }

@@ -28,7 +28,7 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("/dic/bizref")
+@RequestMapping("/dictionary/bizref")
 public class DicTableBizRefController {
 
     @Autowired
