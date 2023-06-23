@@ -8,7 +8,8 @@
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="bizName" column="biz_name" jdbcType="VARCHAR"/>
             <result property="tableName" column="table_name" jdbcType="VARCHAR"/>
-            <result property="schemaJson" column="schema_json" jdbcType="VARCHAR"/>
+            <result property="schemaJson" column="schema_json" jdbcType="VARCHAR" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+            <result property="isSys" column="is_sys" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
