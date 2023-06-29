@@ -31,7 +31,7 @@ CREATE TABLE `customer_follow_up_history` (
   `traceType` int DEFAULT NULL COMMENT '跟进方式 计划采用如电话、邀约上门等  数据字典',
   `traceResult` int DEFAULT NULL COMMENT '跟进效果 优----3、中----2、差----1',
   `customerID` int DEFAULT NULL COMMENT '跟进客户 编辑时不可编辑 潜在客户对象/客户对象',
-  `inputUser` int DEFAULT NULL COMMENT '创建人 自动填入当前登录用户，用户不可更改 员工对象',
+  `inputUser` int DEFAULT NULL COMMENT '创建人 自动填入当前登录用户，用户不可更改/员工对象',
   `type` int DEFAULT NULL COMMENT '跟进类型 0:潜在开发计划 1:客户跟进历史',
   `comment` text,
   PRIMARY KEY (`id`),
