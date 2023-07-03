@@ -51,6 +51,9 @@
 
 客户关系管理系统用于管理与客户相关的信息与活动，包括企业与顾客间在销售、营销和服务上的交互。从而提升其管理方式，向客户提供创新式的个性化的客户交互和服务。CRM不仅仅是一个软件，它还是方法论、软件和IT能力综合，是一种商业策略。其最终目标是吸引新客户、保留老客户以及将已有客户转为忠实客户。为企业一系列的客户关系管理解决方案。
 
+# contributors
+[![](https://opencollective.com/project-3-crm/contributors.svg?width=890)](https://github.com/moshuying/project-3-crm/graphs/contributors)
+
 部分页面截图
 
 ![](/images/Snipaste_2021-05-24_17-26-55.png)
