@@ -30,6 +30,16 @@
           :loading="loading"
           @change="handleTableChange"
       >
+
+      <span slot="tags" slot-scope="schemaJson">
+          <a-tag
+              v-for="tag in schemaJson"
+              :key="tag.id"
+          >
+            {{ tag.title }}
+          </a-tag>
+      </span>`
+
            <span slot="action" slot-scope="text">
               <a @click="updateItem(text.id)">编辑</a>
            </span>
@@ -61,6 +71,7 @@ const columns = [
     title: '字段明细',
     dataIndex: 'schemaJson',
     ellipsis: true,
+    scopedSlots: { customRender: 'tags' },
   },
   {
     title: '操作',
