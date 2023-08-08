@@ -56,11 +56,19 @@ export default {
           validation: 'required',
           placeholder: "Sample placeholder"
         },
+        // {
+        //   type: 'select',
+        //   name: 'productUnit',
+        //   label: '单位',
+        //  // options: this.dictionaryDetailsUnit,
+        //   validation: '^required',
+        //   validationName: 'Password confirmation'
+        // },
         {
-          type: 'select',
+          type: 'text',
           name: 'productUnit',
           label: '单位',
-         // options: this.dictionaryDetailsUnit,
+          // options: this.dictionaryDetailsUnit,
           validation: '^required',
           validationName: 'Password confirmation'
         },
@@ -157,7 +165,7 @@ export default {
 
   },
   mounted() {
-    this.loadProductUnit()
+   // this.loadProductUnit()
   },
 
 

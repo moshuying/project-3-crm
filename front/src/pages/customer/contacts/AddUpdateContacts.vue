@@ -2,15 +2,17 @@
   <a-modal
       :title="title"
       :visible="visible"
+      width="800px"
       :confirm-loading="confirmLoading"
       @ok="handleOk"
       @cancel="handleCancel"
       okText="提交"
   >
-    <a-form :form="form" :layout="`horizontal`">
+    <a-form :form="form" >
       <a-form-item hidden>
         <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
       </a-form-item>
+
       <div v-for="(item) in baseColumns" :key="item.dataIndex">
         <a-form-item :label="item.title">
           <a-select v-if="item.dataIndex==='gender'"
@@ -54,6 +56,7 @@
                    :placeholder="`请输入`+item.title"
           />
         </a-form-item>
+
       </div>
     </a-form>
   </a-modal>
@@ -86,6 +89,7 @@ export default {
       form: this.$form.createForm(this, {name: 'coordinated'}),
       confirmLoading: false,
       title: '新增',
+      newContact: null, //新增s
      // visible: false,
       // 字典细节
       dictionaryDetailsJob:[],
@@ -94,7 +98,7 @@ export default {
   },
   mounted() {
     dictionaryDetails.list({page:1,size:999999,id:1}).then(({data})=>{
-      this.dictionaryDetailsJob = data.data.records
+        this.dictionaryDetailsJob = data.data.records
     });
   },
 

@@ -2,6 +2,8 @@ package com.yly.crm.controller;
 
 
 import com.yly.crm.entity.Baobei;
+import com.yly.crm.entity.BaobeiEntity;
+import com.yly.crm.mapper.BaobeiMapper;
 import com.yly.crm.service.BaobeiService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
@@ -21,19 +23,21 @@ public class BaobeiController {
 
 
     @Autowired
-    public BaobeiService baobeiService;
+    public BaobeiMapper baobeiMapper;
+
 
     @PostMapping("/add")
-    public void addBaobei(Baobei baobei){
-       // return baobeiService.save(baobei);
+    public boolean addBaobei(@RequestBody BaobeiEntity baobei){
+         return baobei.save();
+     // return   BaobeiEntity.create().setProductName("云盘").setProductId(2L).setCustomerName("申浪").setProjectDesc("asdfasdf").save();
     }
 
 
-    @GetMapping
-    @ResponseBody
-    public List<Baobei> getAllBaobei(){
-        return baobeiService.listAllAndSearch("ts",null,null,0);
-
-    }
+//    @GetMapping
+//    @ResponseBody
+//    public List<BaobeiEntity> getAllBaobei(){
+//        return baobeiService.listAllAndSearch("ts",null,null,0);
+//
+//    }
 
 }
