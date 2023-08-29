@@ -58,11 +58,6 @@ const columns = [
     dataIndex: 'id'
   },
   {
-    title: '名称',
-    dataIndex: 'bizName',
-    ellipsis: true,
-  },
-  {
     title: '对应关系',
     dataIndex: 'tableName',
     ellipsis: true,

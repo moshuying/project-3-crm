@@ -46,7 +46,7 @@
       </div>
     </a-card>
 
-    <add-customer :visible="visible" :baseColumns="baseColumns" ref="addContacts"></add-customer>
+    <add-update-contacts :visible="visible" :baseColumns="baseColumns" ref="addContacts"></add-update-contacts>
 
 <!--    修改客户状态-->
     <a-modal
@@ -211,7 +211,7 @@ import * as customerHandover from "@/services/customerHandover"
 import * as customerFollowUpHistory from "@/services/customerFollowUpHistory"
 import moment from "moment";
 import validators from "@/utils/validators";
-import AddCustomer from "@/pages/customer/contacts/AddUpdateContacts";
+import AddUpdateContacts from "@/pages/customer/contacts/AddUpdateContacts";
 
 const baseColumns =[
   {
@@ -275,9 +275,12 @@ const columns = [
   }
 ]
 
+/**
+ * 联系人模块
+ */
 export default {
-  name: 'Department',
-  components: {AddCustomer},
+  name: 'contacts',
+  components: {AddUpdateContacts},
   data() {
     return {
       validators,

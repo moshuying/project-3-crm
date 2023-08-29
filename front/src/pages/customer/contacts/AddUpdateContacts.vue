@@ -9,6 +9,7 @@
       okText="提交"
   >
     <a-form :form="form" >
+
       <a-form-item hidden>
         <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
       </a-form-item>
@@ -68,8 +69,9 @@ import validators from "@/utils/validators";
 import * as dictionaryDetails from "@/services/dictionaryDetails";
 
 export default {
+
   /**
-   * @name: AddCustomer  添加联系人
+   * @name: AddUpdateContacts  添加联系人
    * @author: Administrator
    * @date: 2022/10/9 18:54
    * @description：AddCustomer
@@ -96,11 +98,14 @@ export default {
     }
 
   },
+
+  // 展示自定义字段；
   mounted() {
     dictionaryDetails.list({page:1,size:999999,id:1}).then(({data})=>{
         this.dictionaryDetailsJob = data.data.records
     });
   },
+
 
   methods: {
     handleOk() {
