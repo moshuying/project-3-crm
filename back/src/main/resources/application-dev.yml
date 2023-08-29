@@ -16,7 +16,7 @@ spring:
   datasource:
     druid:
       # 连接，注意各个配置，尤其是要一次性执行多条 SQL 时，要 allowMultiQueries=true
-      url: jdbc:mysql://localhost:3309/crm3?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3306/crm3?useUnicode=true&useSSL=false&allowPublicKeyRetrieval=true&useLegacyDatetimeCode=false&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=UTC
       # 用户名 root
       username: root
       # 密码 root

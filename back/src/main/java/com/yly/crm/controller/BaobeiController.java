@@ -2,7 +2,6 @@ package com.yly.crm.controller;
 
 
 import com.yly.crm.entity.Baobei;
-import com.yly.crm.entity.BaobeiEntity;
 import com.yly.crm.mapper.BaobeiMapper;
 import com.yly.crm.service.BaobeiService;
 import io.swagger.annotations.Api;
@@ -27,8 +26,8 @@ public class BaobeiController {
 
 
     @PostMapping("/add")
-    public boolean addBaobei(@RequestBody BaobeiEntity baobei){
-         return baobei.save();
+    public boolean addBaobei(@RequestBody Baobei baobei){
+         return  true;
      // return   BaobeiEntity.create().setProductName("云盘").setProductId(2L).setCustomerName("申浪").setProjectDesc("asdfasdf").save();
     }
 

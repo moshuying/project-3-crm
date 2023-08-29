@@ -1,7 +1,7 @@
 package com.yly.crm.service.impl;
 
-import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.yly.crm.entity.BaobeiEntity;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yly.crm.entity.Baobei;
 import com.yly.crm.mapper.BaobeiMapper;
 import com.yly.crm.query.BaobeiQuery;
 
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class BaobeiServiceImpl extends ServiceImpl<BaobeiMapper, BaobeiEntity>
+public class BaobeiServiceImpl extends ServiceImpl<BaobeiMapper, Baobei>
         implements BaobeiService {
 
 //    @Resource private BaobeiMapper baobeiMapper;

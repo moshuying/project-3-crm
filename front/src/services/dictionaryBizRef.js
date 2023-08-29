@@ -6,7 +6,7 @@ import {DIC_REF} from './api'
  * @param page {{size: number, page: number}}
  * @returns {Promise<AxiosResponse<T>>}
  */
-export async function list(page ) {
+export async function list(page) {
     return request(DIC_REF+"/list", METHOD.GET, page||{"page": 1, "size": 10})
 }
 
