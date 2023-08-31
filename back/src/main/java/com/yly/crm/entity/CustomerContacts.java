@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -16,7 +17,8 @@ import java.time.LocalDateTime;
  */
 @TableName(value ="customer_contacts")
 @Data
-public class CustomerManager implements Serializable {
+@NoArgsConstructor
+public class CustomerContacts implements Serializable {
     /**
      *
      */
@@ -104,4 +106,6 @@ public class CustomerManager implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+
 }

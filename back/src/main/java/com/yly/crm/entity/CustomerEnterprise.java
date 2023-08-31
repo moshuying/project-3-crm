@@ -5,13 +5,19 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  *
  * @TableName customer_enterprise
  */
 @TableName(value ="customer_enterprise")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomerEnterprise implements Serializable {
     /**
      *

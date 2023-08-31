@@ -5,9 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yly.crm.core.jwt.JwtUtil;
 import com.yly.crm.core.response.Result;
 import com.yly.crm.core.response.ResultGenerator;
-import com.yly.crm.dto.CustomerManagerList;
-import com.yly.crm.entity.CustomerManager;
-import com.yly.crm.service.CustomerManagerService;
+import com.yly.crm.dto.CustomerContactsDTO;
+import com.yly.crm.entity.CustomerContacts;
+import com.yly.crm.service.CustomerContactsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Map;
+import java.util.Optional;
 
 /**
 * @author jiuyuehe
@@ -56,21 +57,21 @@ import java.util.Map;
 @Api(tags={"客户管理接口"})
 @RestController
 @RequestMapping("/customer/manager")
-public class CustomerManagerController {
-    @Resource private CustomerManagerService customerManagerService;
+public class CustomerContactsController {
+    @Resource private CustomerContactsService customerContactsService;
     @Resource private JwtUtil jwtUtil;
 
     @Operation(description = "客户管理添加")
     @PostMapping
-    public Result add(@RequestBody CustomerManager customerManager, @RequestHeader Map<String, String> headers) {
-        if(customerManager.getId()!=null){
-            customerManager.setId(null);
+    public Result add(@RequestBody CustomerContacts customerContacts, @RequestHeader Map<String, String> headers) {
+        if(customerContacts.getId()!=null){
+            customerContacts.setId(null);
         }
         String header = jwtUtil.getJwtProperties().getHeader();
         String id= jwtUtil.getId(headers.get(header)).get();
-        customerManager.setInputuser(Integer.valueOf(id));
-        customerManager.setSeller(Integer.valueOf(id));
-        customerManagerService.save(customerManager);
+        customerContacts.setInputuser(Integer.valueOf(id));
+        customerContacts.setSeller(Integer.valueOf(id));
+        customerContactsService.save(customerContacts);
         return ResultGenerator.genOkResult();
     }
 
@@ -83,16 +84,16 @@ public class CustomerManagerController {
 
     @Operation(description = "客户管理更新")
     @PutMapping
-    public Result update(@RequestBody CustomerManager customerManager) {
-    customerManagerService.saveOrUpdate(customerManager);
+    public Result update(@RequestBody CustomerContacts customerContacts) {
+    customerContactsService.saveOrUpdate(customerContacts);
         return ResultGenerator.genOkResult();
     }
 
     @Operation(description = "客户管理获取详细信息")
     @GetMapping("/{id}")
     public Result detail(@PathVariable Long id) {
-    CustomerManager customerManager = customerManagerService.getById(id);
-        return ResultGenerator.genOkResult(customerManager);
+        CustomerContactsDTO customerContactsDTO = customerContactsService.getDetailById(id);
+        return ResultGenerator.genOkResult(customerContactsDTO);
     }
 
     @Operation(description = "客户管理分页查询")
@@ -107,9 +108,9 @@ public class CustomerManagerController {
        @RequestParam(defaultValue = "",required = false) String keyword,
        @RequestParam(required = false) Integer status,
        @RequestParam(required = false) Integer ceId) {
-        IPage<CustomerManagerList> customerManagerListIPage = new Page<CustomerManagerList>(page, size);
+        IPage<CustomerContactsDTO> customerManagerListIPage = new Page<CustomerContactsDTO>(page, size);
 
-        customerManagerListIPage = customerManagerService.listAllWithDictionary(customerManagerListIPage,keyword,status,ceId);
+        customerManagerListIPage = customerContactsService.listAllWithDictionary(customerManagerListIPage,keyword,status,ceId);
         return ResultGenerator.genOkResult(customerManagerListIPage);
     }
 }

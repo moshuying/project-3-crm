@@ -7,7 +7,7 @@ import com.yly.crm.core.jwt.JwtUtil;
 import com.yly.crm.core.response.Result;
 import com.yly.crm.core.response.ResultGenerator;
 import com.yly.crm.dto.AnalysisQuery;
-import com.yly.crm.service.CustomerManagerService;
+import com.yly.crm.service.CustomerContactsService;
 import com.yly.crm.service.EmployeeService;
 import com.yly.crm.service.RoleService;
 import com.yly.crm.entity.Analysis;
@@ -58,7 +58,7 @@ import java.util.Map;
 @RequestMapping("/analysis")
 public class AnalysisController {
     @Resource
-    CustomerManagerService customerManagerService;
+    CustomerContactsService customerContactsService;
     @Resource
     EmployeeService employeeService;
     @Resource
@@ -84,13 +84,13 @@ public class AnalysisController {
             }
             if(roleName.equals("董事长")){
                // PageInfo<Analysis> pageInfo = PageInfo.of(customerManagerService.queryAnalysis(analysisQuery));
-                analysisIPage = customerManagerService.queryAnalysis(analysisIPage, analysisQuery);
+                analysisIPage = customerContactsService.queryAnalysis(analysisIPage, analysisQuery);
                 return ResultGenerator.genOkResult(analysisIPage);
             }
         }
         // 除了董事长 其他人都只能查看自己的
         analysisQuery.setName(jwtUtil.getName(headers.get(header)).get());
-        analysisIPage = customerManagerService.queryAnalysis(analysisIPage, analysisQuery);
+        analysisIPage = customerContactsService.queryAnalysis(analysisIPage, analysisQuery);
         return ResultGenerator.genOkResult(analysisIPage);
     }
 

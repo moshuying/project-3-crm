@@ -46,7 +46,7 @@
       </div>
     </a-card>
 
-    <add-update-contacts :visible="visible" :baseColumns="baseColumns" ref="addContacts"></add-update-contacts>
+    <add-update-contacts @query ="query" :visible="visible" :baseColumns="baseColumns" ref="addContacts"></add-update-contacts>
 
 <!--    修改客户状态-->
     <a-modal
@@ -341,6 +341,7 @@ export default {
       this.employeeList = data.data.records
     })
   },
+
   methods: {
     query(){
       this.queryLoading = true
@@ -536,22 +537,7 @@ export default {
 
 
     async updateItem(id,line) {
-
-      this.$refs["addModal"].updateItem1(id,line);
-      // this.confirmLoading=false
-      // await this.showModal('更改')
-      // customerManager.getDetail(id).then(({data}) => {
-      //   if(!data.data) return;
-      //   // 这里不能循环
-      //   this.form.setFieldsValue({id:data.data["id"]})
-      //   this.form.setFieldsValue({name:data.data["name"]})
-      //   this.form.setFieldsValue({age:line["age"]})
-      //   this.form.setFieldsValue({gender:data.data["gender"]})
-      //   this.form.setFieldsValue({tel:data.data["tel"]})
-      //   this.form.setFieldsValue({qq:data.data["qq"]})
-      //   this.form.setFieldsValue({job:data.data["job"]})
-      //   this.form.setFieldsValue({source:data.data["source"]})
-      // })
+      this.$refs["addContacts"].updateItem1(id,line);
     },
 
     handleOk() {

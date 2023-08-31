@@ -15,7 +15,9 @@
       </a-form-item>
 
       <div v-for="(item) in baseColumns" :key="item.dataIndex">
+
         <a-form-item :label="item.title">
+
           <a-select v-if="item.dataIndex==='gender'"
                     style="width: 6rem"
                     v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">
@@ -26,12 +28,14 @@
               女
             </a-select-option>
           </a-select>
+
           <a-select v-else-if="item.dataIndex==='job'"
                     v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">
             <a-select-option v-for="(list) in dictionaryDetailsJob" :key="list.id">
               {{ list.title }}
             </a-select-option>
           </a-select>
+
           <a-select v-else-if="item.dataIndex==='source'"
                     v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">
             <a-select-option v-for="(list) in dictionaryDetailsSource" :key="list.id">
@@ -71,7 +75,7 @@ import * as dictionaryDetails from "@/services/dictionaryDetails";
 export default {
 
   /**
-   * @name: AddUpdateContacts  添加联系人
+   * @name: AddUpdateContacts  添加或者修改联系人
    * @author: Administrator
    * @date: 2022/10/9 18:54
    * @description：AddCustomer
@@ -106,8 +110,8 @@ export default {
     });
   },
 
-
   methods: {
+
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
@@ -118,7 +122,6 @@ export default {
         }
         let method = 'add';
         if (values.id) method = 'update';
-
         customerManager[method](values).then(({data}) => {
           this.confirmLoading = false;
           if (data.code !== 200) {
@@ -133,16 +136,18 @@ export default {
             });
           }
           this.visible = false
-          this.query()
+          this.$emit('query');
         })
       });
     },
+
     handleCancel() {
       this.visible = false;
       this.title = ''
       this.confirmLoading = false
       this.form.resetFields()
     },
+
     // modal
     async showModal(title) {
       this.visible = true;
@@ -158,7 +163,7 @@ export default {
     //更新字段
     async updateItem(id,line) {
       this.confirmLoading=false
-      await this.showModal('更改')
+      await this.showModal('编辑联系人信息')
       customerManager.getDetail(id).then(({data}) => {
         if(!data.data) return;
         // 这里不能循环
