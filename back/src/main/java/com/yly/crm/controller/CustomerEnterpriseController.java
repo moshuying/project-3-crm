@@ -70,7 +70,6 @@ public class CustomerEnterpriseController {
         queryWrapper.like("ent_name",keyword);
         queryWrapper.orderByDesc("ent_id");
 
-
         cepage =  customerEnterpriseService.page(cepage,queryWrapper);
 
         //CustomerEnterprise ce = customerEnterpriseService.getById(ceid);

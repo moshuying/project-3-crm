@@ -39,7 +39,12 @@ public class CustomerContactsServiceImpl extends ServiceImpl<CustomerContactsMap
     }
 
     public IPage<CustomerContactsDTO> listAllWithDictionary(IPage<CustomerContactsDTO> customerManagerListIPage, String keyword, Integer status, Integer ceId) {
-        return customerContactsMapper.listAllWithDictionary(customerManagerListIPage, keyword,status,ceId);
+       // return customerContactsMapper.listAllWithDictionary(customerManagerListIPage, keyword,status,ceId);
+        MPJLambdaWrapper wrapper = new MPJLambdaWrapper<CustomerContacts>()
+                .selectAll(CustomerContacts.class)
+                .select(CustomerEnterprise::getEntId,CustomerEnterprise::getEntName)
+                .leftJoin(CustomerEnterprise.class, CustomerEnterprise::getEntId, CustomerContacts::getCustomerEntId);
+        return customerContactsMapper.selectJoinPage(customerManagerListIPage,CustomerContactsDTO.class,wrapper);
     }
 
     public IPage<Analysis> queryAnalysis(IPage<Analysis> qpage,AnalysisQuery analysisQuery) {

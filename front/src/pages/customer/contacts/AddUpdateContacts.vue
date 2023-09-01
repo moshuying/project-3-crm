@@ -12,6 +12,7 @@
 
       <a-form-item hidden>
         <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
+        <a-input v-decorator="['entId',{ rules: [{ required: false}] }]"/>
       </a-form-item>
 
       <div v-for="(item) in baseColumns" :key="item.dataIndex">
@@ -36,18 +37,40 @@
             </a-select-option>
           </a-select>
 
-          <a-select v-else-if="item.dataIndex==='source'"
-                    v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">
-            <a-select-option v-for="(list) in dictionaryDetailsSource" :key="list.id">
-              {{ list.title }}
-            </a-select-option>
-          </a-select>
+<!--          <a-select v-else-if="item.dataIndex==='source'"-->
+<!--                    v-decorator="[item.dataIndex,{ rules: [{ required: true, message: item.title }] }]">-->
+<!--            <a-select-option v-for="(list) in dictionaryDetailsSource" :key="list.id">-->
+<!--              {{ list.title }}-->
+<!--            </a-select-option>-->
+<!--          </a-select>-->
+
           <a-input-number v-else-if="item.dataIndex==='age'" :min="0" :max="200"
                           v-decorator="[item.dataIndex, { rules: [{ required: true, message: item.title  }]}]"/>
+
           <a-input v-else-if="item.dataIndex==='name'"
                    v-decorator="[item.dataIndex, { rules: [{ required: true,min:1,max:120,message:'输入长度应在1到120之间' }]}]"
                    :placeholder="`请输入`+item.title"
           />
+
+          <a-input v-else-if="item.dataIndex==='entName' && formStatus === 'update'"
+                   v-decorator="[item.dataIndex, { rules: [{ required: true,min:1,max:120,message:'输入长度应在1到120之间' }]}]"
+                   :placeholder="`请输入`+item.title"
+          />
+
+
+          <a-auto-complete  v-else-if="item.dataIndex==='entName' && formStatus === 'add'"
+              style="width: 200px"  :defaultEntValue="defaultEntValue"
+              placeholder="搜索企业"
+              @search="onSearch"
+              @change="onSelect" >
+
+            <template slot="dataSource">
+              <a-select-option v-for="ent in entDataSource" :key="ent.entId.toString()">
+              {{ent.entId}} - {{ ent.entName }}
+              </a-select-option>
+            </template>
+          </a-auto-complete>
+
           <a-input v-else-if="item.dataIndex==='tel'"
                    v-decorator="[item.dataIndex, { rules: [{ required: true,pattern:validators.phoneReg,message:validators.phoneMsg  }]}]"
                    :placeholder="`请输入`+item.title"
@@ -71,6 +94,8 @@
 import * as customerManager from "@/services/customerManager";
 import validators from "@/utils/validators";
 import * as dictionaryDetails from "@/services/dictionaryDetails";
+import * as customerEnterprise from "@/services/customerEnterprise";
+
 
 export default {
 
@@ -91,14 +116,19 @@ export default {
   data() {
     return {
       // 新增修改
+      formEntName:"",
       validators,
       form: this.$form.createForm(this, {name: 'coordinated'}),
       confirmLoading: false,
       title: '新增',
+      formStatus:"add",
       newContact: null, //新增s
      // visible: false,
       // 字典细节
       dictionaryDetailsJob:[],
+      defaultEntValue:"",
+      //entDataSource
+      entDataSource:[],
     }
 
   },
@@ -115,11 +145,19 @@ export default {
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
+
+        console.log("form", values);
+
         if (err) {
           console.log("form error");
           this.confirmLoading=false
           return;
         }
+
+        if(!values.customerEntId){
+          values.customerEntId = values.entId;
+        }
+
         let method = 'add';
         if (values.id) method = 'update';
         customerManager[method](values).then(({data}) => {
@@ -150,31 +188,54 @@ export default {
 
     // modal
     async showModal(title) {
+      this.formStatus ="add"
+      this.entDataSource = []
       this.visible = true;
       this.title = title || '新增'
       await this.form.resetFields()
     },
 
+
+    onSearch(searchText) {
+      console.log('searchText', searchText);
+      customerEnterprise.list({"keyword":searchText}).then(
+          ({data}) => {
+            if(!data.data) return;
+            this.entDataSource = data.data.records
+          }
+      )
+    },
+
+    onSelect(value) {
+      console.log('onChange', value,this.form );
+      this.form.setFieldsValue({entId: value})
+    },
+
+
     updateItem1(id,line){
       console.log("updateItem1",id,line)
+      this.formStatus = "update"
+      this.entDataSource = []
       this.updateItem(id,line)
     },
 
     //更新字段
     async updateItem(id,line) {
       this.confirmLoading=false
-      await this.showModal('编辑联系人信息')
+      await this.showModal('update')
       customerManager.getDetail(id).then(({data}) => {
         if(!data.data) return;
         // 这里不能循环
         this.form.setFieldsValue({id:data.data["id"]})
         this.form.setFieldsValue({name:data.data["name"]})
+        this.form.setFieldsValue({entName:data.data["entName"]})
         this.form.setFieldsValue({age:line["age"]})
         this.form.setFieldsValue({gender:data.data["gender"]})
         this.form.setFieldsValue({tel:data.data["tel"]})
         this.form.setFieldsValue({qq:data.data["qq"]})
         this.form.setFieldsValue({job:data.data["job"]})
         this.form.setFieldsValue({source:data.data["source"]})
+        this.defaultEntValue = data.data.entName
       })
     },
   }

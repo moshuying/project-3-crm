@@ -34,13 +34,27 @@
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
-            :scroll="{ x: 1500, y: 300 }"
+            :scroll="{ x: 2000, y: 800 }"
         >
            <span slot="action" slot-scope="text">
-             <a-button type="link" shape="round" icon="edit" size="small" @click="updateItem(text.id,text)" >编辑</a-button>
              <a-button type="link" shape="round" icon="edit" size="small" @click="showFollowModal(text.id,text)" >跟进</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" @click="showHandoverModal(text.id)">移交</a-button>
-             <a-button type="link" shape="round" icon="edit" size="small" @click="showStatusModal(text.id)" >修改状态</a-button>
+              <a-dropdown>
+                <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+                  更多 <a-icon type="down" />
+                </a>
+                <a-menu slot="overlay">
+                  <a-menu-item>
+                    <a  @click="updateItem(text.id,text)" >编辑</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a  @click="showHandoverModal(text.id)" >移交</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a @click="showStatusModal(text.id)" >修改状态</a>
+                  </a-menu-item>
+                </a-menu>
+              </a-dropdown>
+
            </span>
         </a-table>
       </div>
@@ -220,6 +234,13 @@ const baseColumns =[
     dataIndex: 'name',
     ellipsis: true,
     fixed: 'left'
+
+  },
+  {
+    width: 400,
+    title: '企业名称',
+    dataIndex: 'entName',
+    ellipsis: true,
   },
   {
     title: '年龄',
@@ -252,7 +273,7 @@ const baseColumns =[
 ]
 const columns = [
   {
-    width:60,
+    width: 60,
     title: '编号',
     dataIndex: 'id',
     fixed: 'left'
@@ -268,7 +289,7 @@ const columns = [
     customRender:(text)=>customerManager.statusMap[parseInt(text)]
   },
   {
-    width:380,
+    width: 180,
     title: '操作',
     scopedSlots: {customRender: 'action'},
     fixed: 'right'
@@ -337,6 +358,7 @@ export default {
       this.dictionaryDetailsFollow = data.data.records
     })
 
+    // 查询公司负责的人
     employee.list({page:1,size:99999}).then(({data})=>{
       this.employeeList = data.data.records
     })
