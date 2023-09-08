@@ -78,7 +78,7 @@ export default {
         },
         {
           type: 'text',
-          name: 'entsn',
+          name: 'entSn',
           label: '统一社会信用代码',
         },
         {

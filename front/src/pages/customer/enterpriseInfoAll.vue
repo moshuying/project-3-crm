@@ -45,11 +45,12 @@
 
     <div>
       <a-tabs default-active-key="1" @change="checkPre">
-        <a-tab-pane key="1" tab="高级属性">
-          <ent-advanced-props></ent-advanced-props>
+
+        <a-tab-pane key="1" tab="跟进日志" force-render>
+          <ent-follows></ent-follows>
         </a-tab-pane>
 
-        <a-tab-pane key="4" tab="项目信息">
+        <a-tab-pane key="2" tab="项目信息">
           <ent-projects></ent-projects>
         </a-tab-pane>
 
@@ -57,18 +58,19 @@
           <ent-contacts></ent-contacts>
         </a-tab-pane>
 
+        <a-tab-pane key="4" tab="技术记录">
+          Content of Tab Pane 3
+        </a-tab-pane>
+
         <a-tab-pane key="5" tab="客户环境">
           <ent-note></ent-note>
         </a-tab-pane>
 
-        <a-tab-pane key="2" tab="跟进日志" force-render>
-          <ent-follows></ent-follows>
+        <a-tab-pane key="6" tab="商务信息">
         </a-tab-pane>
 
-        <a-tab-pane key="6" tab="技术记录">
-          Content of Tab Pane 3
-        </a-tab-pane>
-        <a-tab-pane key="7" tab="商务信息">
+        <a-tab-pane key="7" tab="高级属性">
+          <ent-advanced-props></ent-advanced-props>
         </a-tab-pane>
       </a-tabs>
     </div>
