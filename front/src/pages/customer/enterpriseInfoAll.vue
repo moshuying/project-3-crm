@@ -47,7 +47,7 @@
       <a-tabs default-active-key="1" @change="checkPre">
 
         <a-tab-pane key="1" tab="跟进日志" force-render>
-          <ent-follows></ent-follows>
+          <ent-follows :curEnterprise = curEnterprise></ent-follows>
         </a-tab-pane>
 
         <a-tab-pane key="2" tab="项目信息">

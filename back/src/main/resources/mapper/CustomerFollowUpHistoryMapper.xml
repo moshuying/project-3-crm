@@ -14,8 +14,9 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="traceDetails" jdbcType="LONGVARCHAR" property="tracedetails" />
     <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
+      <result column="customer_ent_id" jdbcType="INTEGER" property="customerEntId" />
   </resultMap>
-  <select id="listAndSearch" resultType="com.yly.crm.entity.CFUHSearch">
+  <select id="listAndSearch" resultType="com.yly.crm.dto.CustomerFollowUpHistoryDTO">
     select cfuh.id          as id,
            cm2.name         as name,
            cfuh.traceTime   as traceTime,

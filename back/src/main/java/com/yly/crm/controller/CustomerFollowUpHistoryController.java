@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yly.crm.core.jwt.JwtUtil;
 import com.yly.crm.core.response.Result;
 import com.yly.crm.core.response.ResultGenerator;
-import com.yly.crm.entity.CFUHSearch;
+import com.yly.crm.dto.CustomerFollowUpHistoryDTO;
 import com.yly.crm.entity.CustomerFollowUpHistory;
 import com.yly.crm.service.CustomerFollowUpHistoryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -72,18 +72,22 @@ public class CustomerFollowUpHistoryController {
     @ApiOperation(value="分页查询客户跟进记录", notes="分页查询 ")
     @ApiImplicitParams({
         @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
-        @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
+        @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query"),
+        @ApiImplicitParam(name = "keyword", value = "内容关键字", required = false, dataType = "String", paramType="query"),
+        @ApiImplicitParam(name = "customerEntId", value = "企业id", required = false, dataType = "Long", paramType="query"),
+        @ApiImplicitParam(name = "type", value = "跟进类型", required = false, dataType = "Integer", paramType="query")
     })
     public Result list(
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(defaultValue = "") String keyword,
+            @RequestParam(defaultValue = "") Long customerEntId,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startTime,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endTime,
             @RequestParam(required = false) Integer type) {
 
-        IPage<CFUHSearch> qpage = new Page<CFUHSearch>(page, size);
-        qpage= customerFollowUpHistoryService.listAndSearch(qpage,keyword,startTime,endTime,type);
+        IPage<CustomerFollowUpHistoryDTO> qpage = new Page<CustomerFollowUpHistoryDTO>(page, size);
+        qpage= customerFollowUpHistoryService.listAndSearch(qpage,keyword,customerEntId,startTime,endTime,type);
         return ResultGenerator.genOkResult(qpage);
     }
 }

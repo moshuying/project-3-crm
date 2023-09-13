@@ -100,8 +100,8 @@ public class CustomerContactsController {
     @GetMapping
     @ApiOperation(value="分页查询客户管理", notes="分页查询 ")
     @ApiImplicitParams({
-        @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query"),
-        @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query")
+        @ApiImplicitParam(name = "page", value = "第几页", required = true, dataType = "Integer", paramType="query",dataTypeClass = Integer.class),
+        @ApiImplicitParam(name = "size", value = "一页有几条", required = true, dataType = "Integer", paramType="query",dataTypeClass = Integer.class)
     })
     public Result list(@RequestParam(defaultValue = "1") Integer page,
        @RequestParam(defaultValue = "10") Integer size,

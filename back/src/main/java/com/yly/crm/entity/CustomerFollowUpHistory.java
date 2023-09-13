@@ -65,7 +65,7 @@ public class CustomerFollowUpHistory implements Serializable {
     private Integer type;
 
     /**
-     *
+     * 评论
      */
     @TableField(value = "comment")
     private String comment;
