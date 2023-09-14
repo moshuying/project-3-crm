@@ -6,10 +6,14 @@
     {{customerFollowUpHistorys}}
     <a-divider />
     <a-steps progress-dot :current="1" direction="vertical">
-      <a-step v-for="followHis in customerFollowUpHistorys"  :key="followHis.id"   :description="followHis.tracedetails" >
-        <div slot="title" > {{ followHis.tracetime}} , {{followHis.customerName}}</div>
+      <a-step v-for="followHis in customerFollowUpHistorys"  :key="followHis.id"  >
+        <div style="width: 500px" slot="title" > <a-icon type="calendar" theme="twoTone" /> : {{ followHis.tracetime}} , {{followHis.customerName}}</div>
+        <div style="width: 800px" slot="description" >跟进内容：  {{ followHis.tracedetails}} </div>
       </a-step>
     </a-steps>
+
+    <a-pagination v-model="pagination.current" :total="pagination.total"  @change="onPageChange" show-less-items />
+
   </div>
 </template>
 
@@ -50,8 +54,18 @@ export default {
         this.loading = false
         this.queryLoading = false
       })
+    },
+
+    // 分页
+    onPageChange(page, pageSize){
+      console.log("onPageChange:::",page, pageSize,this.pagination)
+      this.pagination.page = page
+      this.fetchFllowHistory(this.pagination)
     }
+
   },
+
+
 
   mounted() {
     this.fetchFllowHistory();
@@ -60,8 +74,8 @@ export default {
 }
 </script>
 
-<style scoped>
-.ant-steps-dot .ant-steps-item-content{
-  width: auto !important;
+<style >
+.ant-steps-item-content{
+  width: 800px !important;
 }
 </style>

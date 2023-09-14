@@ -119,6 +119,23 @@ const options = {
                         }]
                 },
                 {
+                    path: '/bizs',
+                    name: '商机与线索',
+                    meta: {
+                        icon: 'gold',
+                        page: {
+                            cacheAble: false
+                        }
+                    },
+                    component: PageView,
+                    children: [
+                        {
+                            path: 'niche',
+                            name: '商机管理',
+                            component: () => import('@/pages/bizs')
+                        }]
+                },
+                {
                     path: '/customer',
                     name: '客户管理',
                     meta: {

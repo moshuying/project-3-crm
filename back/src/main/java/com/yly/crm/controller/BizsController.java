@@ -43,7 +43,7 @@ public class BizsController {
 
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @Operation(description = "获取商机列表, 新增接口不做鉴权处理")
+    @Operation(description = "获取商机列表, 做权限过滤")
     @GetMapping("/list")
     public Result  listBizs(@RequestParam(defaultValue = "1") Integer page,
                             @RequestParam(defaultValue = "10") Integer size,

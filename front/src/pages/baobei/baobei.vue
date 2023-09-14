@@ -1,9 +1,9 @@
 <template>
-  <a-card  title="一粒云产品商机报备（渠道专用）">
+  <a-card title="一粒云产品商机报备（渠道专用）">
 
-    <FormulateForm  @submit="handAddprts"
-                    v-model="values"
-                    :schema="schema"
+    <FormulateForm @submit="handAddprts"
+                   v-model="values"
+                   :schema="schema"
     />
   </a-card>
 </template>
@@ -20,34 +20,26 @@ export default {
   name: "baobei",
   data() {
     return {
-      values:{},
-      schema:[
+      values: {},
+      schema: [
         {
           type: 'text',
-              name: 'productName',
-            label: '报备客户（企业）名称',
-            validation: 'required',
-            placeholder: "Sample placeholder"
-        },
-        {
-          type: 'select',
-          name: 'productUnit',
-          label: '报备产品',
-            // options: this.dictionaryDetailsUnit,
-          validation: '^required',
-          validationName: 'Password confirmation'
+          name: 'productName',
+          label: '商机名称',
+          validation: 'required',
+          placeholder: "Sample placeholder"
         },
         {
           type: 'textarea',
           name: 'productName',
-          label: '项目描述，厂家根据描述配备对应资源',
+          label: '项目商机描述，便于厂家配备资源',
           validation: 'required',
           placeholder: "Sample placeholder"
         },
         {
           type: 'select',
           name: 'productUnit',
-          label: '项目当前阶段',
+          label: '关联产品',
           // options: this.dictionaryDetailsUnit,
           validation: '^required',
           validationName: 'Password confirmation'
@@ -55,7 +47,14 @@ export default {
         {
           type: 'text',
           name: 'productName',
-          label: '报备人姓名',
+          label: '商机归属方（渠道名称或直接客户名称）',
+          validation: 'required',
+          placeholder: "Sample placeholder"
+        },
+        {
+          type: 'text',
+          name: 'productName',
+          label: '报备人(联系人)姓名',
           validation: 'required',
           placeholder: "Sample placeholder"
         },
@@ -69,7 +68,7 @@ export default {
         {
           type: 'text',
           name: 'productName',
-          label: '微信openId',
+          label: '报备人邮箱地址',
           validation: 'required',
           placeholder: "Sample placeholder"
         },
@@ -82,10 +81,10 @@ export default {
       ],
     }
   },
-  methods:{
+  methods: {
 
     // 提交
-    handAddprts(){
+    handAddprts() {
 
     }
   }
