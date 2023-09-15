@@ -65,6 +65,7 @@ export default {
 
     // 展示
     showModal(){
+      this.$refs["bizForm"].showModal();
     },
 
     bizInfo(){

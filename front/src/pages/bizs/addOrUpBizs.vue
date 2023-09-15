@@ -9,32 +9,36 @@
       okText="提交"
   >
     <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
-      <a-form-model-item label="Activity name">
-        <a-input v-model="form.name"/>
+
+      <a-form-model-item label="项目商机描述：">
+        <a-input v-model="form.desc" type="textarea"/>
       </a-form-model-item>
-      <a-form-model-item label="Activity zone">
-        <a-select v-model="form.region" placeholder="please select your zone">
+
+      <a-form-model-item label="项目商机产品：">
+        <a-select   mode="multiple" v-model="form.region" placeholder="please select your zone">
           <a-select-option value="shanghai">
-            Zone one
+            产品1
           </a-select-option>
           <a-select-option value="beijing">
-            Zone two
+            产品2
+          </a-select-option>
+          <a-select-option value="bei22jing">
+            产品3
           </a-select-option>
         </a-select>
       </a-form-model-item>
-      <a-form-model-item label="Activity time">
-        <a-date-picker
-            v-model="form.date1"
-            show-time
-            type="date"
-            placeholder="Pick a date"
-            style="width: 100%;"
-        />
+
+      <a-form-model-item label="商机归属企业">
+        <a-input v-model="form.name"/>
+        <a href="">新客户录入</a>
       </a-form-model-item>
-      <a-form-model-item label="Instant delivery">
-        <a-switch v-model="form.delivery"/>
+
+      <a-form-model-item label="商机联系人">
+        <a-input v-model="form.name"/>
       </a-form-model-item>
-      <a-form-model-item label="Activity type">
+
+
+      <a-form-model-item label="联系人">
         <a-checkbox-group v-model="form.type">
           <a-checkbox value="1" name="type">
             Online
@@ -47,19 +51,27 @@
           </a-checkbox>
         </a-checkbox-group>
       </a-form-model-item>
-      <a-form-model-item label="Resources">
+      <a-form-model-item label="线索或商机">
         <a-radio-group v-model="form.resource">
           <a-radio value="1">
-            Sponsor
+            商机（客户已经立项）
           </a-radio>
           <a-radio value="2">
-            Venue
+            线索（客户未立项）
           </a-radio>
         </a-radio-group>
       </a-form-model-item>
-      <a-form-model-item label="Activity form">
+
+      <a-form-model-item label="预计成交时间">
+
+        <a-month-picker  v-model="form.okdate" :disabled-date="disabledDate" placeholder="Select month" />
+      </a-form-model-item>
+
+      <a-form-model-item label="备注">
         <a-input v-model="form.desc" type="textarea"/>
       </a-form-model-item>
+
+
       <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
         <a-button type="primary" @click="onSubmit">
           Create
@@ -105,13 +117,19 @@ export default {
   },
 
   methods: {
+
+    showModal(){
+      this.visible =true;
+    },
+
     handleOk() {
 
     },
 
     handleCancel() {
 
-    }, onSubmit() {
+    },
+    onSubmit() {
       console.log('submit!', this.form);
     },
   }

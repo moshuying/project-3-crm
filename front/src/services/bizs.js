@@ -26,3 +26,13 @@ import {BIZS} from './api'
 export async function add(object) {
     return request(BIZS, METHOD.POST, object)
 }
+
+
+/***
+ * 列出商机
+ * @param object
+ * @returns {Promise<AxiosResponse<T>>}
+ */
+export async function list(object) {
+    return request(BIZS+"/list", METHOD.GET, object)
+}
