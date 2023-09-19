@@ -16,27 +16,29 @@
 
       <a-form-model-item label="项目商机产品：">
         <a-select   mode="multiple" v-model="form.region" placeholder="please select your zone">
-          <a-select-option value="shanghai">
-            产品1
+          <a-select-option v-for="prd in productsDataSource" :key="prd.id" :value="prd.id">
+            {{ prd.productName }}-{{prd.productUnitPrice}} -{{prd.productUnit}}
           </a-select-option>
-          <a-select-option value="beijing">
-            产品2
-          </a-select-option>
-          <a-select-option value="bei22jing">
-            产品3
-          </a-select-option>
+
         </a-select>
       </a-form-model-item>
 
       <a-form-model-item label="商机归属企业">
-        <a-input v-model="form.name"/>
-        <a href="">新客户录入</a>
-      </a-form-model-item>
+        <a-auto-complete  v-model="form.entName"
+                          style="width: 200px"
+                          placeholder="搜索企业"
+                          @search="onSearch"
+                          @change="onSelect" >
 
-      <a-form-model-item label="商机联系人">
-        <a-input v-model="form.name"/>
+          <template slot="dataSource">
+            <a-select-option v-for="ent in entDataSource" :key="ent.entId.toString()">
+              {{ent.entId}} - {{ ent.entName }}
+            </a-select-option>
+          </template>
+        </a-auto-complete>
+        &nbsp;&nbsp;
+        <a href="" style="float: right">新客户录入</a>
       </a-form-model-item>
-
 
       <a-form-model-item label="联系人">
         <a-checkbox-group v-model="form.type">
@@ -64,7 +66,7 @@
 
       <a-form-model-item label="预计成交时间">
 
-        <a-month-picker  v-model="form.okdate" :disabled-date="disabledDate" placeholder="Select month" />
+        <a-month-picker  v-model="form.okdate"  placeholder="Select month" />
       </a-form-model-item>
 
       <a-form-model-item label="备注">
@@ -86,6 +88,11 @@
 </template>
 
 <script>
+import * as products  from "@/services/products";
+import * as customerEnterprise from "@/services/customerEnterprise";
+
+
+
 export default {
   /**
    * @name: addOrUpBizs 商机的增删操作
@@ -104,16 +111,15 @@ export default {
       title: null,
       labelCol: {span: 4},
       wrapperCol: {span: 14},
-      form: {
-        name: '',
-        region: undefined,
-        date1: undefined,
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
-      }
+      productsDataSource:[],
+      entDataSource:[],
+      form: this.$form.createForm(this, {name: 'bizAU'}),
+
     }
+  },
+
+  mounted(){
+    this.getProductsList()  // 加载产品列表；
   },
 
   methods: {
@@ -127,12 +133,38 @@ export default {
     },
 
     handleCancel() {
-
+      this.visible = false;
     },
     onSubmit() {
       console.log('submit!', this.form);
     },
-  }
+
+    onSearch(searchText) {
+      console.log('searchText', searchText);
+      customerEnterprise.list({"keyword":searchText}).then(
+          ({data}) => {
+            if(!data.data) return;
+            this.entDataSource = data.data.records
+          }
+      )
+    },
+
+    onSelect(value) {
+      console.log('onChange', value,this.form );
+      this.form.setFieldsValue({entId: value})
+    },
+
+    async getProductsList(params) {
+      let data = await products.list(params)
+      console.log("this.data:",data)
+      this.productsDataSource = data.data.data.records
+      console.log("this.productsDataSource:",this.productsDataSource)
+      return  this.productsDataSource
+    }
+  },
+
+
+
 }
 </script>
 
