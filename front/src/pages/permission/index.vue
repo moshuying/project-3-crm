@@ -120,7 +120,7 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({key: i + "",...e}))
+        this.dataSource = res.records.map((e, i) => ({key: i + "",...e}))
         this.pagination = pagination
         this.loading = false
       })

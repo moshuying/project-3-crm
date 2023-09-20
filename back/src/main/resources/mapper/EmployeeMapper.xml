@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msy.plus.mapper.EmployeeMapper">
-    <resultMap id="BaseResultMap" type="com.msy.plus.entity.Employee">
+<mapper namespace="com.yly.crm.mapper.EmployeeMapper">
+    <resultMap id="BaseResultMap" type="com.yly.crm.entity.Employee">
         <!--
           WARNING - @mbg.generated
         -->
@@ -15,15 +15,16 @@
         <result column="state" jdbcType="INTEGER" property="state"/>
         <result column="admin" jdbcType="INTEGER" property="admin"/>
     </resultMap>
-    <resultMap id="EmployeeWithRole" type="com.msy.plus.entity.EmployeeWithRoleDO" extends="BaseResultMap">
+    <resultMap id="EmployeeWithRole" type="com.yly.crm.entity.EmployeeWithRoleDO" extends="BaseResultMap">
         <result column="departmentName" jdbcType="VARCHAR" property="departmentName"/>
         <result column="roleNames" jdbcType="VARCHAR" property="roleNames"/>
     </resultMap>
-    <resultMap id="EmployeeDetail" type="com.msy.plus.entity.EmployeeDetail" extends="BaseResultMap">
+    <resultMap id="EmployeeDetail" type="com.yly.crm.entity.EmployeeDetail" extends="BaseResultMap">
         <collection property="roleIds" javaType="java.util.List" ofType="java.lang.Long">
             <result column="roleIds" jdbcType="INTEGER"/>
         </collection>
     </resultMap>
+
     <select id="listEmployeeWithRole" resultMap="EmployeeWithRole">
         select e.id as id,
         e.name as name,
@@ -41,6 +42,7 @@
         </if>
         group by e.id order by e.id desc
     </select>
+
     <select id="getDetailById" resultMap="EmployeeDetail">
         select e.id       as id,
                e.name     as name,
@@ -54,11 +56,13 @@
                  left join employee_role er on er.employeeId = e.id
         where e.id = #{id}
     </select>
+
     <delete id="deleteEmployeeWithRole">
         delete
         from employee_role
         where employeeId = #{id}
     </delete>
+
     <select id="saveRoles">
         <if test="roles !=null">
             insert into employee_role (employeeId,roleId) values
@@ -76,6 +80,7 @@
         from employee_role
         where employeeId = #{id}
     </select>
+
     <delete id="deleteEmployeeWithRoleItem">
         delete
         from employee_role

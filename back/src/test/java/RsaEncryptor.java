@@ -1,4 +1,4 @@
-import com.msy.plus.core.rsa.RsaUtils;
+import com.yly.crm.core.rsa.RsaUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.Base64Utils;

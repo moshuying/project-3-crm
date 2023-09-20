@@ -38,6 +38,19 @@
         <a-form-item hidden>
           <a-input v-decorator="['id',{ rules: [{ required: false}] }]"/>
         </a-form-item>
+
+        <a-form-item label="选择父部门">
+          <a-select
+              v-decorator="['dept',{ rules: [{ required: true, message: '请输入员工部门' }] }]">
+            <a-select-option
+                :value="item.id"
+                :key="item.id"
+                v-for="(item) in dataSource">
+              {{item.name}}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+
         <a-form-item label="部门名称">
           <a-input
               v-decorator="['name', { rules: [{ required: true, min:1,max:15,message:'部门名称长度在1到15之间' }] }]"
@@ -120,7 +133,7 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({key: i + "",...e}))
+        this.dataSource = res.records.map((e, i) => ({key: i + "",...e}))
         this.pagination = pagination
         this.loading = false
       })

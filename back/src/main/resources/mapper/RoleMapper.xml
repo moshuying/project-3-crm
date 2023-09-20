@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msy.plus.mapper.RoleMapper">
-    <resultMap id="RoleMap" type="com.msy.plus.entity.RoleDO">
+<mapper namespace="com.yly.crm.mapper.RoleMapper">
+    <resultMap id="RoleMap" type="com.yly.crm.entity.RoleDO">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="sn" jdbcType="VARCHAR" property="sn"/>
         <result column="permission" jdbcType="BIGINT" property="permission"/>
     </resultMap>
-    <resultMap id="RoleWithPermission" type="com.msy.plus.entity.RoleWithPermissionDO" extends="RoleMap">
-        <collection property="permissions" javaType="java.util.List" ofType="com.msy.plus.entity.Permission">
+    <resultMap id="RoleWithPermission" type="com.yly.crm.entity.RoleWithPermissionDO" extends="RoleMap">
+        <collection property="permissions" javaType="java.util.List" ofType="com.yly.crm.entity.Permission">
             <result column="permission_id" jdbcType="BIGINT" property="id"/>
             <result column="permission_name" jdbcType="VARCHAR" property="name"/>
             <result column="expression" jdbcType="VARCHAR" property="expression"/>
@@ -34,7 +34,7 @@
         where role_id = #{roleId}
           and permission_id = #{permissionId}
     </delete>
-    <select id="getAllRolePermissionTableRow" parameterType="java.lang.Long" resultType="com.msy.plus.entity.RolePermissionDO">
+    <select id="getAllRolePermissionTableRow" parameterType="java.lang.Long" resultType="com.yly.crm.entity.RolePermissionDO">
         select * from role_permission where role_id = #{roleId}
     </select>
     <select id="getDetailById" parameterType="java.lang.Long" resultMap="RoleWithPermission">

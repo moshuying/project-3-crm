@@ -270,7 +270,7 @@ export default {
   },
   created() {
     department.list({"page": 1, "size": 99999}).then(({data})=>{
-      this.departmentNames = data.data.list.map((e,i)=>({key:i+'',...e}))
+      this.departmentNames = data.data.records.map((e,i)=>({key:i+'',...e}))
     })
     this.getAllroleIds()
   },
@@ -394,8 +394,8 @@ export default {
           return;
         }
         this.fetch({"page": 1, "size": 99999999,...values}).then(({data})=>{
-          const {list} = data
-          const res = list.map(e=>({
+          const {records} = data
+          const res = records.map(e=>({
             '部门':e.departmentName,
             '名称':e.name,
             '角色':e.roleNames,
@@ -479,21 +479,25 @@ export default {
       this.pagination = pager;
       this.query()
     },
+
+    // 加载员工列表
     async fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
       let {data} = await employee.list(params || {"page": 1, "size": 10})
       const res = data.data
       const pagination = {...this.pagination};
       pagination.total = res.total
-      pagination.current = res.pageNum
-      if(res.list){
-        this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
+      pagination.current = res.current
+      if(res.records){
+        this.dataSource = res.records.map((e, i) => ({key: i + "", ...e}))
       }
       this.pagination = pagination
       this.loading = false
       this.queryLoading=false
       return data
     },
+
+    // 删除用户
     deleteItem(text) {
       const title = '删除'
       employee.deleteItem(text.id).then(({data}) => {
@@ -510,6 +514,8 @@ export default {
         this.query()
       })
     },
+
+    // 更新用户
     async updateItem(id) {
       if(this.confirmLoading){
         this.confirmLoading=false
@@ -535,6 +541,7 @@ export default {
         }
       })
     },
+
     // modal
     async showModal(title) {
       this.visible = true;
@@ -543,6 +550,7 @@ export default {
       this.targetKeys = []
       await this.getAllroleIds()
     },
+
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
@@ -598,7 +606,7 @@ export default {
     // modal transfer
     getAllroleIds() {
       return role.list({page: 1, size: 999999999}).then(({data}) => {
-        this.roleIds = data.data.list.map((e, i) => ({key: i + "", title: e.name, ...e}))
+        this.roleIds = data.data.records.map((e, i) => ({key: i + "", title: e.name, ...e}))
       })
     },
     handleChange(targetKeys) {

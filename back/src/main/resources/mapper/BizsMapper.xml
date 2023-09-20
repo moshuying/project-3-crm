@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yly.crm.mapper.BizsMapper">
+
+    <resultMap id="BaseResultMap" type="com.yly.crm.entity.Bizs">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="contactId" column="contact_id" jdbcType="INTEGER"/>
+            <result property="contactName" column="contact_name" jdbcType="VARCHAR"/>
+            <result property="contactEntId" column="contact_ent_id" jdbcType="INTEGER"/>
+            <result property="contactTel" column="contact_tel" jdbcType="VARCHAR"/>
+            <result property="customerEntId" column="customer_ent_id" jdbcType="INTEGER"/>
+            <result property="bizEntName" column="biz_ent_name" jdbcType="VARCHAR"/>
+            <result property="bizDesc" column="biz_desc" jdbcType="VARCHAR"/>
+            <result property="bizStage" column="biz_stage" jdbcType="VARCHAR"/>
+            <result property="productId" column="product_id" jdbcType="INTEGER"/>
+            <result property="productName" column="product_name" jdbcType="VARCHAR"/>
+            <result property="productDesc" column="product_desc" jdbcType="VARCHAR"/>
+            <result property="employeeId" column="employee_id" jdbcType="INTEGER"/>
+            <result property="employeeName" column="employee_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,contact_id,contact_name,
+        contact_ent_id,contact_tel,customer_ent_id,
+        biz_ent_name,biz_desc,biz_stage,
+        product_id,product_name,product_desc,
+        employee_id,employee_name,create_time
+    </sql>
+</mapper>

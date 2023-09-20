@@ -123,7 +123,7 @@ export default {
       this.$nextTick(async ()=>{
         //2.初始化
         this.chart = Echarts.init(this.$refs.chart);
-        const data =(await this.query(999999999)).data.list
+        const data =(await this.query(999999999)).data.records
         //3.配置数据
         let option = {
           tooltip: {
@@ -161,7 +161,7 @@ export default {
       this.$nextTick(async ()=>{
         //2.初始化
         this.chart = Echarts.init(this.$refs.chart);
-        const data =(await this.query(999999999)).data.list
+        const data =(await this.query(999999999)).data.records
         //3.配置数据
         let option = {
           xAxis: { type: 'category', data: data.map(e=>e.name) }, //X轴
@@ -212,7 +212,7 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({key: i + "", ...e}))
+        this.dataSource = res.records.map((e, i) => ({key: i + "", ...e}))
         this.pagination = pagination
         this.loading = false
         this.queryLoading = false

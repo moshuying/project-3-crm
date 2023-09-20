@@ -22,4 +22,8 @@ module.exports = {
   CUSTOMER_HANDOVER:`${BASE_URL}/customer/handover`, // method CRUD
   CUSTOMER_FOLLOW_UP_HISTORY:`${BASE_URL}/customer/follow/up/history`, // method CRUD
   ANALYSIS:`${BASE_URL}/analysis`, // method CRUD
+  BIZS:`${BASE_URL}/bizs`, // 商机 method CRUD
+  PRODUCTS:`${BASE_URL}/products`, // 产品 method CRUD
+  CUS_ENTERPRISE:`${BASE_URL}/customer/enterprise`, // 企业客户 method CRUD
+  DIC_REF:`${BASE_URL}/dictionary/bizref`, // 业务表自定义字典字段关系
 }

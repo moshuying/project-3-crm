@@ -1,10 +1,11 @@
 <template>
   <div style="display: flex;">
-    <a-card style="width: 30%" title="数据字典分组">
+    <a-card style="width: 30%" title="系统字典组">
+      <a slot="extra" @click="showDicModal('添加')">添加</a>
       <div :key="item.id" v-for="(item) in dContentsList">
         <div
             :style="{backgroundColor:leftFirstId===item.id?'#337ab7':''}"
-            @click="changeRight(item.id)">
+            @click="changeRight(item)">
           <a-button
               :style="{color:leftFirstId===item.id?'white':''}"
               type="link">{{item.title}}</a-button>
@@ -26,14 +27,12 @@
             </a-form-item>
           </a-form>
           <a-button type="primary" @click="showModal('添加')">添加字典明细</a-button>
+          <a-button type="primary" @click="showBizModal('添加')">添加到业务表单</a-button>
         </a-space>
       </div>
       <div>
-        <a-button
-            target="_blank"
-            href="https://www.sxejgfyxgs.com/uploadfile/file/20200421/6dfb8b3f8.pdf"
-            v-if="leftFirstId===1"
-            type="link">《中华人民共和国职业分类大典》目录</a-button>
+        <a-tag color="red">id: {{selectedDic.id}}</a-tag>
+        <a-tag color="red">sn: {{selectedDic.sn}}</a-tag>
       </div>
         <a-table
             :columns="columns"
@@ -43,10 +42,20 @@
             @change="handleTableChange"
         >
            <span slot="action" slot-scope="text">
-              <a @click="updateItem(text.id)">编辑</a>
+              <a @click="updateItem(text.id)">编辑 </a> |
+
+             <a-popover v-model="text.visible" title="你确定要删除？" trigger="click">
+                <a slot="content" @click="deleteItem(text)">确定</a>
+                <a-button type="link">
+                  删除
+                </a-button>
+             </a-popover>
+
            </span>
+
         </a-table>
     </a-card>
+<!--     添加 明细   -->
     <a-modal
         :title="title"
         :visible="visible"
@@ -77,13 +86,49 @@
         </a-form-item>
       </a-form>
     </a-modal>
+
+
+    <!--  添加到业务表单  -->
+    <a-modal
+        title="添加到业务表单"
+        width="80%"
+        :visible="visibleBiz"
+        :confirm-loading="confirmLoading"
+        @ok="handleBizOk"
+        @cancel="handleBizCancel"
+        okText="提交"
+    >
+      <a-form :form="form" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
+        <a-list  :data-source="bizData">
+          <a-list-item slot="renderItem" slot-scope="item">
+            <a-card :title="item.tableName">
+              共有：{{item.schemaJson.length}} <br>
+              <a-tag  closable @close="() => delBizItem(dic, item)" color="orange" :key="key" v-for="(dic,key) in item.schemaJson" >
+                {{ dic.title }}
+              </a-tag>
+              <br>
+              <a-button type="link" @click="addtoBiz(item)">
+                添加
+              </a-button>
+            </a-card>
+
+          </a-list-item>
+        </a-list>
+      </a-form>
+
+    </a-modal>
+
+
+    <dictionary-name-modal :query="fetchDictionaries" ref="dictsForm"></dictionary-name-modal>
   </div>
 </template>
 
 <script>
 import * as dictionaryDetails from "@/services/dictionaryDetails"
 import * as dictionaryContents from "@/services/dictionaryContents"
+import DictionaryNameModal from "@/pages/dictionary/dictionaryNameModal"
 import validators from "@/utils/validators";
+import * as dictionaryBizRef from "@/services/dictionaryBizRef";
 const columns = [
   {
     title: '编号',
@@ -104,7 +149,10 @@ const columns = [
     scopedSlots: {customRender: 'action'}
   }
 ]
+
+
 export default {
+  components:{DictionaryNameModal},
   data() {
     return {
       validators,
@@ -112,6 +160,7 @@ export default {
       queryLoading:false,
       // table
       columns: columns,
+      bizData: [],
       dataSource: [],
       selectedRows: [],
       pagination: {},
@@ -119,26 +168,41 @@ export default {
       // modal
       title: '添加',
       visible: false,
+      visibleBiz:false,
       confirmLoading: false,
       dContentsList:[],
       // modal form
       form: this.$form.createForm(this, {name: 'coordinated'}),
       // left card
       leftFirstId:null,
+      selectedDic:null,
     }
   },
+
   created() {
-    dictionaryContents.list({page:1,size:999999}).then(({data})=>{
-      this.dContentsList = data.data.list
-      this.leftFirstId = this.dContentsList[0].id
+
+    this.fetchDictionaries().then(()=>{
       this.fetch({page:1,size:10,id:this.leftFirstId})
     })
+
   },
   methods: {
-    changeRight(id){
-      this.leftFirstId = id
+
+    fetchDictionaries(){
+      return dictionaryContents.list({page:1,size:999999}).then(({data})=>{
+        this.dContentsList = data.data.records
+        this.leftFirstId = this.dContentsList[0].id
+        this.selectedDic = this.dContentsList[0]
+      })
+    },
+
+    changeRight(item){
+      this.leftFirstId = item.id
+      this.selectedDic = item
       this.query()
     },
+
+    // 搜索
     query(){
       this.queryLoading = true
       this.queryForm.validateFields((err, values) => {
@@ -157,6 +221,8 @@ export default {
       this.pagination = pager;
       this.query()
     },
+
+    //加载明细
     fetch(params = {"page": 1, "size": 10}) {
       this.loading = true
       dictionaryDetails.list(params || {"page": 1, "size": 10,id:this.leftFirstId}).then(({data}) => {
@@ -164,12 +230,13 @@ export default {
         const pagination = {...this.pagination};
         pagination.total = res.total
         pagination.current = params.page
-        this.dataSource = res.list.map((e, i) => ({key: i + "",...e}))
+        this.dataSource = res.records.map((e, i) => ({key: i + "",...e}))
         this.pagination = pagination
         this.loading = false
         this.queryLoading = false
       })
     },
+
     deleteItem(text) {
       const title = '删除'
       dictionaryDetails.deleteItem(text.id).then(({data})=>{
@@ -183,9 +250,13 @@ export default {
           message: title + '成功',
           description: title + '字典明细信息成功',
         });
+
+        text.visible = false;
+
         this.fetch({"page": this.pagination.current, "size": 10,id:this.leftFirstId})
       })
     },
+
     updateItem(id) {
       this.showModal('更改')
       dictionaryDetails.getDetail(id).then(({data}) => {
@@ -205,6 +276,23 @@ export default {
         this.form.setFieldsValue({"parentid": this.leftFirstId})
       })
     },
+
+    showBizModal(){
+      this.visibleBiz = true;
+      dictionaryBizRef.list().then(({data}) => {
+        const res = data.data
+        this.bizData = res.records
+        console.log(res);
+      });
+
+
+    },
+
+    //添加字典
+    showDicModal(){
+      this.$refs["dictsForm"].showModal();
+    },
+
     handleOk() {
       this.confirmLoading = true;
       this.form.validateFields((err, values) => {
@@ -238,7 +326,55 @@ export default {
       this.title=''
       this.confirmLoading = false
       this.form.resetFields()
+    },
+
+
+    handleBizOk(){
+      this.visibleBiz = false;
+    },
+
+    handleBizCancel(){
+      this.visibleBiz = false;
+    },
+
+    // 添加字段到业务表单
+    addtoBiz(bizForm){
+      if(!bizForm.schemaJson){
+        bizForm.schemaJson =[]
+      }
+
+      let has  = bizForm.schemaJson.find(item =>{
+        return item.id === this.selectedDic.id;
+      })
+      console.log("has",has)
+      if(!has){
+        bizForm.schemaJson.push(this.selectedDic)
+        dictionaryBizRef.add(bizForm).then(({data}) => {
+          console.log("dictionaryBizRef",data);
+        })
+      }else{
+        this.$message.warning('已经有该字段了');
+        console.log("已经有该字段了")
+      }
+    },
+
+    delBizItem(dic, bizForm){
+      console.log(dic, bizForm)
+      bizForm.schemaJson.forEach((ele, index) =>{
+        if(ele.id === dic.id){
+          bizForm.schemaJson.splice(index,1)
+        }
+      });
+
+      console.log("after del:", bizForm.schemaJson)
+
+      dictionaryBizRef.add(bizForm).then(({data}) => {
+        console.log("delBizItem",data);
+      })
+
     }
+
+
   }
 }
 </script>

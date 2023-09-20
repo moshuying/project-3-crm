@@ -7,7 +7,7 @@
     <artifactId>spring-boot-api-seeding</artifactId>
     <version>1.1</version>
     <!-- 打包类型 -->
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <!-- Inherit defaults from Spring Boot -->
     <parent>
@@ -32,6 +32,7 @@
         <guava.version>32.0.0-jre</guava.version>
         <mybatis.version>2.1.3</mybatis.version>
         <mybatis-generator.version>1.3.7</mybatis-generator.version>
+        <mysql.version>8.0.16</mysql.version>
         <mapper.version>4.1.5</mapper.version>
         <mapper-starter.version>2.1.5</mapper-starter.version>
         <pagehelper.version>1.3.0</pagehelper.version>
@@ -39,7 +40,7 @@
         <druid.version>1.2.2</druid.version>
         <jasypt.version>3.0.3</jasypt.version>
         <freemarker.version>2.3.30</freemarker.version>
-        <lombok.version>1.18.16</lombok.version>
+        <lombok.version>1.18.24</lombok.version>
         <hibernate.version>6.1.6.Final</hibernate.version>
     </properties>
 
@@ -60,11 +61,18 @@
             <artifactId>jjwt</artifactId>
             <version>${jjwt.version}</version>
         </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.1</version>
+        </dependency>
         <!-- MySQL JDBC驱动 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
         </dependency>
+
         <!-- Spring Boot依赖 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,6 +82,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>asm</artifactId>
+                    <groupId>org.ow2.asm</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -173,28 +187,45 @@
         </dependency>
 
         <!-- PageHelper -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>${pagehelper.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.pagehelper</groupId>-->
+<!--            <artifactId>pagehelper-spring-boot-starter</artifactId>-->
+<!--            <version>${pagehelper.version}</version>-->
+<!--        </dependency>-->
         <!-- MyBatis及插件依赖 -->
+
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis.version}</version>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.5.2</version>
         </dependency>
-        <!-- mapper -->
+
+
         <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper</artifactId>
-            <version>${mapper.version}</version>
+            <groupId>com.github.yulichang</groupId>
+            <artifactId>mybatis-plus-join-boot-starter</artifactId>
+            <version>1.4.6</version>
         </dependency>
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>${mapper-starter.version}</version>
-        </dependency>
+
+<!-- mybatis-flex -->
+<!--        <dependency>-->
+<!--            <groupId>com.mybatis-flex</groupId>-->
+<!--            <artifactId>mybatis-flex-spring-boot-starter</artifactId>-->
+<!--            <version>1.5.6</version>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.mysql</groupId>-->
+<!--            <artifactId>mysql-connector-j</artifactId>-->
+<!--            <version>8.0.32</version>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.zaxxer</groupId>-->
+<!--            <artifactId>HikariCP</artifactId>-->
+<!--        </dependency>-->
+
         <!-- 代码生成器依赖 -->
         <dependency>
             <groupId>org.freemarker</groupId>
@@ -235,7 +266,7 @@
                             <goal>repackage</goal>
                         </goals>
                         <configuration>
-                            <mainClass>com.msy.plus.Application</mainClass>
+                            <mainClass>com.yly.crm.Application</mainClass>
                         </configuration>
                     </execution>
                 </executions>
@@ -246,6 +277,13 @@
                     <source>${java.version}</source>
                     <!-- 指定JDK编译版本 -->
                     <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.26</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>

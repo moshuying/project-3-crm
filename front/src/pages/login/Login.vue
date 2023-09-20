@@ -103,11 +103,12 @@ export default {
           this.logging = true
           const name = this.form.getFieldValue('name')
           const password = this.form.getFieldValue('password')
-          login(name, password).then(this.afterLogin)
+          login(name, password).then(this.afterLogin).catch(this.haveErr)
         }
       })
     },
     afterLogin(res) {
+      console.log("error happend!",res)
       this.logging = false
       const loginRes = res.data
       if (loginRes.code === 200) {
@@ -128,6 +129,11 @@ export default {
       } else {
         this.error = loginRes.message
       }
+    },
+
+    haveErr(err){
+      console.log("haveErr:------------",err)
+      this.logging = false
     }
   }
 }

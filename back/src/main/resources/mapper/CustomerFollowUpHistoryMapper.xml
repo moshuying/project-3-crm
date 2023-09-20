@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.msy.plus.mapper.CustomerFollowUpHistoryMapper">
-  <resultMap id="BaseResultMap" type="com.msy.plus.entity.CustomerFollowUpHistory">
+<mapper namespace="com.yly.crm.mapper.CustomerFollowUpHistoryMapper">
+  <resultMap id="BaseResultMap" type="com.yly.crm.entity.CustomerFollowUpHistory">
     <!--
       WARNING - @mbg.generated
     -->
@@ -14,8 +14,9 @@
     <result column="type" jdbcType="INTEGER" property="type" />
     <result column="traceDetails" jdbcType="LONGVARCHAR" property="tracedetails" />
     <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
+      <result column="customer_ent_id" jdbcType="INTEGER" property="customerEntId" />
   </resultMap>
-  <select id="listAndSearch" resultType="com.msy.plus.entity.CFUHSearch">
+  <select id="listAndSearch" resultType="com.yly.crm.dto.CustomerFollowUpHistoryDTO">
     select cfuh.id          as id,
            cm2.name         as name,
            cfuh.traceTime   as traceTime,
@@ -26,7 +27,7 @@
            cfuh.inputUser   as inputUser,
            cfuh.type        as type
     from customer_follow_up_history cfuh
-           left join customer_manager cm2 on cfuh.customerID = cm2.id
+           left join customer_contacts cm2 on cfuh.customerID = cm2.id
     where (cm2.tel like concat('%',#{keyword},'%') or cm2.name like concat('%',#{keyword},'%'))
       <if test="startTime != null and startTime != ''">
         and cfuh.traceTime between #{startTime} and #{endTime}
