@@ -2,6 +2,15 @@ import {request, METHOD} from '@/utils/request'
 import {PRODUCTS} from './api'
 
 
+export default function (){
+
+
+
+
+
+}
+
+
 /**
  * 新增或者保存产品
  * @returns {Promise<AxiosResponse<T>>}
@@ -29,3 +38,5 @@ export async function del(id) {
 export async function list(page ) {
     return request(PRODUCTS+"/list", METHOD.GET, page||{"page": 1, "size": 10})
 }
+
+
