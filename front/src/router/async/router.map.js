@@ -15,7 +15,7 @@ const routerMap = {
   baobei: {
     authority: '*',
     path: '/baobei',
-    component: () => import('@/pages/baobei/baobei')
+    component: () => import('@/pages/baobei/baobeiLink.vue')
   },
   root: {
     path: '/',

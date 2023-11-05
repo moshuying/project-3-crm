@@ -133,6 +133,11 @@ const options = {
                             path: 'niche',
                             name: '商机管理',
                             component: () => import('@/pages/bizs')
+                        },
+                        {
+                            path: 'protect',
+                                name: '报备管理',
+                                component: () => import('@/pages/baobei')
                         }]
                 },
                 {
