@@ -1,7 +1,6 @@
 package com.yly.crm.dto;
 
 import com.yly.crm.core.dto.AbstractConverter;
-import com.yly.crm.entity.Baobei;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

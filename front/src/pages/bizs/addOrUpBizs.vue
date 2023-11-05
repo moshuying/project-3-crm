@@ -10,51 +10,8 @@
   >
     <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
 
-      <a-form-model-item label="项目商机描述：">
-        <a-input v-model="form.desc" type="textarea"/>
-      </a-form-model-item>
-
-      <a-form-model-item label="项目商机产品：">
-        <a-select   mode="multiple" v-model="form.region" placeholder="please select your zone">
-          <a-select-option v-for="prd in productsDataSource" :key="prd.id" :value="prd.id">
-            {{ prd.productName }}-{{prd.productUnitPrice}} -{{prd.productUnit}}
-          </a-select-option>
-
-        </a-select>
-      </a-form-model-item>
-
-      <a-form-model-item label="商机归属企业">
-        <a-auto-complete  v-model="form.entName"
-                          style="width: 200px"
-                          placeholder="搜索企业"
-                          @search="onSearch"
-                          @change="onSelect" >
-
-          <template slot="dataSource">
-            <a-select-option v-for="ent in entDataSource" :key="ent.entId.toString()">
-              {{ent.entId}} - {{ ent.entName }}
-            </a-select-option>
-          </template>
-        </a-auto-complete>
-        &nbsp;&nbsp;
-        <a href="" style="float: right">新客户录入</a>
-      </a-form-model-item>
-
-      <a-form-model-item label="联系人">
-        <a-checkbox-group v-model="form.type">
-          <a-checkbox value="1" name="type">
-            Online
-          </a-checkbox>
-          <a-checkbox value="2" name="type">
-            Promotion
-          </a-checkbox>
-          <a-checkbox value="3" name="type">
-            Offline
-          </a-checkbox>
-        </a-checkbox-group>
-      </a-form-model-item>
       <a-form-model-item label="线索或商机">
-        <a-radio-group v-model="form.resource">
+        <a-radio-group v-model="form.bizType">
           <a-radio value="1">
             商机（客户已经立项）
           </a-radio>
@@ -64,24 +21,81 @@
         </a-radio-group>
       </a-form-model-item>
 
+      <a-form-model-item label="来源分类">
+        <a-radio-group v-model="form.resource">
+          <a-radio value="1">
+            渠道报备
+          </a-radio>
+          <a-radio value="2">
+            官网、互联网
+          </a-radio>
+          <a-radio value="3">
+            市场活动
+          </a-radio>
+          <a-radio value="4">
+            其他
+          </a-radio>
+        </a-radio-group>
+      </a-form-model-item>
+
+      <a-form-model-item label="商机产品：">
+        <a-select   mode="multiple" v-model="form.products" placeholder="请您选择产品">
+          <a-select-option v-for="prd in productsDataSource" :key="prd.id" :value="prd.id">
+            {{ prd.productName }}-{{prd.productUnitPrice}} -{{prd.productUnit}}
+          </a-select-option>
+        </a-select>
+      </a-form-model-item>
+
+      <a-form-model-item label="项目商机描述：">
+        <a-input v-model="form.desc" type="textarea" placeholder="针对这个项目，你设计了什么样的成功路径"/>
+      </a-form-model-item>
+
       <a-form-model-item label="预计成交时间">
-
-        <a-month-picker  v-model="form.okdate"  placeholder="Select month" />
+        <a-month-picker  v-model="form.okdate"  placeholder="选择 月份" />
       </a-form-model-item>
 
-      <a-form-model-item label="备注">
-        <a-input v-model="form.desc" type="textarea"/>
+      <a-form-model-item label="预算金额">
+        <a-input v-model="form.desc" type="number" placeholder="大概金额"/>
       </a-form-model-item>
 
 
-      <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
-        <a-button type="primary" @click="onSubmit">
-          Create
-        </a-button>
-        <a-button style="margin-left: 10px;">
-          Cancel
-        </a-button>
+      <a-divider dashed />
+
+
+
+
+
+      <a-form-model-item label="报备渠道：">
+        <a-auto-complete  v-model="form.entName"
+                          style="width: 200px"
+                          placeholder="搜索渠道企业名称"
+                          @search="onSearch"
+                          @change="onSelect" >
+          <template slot="dataSource">
+            <a-select-option v-for="ent in entDataSource" :key="ent.entId.toString()">
+              {{ent.entId}} - {{ ent.entName }}
+            </a-select-option>
+          </template>
+        </a-auto-complete>
+
       </a-form-model-item>
+
+      <a-form-model-item label="渠道销售负责人">
+          <a-checkbox-group v-model="form.type">
+            <a-checkbox value="1" name="type">
+              Online
+            </a-checkbox>
+            <a-checkbox value="2" name="type">
+              Promotion
+            </a-checkbox>
+            <a-checkbox value="3" name="type">
+              Offline
+            </a-checkbox>
+          </a-checkbox-group>
+      </a-form-model-item>
+
+      <a href="" style="float: right">新客户录入</a>
+
     </a-form-model>
 
   </a-modal>

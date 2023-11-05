@@ -5,13 +5,13 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yly.crm.core.response.Result;
 import com.yly.crm.core.response.ResultGenerator;
-import com.yly.crm.entity.Bizs;
 import com.yly.crm.service.BizsService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import com.yly.crm.entity.BizsDO;
 
 import java.util.Map;
 
@@ -34,7 +34,7 @@ public class BizsController {
 
     @Operation(description = "添加商机, 新增接口不做鉴权处理")
     @PostMapping
-    public Result<Bizs> addBiz(@RequestBody Bizs bizs, @RequestHeader Map<String, String> headers){
+    public Result<BizsDO> addBiz(@RequestBody BizsDO bizs, @RequestHeader Map<String, String> headers){
 
         log.debug("params",bizs,headers);
         bizsService.save(bizs);
@@ -50,8 +50,8 @@ public class BizsController {
                             @RequestParam(defaultValue = "",required = false) String keyword,
                             @RequestParam(required = false) Integer status,@RequestHeader Map<String, String> headers){
 
-        IPage<Bizs> bizsIPage = new Page<>(page, size);
-        bizsIPage =  bizsService.page(bizsIPage, Wrappers.lambdaQuery(Bizs.class).like(Bizs::getBizDesc,keyword));
+        IPage<BizsDO> bizsIPage = new Page<>(page, size);
+        bizsIPage =  bizsService.page(bizsIPage, Wrappers.lambdaQuery(BizsDO.class).like(BizsDO::getBiz_desc,keyword));
         return ResultGenerator.genOkResult(bizsIPage);
     }
 

@@ -44,18 +44,55 @@
 
 <script>
 import AddOrUpBizs from "@/pages/bizs/addOrUpBizs";
+
+const columns = [
+  {
+    title: '编号',
+    dataIndex: 'id'
+  },
+  {
+    title: '产品',
+    dataIndex: 'name',
+  },
+  {
+    title: '描述',
+    dataIndex: 'tracetime',
+  },
+  {
+    title: '跟进内容',
+    dataIndex: 'tracedetails',
+  },
+  {
+    title: '跟进方式',
+    dataIndex: 'tracetypeFind',
+  },
+  {
+    title: '录入人',
+    dataIndex: 'inputuserFind',
+  },
+  {
+    title: '跟进类型',
+    dataIndex: 'type',
+  },
+  {
+    title: '操作',
+    scopedSlots: {customRender: 'action'}
+  }
+]
 export default {
   /**
-   * @name: niche 商机管理
+   * @name: bizs 商机管理
    * @author: Administrator
    * @date: 2023/9/14 17:14
    * @description：niche
    * @update: 2023/9/14 17:14
    */
-  name: "niche",
+  name: "bizs",
   components: {AddOrUpBizs},
   data(){
-    return{}
+    return{
+      columns:columns
+    }
   },
   methods:{
 

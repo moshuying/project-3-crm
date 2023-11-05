@@ -7,7 +7,7 @@
         <p>{{desc}}</p>
         <div v-if="this.linkList" class="link">
           <template  v-for="(link, index) in linkList">
-            <a :key="index" :href="link.href"><a-icon :type="link.icon" />{{link.title}}</a>
+            <a :key="index" :href="link.href"><a-icon :type="link.icon" /> {{link.title}}</a>
           </template>
         </div>
       </div>

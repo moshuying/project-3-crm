@@ -1,16 +1,13 @@
 package com.yly.crm.controller;
 
 
-import com.yly.crm.entity.Baobei;
+import com.yly.crm.entity.BaobeiDO;
 import com.yly.crm.mapper.BaobeiMapper;
-import com.yly.crm.service.BaobeiService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @Slf4j
@@ -26,7 +23,7 @@ public class BaobeiController {
 
 
     @PostMapping("/add")
-    public boolean addBaobei(@RequestBody Baobei baobei){
+    public boolean addBaobei(@RequestBody BaobeiDO baobei){
          return  true;
      // return   BaobeiEntity.create().setProductName("云盘").setProductId(2L).setCustomerName("申浪").setProjectDesc("asdfasdf").save();
     }

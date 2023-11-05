@@ -120,7 +120,7 @@ const options = {
                 },
                 {
                     path: '/bizs',
-                    name: '商机与线索',
+                    name: '商机与项目',
                     meta: {
                         icon: 'gold',
                         page: {

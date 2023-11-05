@@ -20,7 +20,7 @@ spring:
       # 用户名 root
       username: root
       # 密码 root
-      password: 123456
+      password: root
       # 驱动类
       driver-class-name: MyEnc({mfkB3F21902N35InZN3DR4jdSuJR1w2bo+3Z4w1jgtfWVkHRZuclaw==})
       # 连接池配置 连接数量、最小、最大、获取连接等待超时的时间
@@ -76,9 +76,9 @@ spring:
     # 服务器地址
     host: 127.0.0.1
     # 服务器连接端口
-    port: 6379
+    port: 49153
     # 服务器连接密码 root
-    # password: redispw
+    password: redispw
     jedis.pool:
       # 连接池最大连接数（使用负值表示没有限制）
       max-active: 8

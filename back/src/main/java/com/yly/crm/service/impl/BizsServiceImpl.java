@@ -1,7 +1,7 @@
 package com.yly.crm.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yly.crm.entity.Bizs;
+import com.yly.crm.entity.BizsDO;
 import com.yly.crm.service.BizsService;
 import com.yly.crm.mapper.BizsMapper;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 * @createDate 2022-10-10 19:39:47
 */
 @Service
-public class BizsServiceImpl extends ServiceImpl<BizsMapper, Bizs>
+public class BizsServiceImpl extends ServiceImpl<BizsMapper, BizsDO>
     implements BizsService{
 
 }

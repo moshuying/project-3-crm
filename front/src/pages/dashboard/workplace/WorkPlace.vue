@@ -46,12 +46,12 @@
         <a-col style="padding: 0 12px" :xl="8" :lg="24" :md="24" :sm="24" :xs="24">
           <a-card :title="$t('access')" style="margin-bottom: 24px" :bordered="false" :body-style="{padding: 0}">
             <div class="item-group">
-              <a>操作一</a>
-              <a>操作二</a>
-              <a>操作三</a>
-              <a>操作四</a>
-              <a>操作五</a>
-              <a>操作六</a>
+              <a>+客户</a>
+              <a>+跟进</a>
+              <a>+商机</a>
+              <a>+产品</a>
+              <a>+联系人</a>
+              <a>+笔记</a>
               <a-button size="small" type="primary" ghost icon="plus">{{$t('add')}}</a-button>
             </div>
           </a-card>
