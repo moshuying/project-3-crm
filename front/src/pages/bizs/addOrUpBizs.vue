@@ -108,7 +108,7 @@ export default {
     },
 
     handleOk() {
-
+      console.log('submit!', this.form);
     },
 
     handleCancel() {

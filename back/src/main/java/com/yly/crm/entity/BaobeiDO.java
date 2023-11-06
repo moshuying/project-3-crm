@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 作废，测试用的表
+ * 先录入商机，再开始报备
  * @TableName baobei
  */
 @TableName(value ="baobei")
@@ -18,52 +18,61 @@ public class BaobeiDO implements Serializable {
     /**
      * 
      */
-    @TableId
+    @TableId(value = "id")
     private Integer id;
 
     /**
      * 
      */
-    private Integer biz_id;
+    @TableField(value = "biz_id")
+    private Integer bizId;
 
     /**
      * 渠道企业id
      */
-    private Integer cent_id;
+    @TableField(value = "cent_id")
+    private Integer centId;
 
     /**
      * 渠道企业名称
      */
-    private String cent_name;
+    @TableField(value = "cent_name")
+    private String centName;
 
     /**
      * 保护到期时间，每次延长3个月
      */
-    private Date protected_period;
+    @TableField(value = "protected_period")
+    private Date protectedPeriod;
 
     /**
      * 渠道销售id
      */
-    private Integer cuser_id;
+    @TableField(value = "cuser_id")
+    private Integer cuserId;
 
     /**
      * 描述信息
      */
-    private String project_desc;
+    @TableField(value = "project_desc")
+    private String projectDesc;
 
     /**
      * 
      */
-    private Date create_at;
+    @TableField(value = "create_at")
+    private Date createAt;
 
     /**
      * 报备人
      */
-    private Integer create_user_id;
+    @TableField(value = "create_user_id")
+    private Integer createUserId;
 
     /**
      * 报备状态
      */
+    @TableField(value = "success")
     private Object success;
 
     @TableField(exist = false)

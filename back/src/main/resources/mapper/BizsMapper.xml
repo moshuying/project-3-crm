@@ -6,18 +6,18 @@
 
     <resultMap id="BaseResultMap" type="com.yly.crm.entity.BizsDO">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="biz_type" column="biz_type" jdbcType="OTHER"/>
-            <result property="biz_resources" column="biz_resources" jdbcType="OTHER"/>
-            <result property="biz_ent_name" column="biz_ent_name" jdbcType="VARCHAR"/>
-            <result property="biz_desc" column="biz_desc" jdbcType="VARCHAR"/>
-            <result property="biz_stage" column="biz_stage" jdbcType="VARCHAR"/>
+            <result property="bizType" column="biz_type" jdbcType="OTHER"/>
+            <result property="bizResources" column="biz_resources" jdbcType="OTHER"/>
+            <result property="bizEntName" column="biz_ent_name" jdbcType="VARCHAR"/>
+            <result property="bizDesc" column="biz_desc" jdbcType="VARCHAR"/>
+            <result property="bizStage" column="biz_stage" jdbcType="VARCHAR"/>
             <result property="products" column="products" jdbcType="OTHER"/>
-            <result property="biz_count" column="biz_count" jdbcType="INTEGER"/>
-            <result property="biz_okday" column="biz_okday" jdbcType="DATE"/>
-            <result property="employee_id" column="employee_id" jdbcType="INTEGER"/>
-            <result property="employee_name" column="employee_name" jdbcType="VARCHAR"/>
-            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="bizCount" column="biz_count" jdbcType="INTEGER"/>
+            <result property="bizOkday" column="biz_okday" jdbcType="DATE"/>
+            <result property="employeeId" column="employee_id" jdbcType="INTEGER"/>
+            <result property="employeeName" column="employee_name" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

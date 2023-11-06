@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.yly.crm.const_enum.BizType;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -19,68 +20,80 @@ public class BizsDO implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
      * 商机、线索
      */
-    private Object biz_type;
+    @TableField(value = "biz_type")
+    private BizType bizType;
 
     /**
      * 来源（渠道、官网、活动、其他）
      */
-    private Object biz_resources;
+    @TableField(value = "biz_resources")
+    private Object bizResources;
 
     /**
      * 最终报备客户名称
      */
-    private String biz_ent_name;
+    @TableField(value = "biz_ent_name")
+    private String bizEntName;
 
     /**
      * 客户商机描述, 根据这个配备资源
      */
-    private String biz_desc;
+    @TableField(value = "biz_desc")
+    private String bizDesc;
 
     /**
      * 商机阶段，消息提醒判断
      */
-    private String biz_stage;
+    @TableField(value = "biz_stage")
+    private String bizStage;
 
     /**
      * 产品{id:name,id:name}
      */
+    @TableField(value = "products")
     private Object products;
 
     /**
      * 预计成交金额
      */
-    private Integer biz_count;
+    @TableField(value = "biz_count")
+    private Integer bizCount;
 
     /**
      * 预计成交时间
      */
-    private Date biz_okday;
+    @TableField(value = "biz_okday")
+    private Date bizOkday;
 
     /**
      * 对口业务经理
      */
-    private Integer employee_id;
+    @TableField(value = "employee_id")
+    private Integer employeeId;
 
     /**
      * 业务经理姓名（冗余，用于查询）
      */
-    private String employee_name;
+    @TableField(value = "employee_name")
+    private String employeeName;
 
     /**
      * 创建时间
      */
-    private Date create_time;
+    @TableField(value = "create_time")
+    private Date createTime;
 
     /**
      * 更新时间
      */
-    private Date update_time;
+    @TableField(value = "update_time")
+    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -6,14 +6,14 @@
 
     <resultMap id="BaseResultMap" type="com.yly.crm.entity.BaobeiDO">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="biz_id" column="biz_id" jdbcType="INTEGER"/>
-            <result property="cent_id" column="cent_id" jdbcType="INTEGER"/>
-            <result property="cent_name" column="cent_name" jdbcType="VARCHAR"/>
-            <result property="protected_period" column="protected_period" jdbcType="DATE"/>
-            <result property="cuser_id" column="cuser_id" jdbcType="INTEGER"/>
-            <result property="project_desc" column="project_desc" jdbcType="VARCHAR"/>
-            <result property="create_at" column="create_at" jdbcType="TIMESTAMP"/>
-            <result property="create_user_id" column="create_user_id" jdbcType="INTEGER"/>
+            <result property="bizId" column="biz_id" jdbcType="INTEGER"/>
+            <result property="centId" column="cent_id" jdbcType="INTEGER"/>
+            <result property="centName" column="cent_name" jdbcType="VARCHAR"/>
+            <result property="protectedPeriod" column="protected_period" jdbcType="DATE"/>
+            <result property="cuserId" column="cuser_id" jdbcType="INTEGER"/>
+            <result property="projectDesc" column="project_desc" jdbcType="VARCHAR"/>
+            <result property="createAt" column="create_at" jdbcType="TIMESTAMP"/>
+            <result property="createUserId" column="create_user_id" jdbcType="INTEGER"/>
             <result property="success" column="success" jdbcType="OTHER"/>
     </resultMap>
 

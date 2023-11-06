@@ -51,7 +51,7 @@ public class BizsController {
                             @RequestParam(required = false) Integer status,@RequestHeader Map<String, String> headers){
 
         IPage<BizsDO> bizsIPage = new Page<>(page, size);
-        bizsIPage =  bizsService.page(bizsIPage, Wrappers.lambdaQuery(BizsDO.class).like(BizsDO::getBiz_desc,keyword));
+        bizsIPage =  bizsService.page(bizsIPage, Wrappers.lambdaQuery(BizsDO.class).like(BizsDO::getBizDesc,keyword));
         return ResultGenerator.genOkResult(bizsIPage);
     }
 
