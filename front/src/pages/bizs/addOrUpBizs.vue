@@ -8,10 +8,10 @@
       @cancel="handleCancel"
       okText="提交"
   >
-    <a-form-model :model="form" :label-col="labelCol" :wrapper-col="wrapperCol">
+    <a-form-model :model="bizform" :label-col="labelCol" :wrapper-col="wrapperCol">
 
       <a-form-model-item label="线索或商机">
-        <a-radio-group v-model="form.bizType">
+        <a-radio-group v-model="bizform.bizType">
           <a-radio value="1">
             商机（客户已经立项）
           </a-radio>
@@ -22,7 +22,7 @@
       </a-form-model-item>
 
       <a-form-model-item label="来源分类">
-        <a-radio-group v-model="form.resource">
+        <a-radio-group v-model="bizform.resource">
           <a-radio value="1">
             渠道报备
           </a-radio>
@@ -39,7 +39,7 @@
       </a-form-model-item>
 
       <a-form-model-item label="商机产品：">
-        <a-select   mode="multiple" v-model="form.products" placeholder="请您选择产品">
+        <a-select   mode="multiple" v-model="bizform.products" placeholder="请您选择产品">
           <a-select-option v-for="prd in productsDataSource" :key="prd.id" :value="prd.id">
             {{ prd.productName }}-{{prd.productUnitPrice}} -{{prd.productUnit}}
           </a-select-option>
@@ -47,15 +47,15 @@
       </a-form-model-item>
 
       <a-form-model-item label="项目商机描述：">
-        <a-input v-model="form.desc" type="textarea" placeholder="针对这个项目，你设计了什么样的成功路径"/>
+        <a-input v-model="bizform.desc" type="textarea" placeholder="针对这个项目，你设计了什么样的成功路径"/>
       </a-form-model-item>
 
       <a-form-model-item label="预计成交时间">
-        <a-month-picker  v-model="form.okdate"  placeholder="选择 月份" />
+        <a-month-picker  v-model="bizform.okdate"  placeholder="选择 月份" />
       </a-form-model-item>
 
       <a-form-model-item label="预算金额">
-        <a-input v-model="form.desc" type="number" placeholder="大概金额"/>
+        <a-input v-model="bizform.pay" type="number" placeholder="大概金额"/>
       </a-form-model-item>
 
 
@@ -92,7 +92,14 @@ export default {
       wrapperCol: {span: 14},
       productsDataSource:[],
       entDataSource:[],
-      form: this.$form.createForm(this, {name: 'bizAU'}),
+      bizform: {
+        bizType:1,
+        resource:1,
+        products:{},
+        desc:"",
+        okDate:null,
+        pay:0
+      }
 
     }
   },
@@ -108,14 +115,14 @@ export default {
     },
 
     handleOk() {
-      console.log('submit!', this.form);
+      console.log('submit!', this.bizform);
     },
 
     handleCancel() {
       this.visible = false;
     },
     onSubmit() {
-      console.log('submit!', this.form);
+      console.log('submit!', this.bizform);
     },
 
     onSearch(searchText) {
@@ -130,7 +137,7 @@ export default {
 
     onSelect(value) {
       console.log('onChange', value,this.form );
-      this.form.setFieldsValue({entId: value})
+      this.bizform.setFieldsValue({entId: value})
     },
 
     async getProductsList(params) {
