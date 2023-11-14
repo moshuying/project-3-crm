@@ -11,7 +11,7 @@
             <result property="bizEntName" column="biz_ent_name" jdbcType="VARCHAR"/>
             <result property="bizDesc" column="biz_desc" jdbcType="VARCHAR"/>
             <result property="bizStage" column="biz_stage" jdbcType="VARCHAR"/>
-            <result property="products" column="products" jdbcType="OTHER"/>
+            <result property="products" column="products" jdbcType="OTHER" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
             <result property="bizCount" column="biz_count" jdbcType="INTEGER"/>
             <result property="bizOkday" column="biz_okday" jdbcType="DATE"/>
             <result property="employeeId" column="employee_id" jdbcType="INTEGER"/>

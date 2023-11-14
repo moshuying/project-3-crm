@@ -22,7 +22,7 @@
       </a-form-model-item>
 
       <a-form-model-item label="来源分类">
-        <a-radio-group v-model="bizform.resource">
+        <a-radio-group v-model="bizform.bizResources">
           <a-radio value="1">
             渠道报备
           </a-radio>
@@ -38,24 +38,28 @@
         </a-radio-group>
       </a-form-model-item>
 
+      <a-form-model-item label="客户名称：">
+        <a-input v-model="bizform.bizEntName" type="input" placeholder="客户名称"/>
+      </a-form-model-item>
+
       <a-form-model-item label="商机产品：">
-        <a-select   mode="multiple" v-model="bizform.products" placeholder="请您选择产品">
-          <a-select-option v-for="prd in productsDataSource" :key="prd.id" :value="prd.id">
+        <a-select   mode="multiple" v-model="bizform.products" @change="prdhandleChange" placeholder="请您选择产品">
+          <a-select-option v-for="prd in productsDataSource" :key="prd.id" :value="prd">
             {{ prd.productName }}-{{prd.productUnitPrice}} -{{prd.productUnit}}
           </a-select-option>
         </a-select>
       </a-form-model-item>
 
       <a-form-model-item label="项目商机描述：">
-        <a-input v-model="bizform.desc" type="textarea" placeholder="针对这个项目，你设计了什么样的成功路径"/>
+        <a-input v-model="bizform.bizDesc" type="textarea" placeholder="针对这个项目，你设计了什么样的成功路径"/>
       </a-form-model-item>
 
       <a-form-model-item label="预计成交时间">
-        <a-month-picker  v-model="bizform.okdate"  placeholder="选择 月份" />
+        <a-month-picker  v-model="bizform.bizOkday"  placeholder="选择 月份" />
       </a-form-model-item>
 
       <a-form-model-item label="预算金额">
-        <a-input v-model="bizform.pay" type="number" placeholder="大概金额"/>
+        <a-input v-model="bizform.bizCount" type="number" placeholder="大概金额"/>
       </a-form-model-item>
 
 
@@ -68,6 +72,7 @@
 
 <script>
 import * as products  from "@/services/products";
+import * as bizs  from "@/services/bizs";
 import * as customerEnterprise from "@/services/customerEnterprise";
 
 
@@ -94,11 +99,12 @@ export default {
       entDataSource:[],
       bizform: {
         bizType:1,
-        resource:1,
-        products:{},
-        desc:"",
-        okDate:null,
-        pay:0
+        bizEntName:null,
+        bizResource:1,
+        products:[],
+        bizDesc:"",
+        bizOkday:null,
+        bizCount:0
       }
 
     }
@@ -116,6 +122,16 @@ export default {
 
     handleOk() {
       console.log('submit!', this.bizform);
+      bizs.add(this.bizform).then((res)=>{
+        console.log("res:",res)
+      })
+    },
+
+    /**
+     * 选择产品设置对象
+     */
+    prdhandleChange(value){
+      console.log("lll",value);
     },
 
     handleCancel() {

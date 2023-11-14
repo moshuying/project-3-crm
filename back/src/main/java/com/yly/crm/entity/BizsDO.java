@@ -1,9 +1,12 @@
 package com.yly.crm.entity;
 
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
+import com.yly.crm.const_enum.BizResources;
 import com.yly.crm.const_enum.BizType;
 import lombok.Data;
 
@@ -14,7 +17,7 @@ import java.util.Date;
  * 商机管理表，管理商机报备，内外报备，提醒跟进等
  * @TableName bizs
  */
-@TableName(value ="bizs")
+@TableName(value ="bizs",autoResultMap = true)
 @Data
 public class BizsDO implements Serializable {
     /**
@@ -32,8 +35,8 @@ public class BizsDO implements Serializable {
     /**
      * 来源（渠道、官网、活动、其他）
      */
-    @TableField(value = "biz_resources")
-    private Object bizResources;
+    @TableField(value = "biz_resources",typeHandler = FastjsonTypeHandler.class)
+    private BizResources bizResources;
 
     /**
      * 最终报备客户名称
@@ -56,8 +59,8 @@ public class BizsDO implements Serializable {
     /**
      * 产品{id:name,id:name}
      */
-    @TableField(value = "products")
-    private Object products;
+    @TableField(value = "products",typeHandler = FastjsonTypeHandler.class)
+    private Products products;
 
     /**
      * 预计成交金额
