@@ -1,17 +1,16 @@
 package com.yly.crm.entity;
 
 import com.alibaba.fastjson.JSONArray;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler;
 import com.yly.crm.const_enum.BizResources;
 import com.yly.crm.const_enum.BizType;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 商机管理表，管理商机报备，内外报备，提醒跟进等
@@ -60,7 +59,7 @@ public class BizsDO implements Serializable {
      * 产品{id:name,id:name}
      */
     @TableField(value = "products",typeHandler = FastjsonTypeHandler.class)
-    private Products products;
+    private List<Products> products;
 
     /**
      * 预计成交金额
@@ -89,14 +88,14 @@ public class BizsDO implements Serializable {
     /**
      * 创建时间
      */
-    @TableField(value = "create_time")
-    private Date createTime;
+    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    @TableField(value = "update_time")
-    private Date updateTime;
+    @TableField(value = "update_time",fill = FieldFill.UPDATE)
+    private LocalDateTime updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

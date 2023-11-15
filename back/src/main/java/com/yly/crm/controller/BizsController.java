@@ -36,7 +36,7 @@ public class BizsController {
     @PostMapping
     public Result<BizsDO> addBiz(@RequestBody BizsDO bizs, @RequestHeader Map<String, String> headers){
 
-        log.debug("params",bizs,headers);
+        log.info("addBiz params================>",bizs,headers);
         bizsService.save(bizs);
         return  ResultGenerator.genOkResult();
     }

@@ -91,7 +91,12 @@ export default {
   components: {AddOrUpBizs},
   data(){
     return{
-      columns:columns
+      columns:columns,
+      queryForm: this.$form.createForm(this, {name: 'bizQuery'}),
+      loading:false,
+      queryLoading:false,
+      pagination:{},
+      dataSource:[]
     }
   },
   methods:{

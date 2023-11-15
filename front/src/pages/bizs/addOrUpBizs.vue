@@ -12,10 +12,10 @@
 
       <a-form-model-item label="线索或商机">
         <a-radio-group v-model="bizform.bizType">
-          <a-radio value="1">
+          <a-radio value=1>
             商机（客户已经立项）
           </a-radio>
-          <a-radio value="2">
+          <a-radio value=2>
             线索（客户未立项）
           </a-radio>
         </a-radio-group>
@@ -23,16 +23,16 @@
 
       <a-form-model-item label="来源分类">
         <a-radio-group v-model="bizform.bizResources">
-          <a-radio value="1">
+          <a-radio value=1>
             渠道报备
           </a-radio>
-          <a-radio value="2">
+          <a-radio value=2>
             官网、互联网
           </a-radio>
-          <a-radio value="3">
+          <a-radio value=3>
             市场活动
           </a-radio>
-          <a-radio value="4">
+          <a-radio value=4>
             其他
           </a-radio>
         </a-radio-group>
@@ -100,11 +100,11 @@ export default {
       bizform: {
         bizType:1,
         bizEntName:null,
-        bizResource:1,
+        bizResources:2,
         products:[],
         bizDesc:"",
         bizOkday:null,
-        bizCount:0
+        bizCount:500
       }
 
     }
