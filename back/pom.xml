@@ -40,7 +40,7 @@
         <jasypt.version>3.0.3</jasypt.version>
         <freemarker.version>2.3.30</freemarker.version>
         <lombok.version>1.18.16</lombok.version>
-        <hibernate.version>6.1.6.Final</hibernate.version>
+        <hibernate.version>6.2.0.Final</hibernate.version>
     </properties>
 
     <dependencies>
